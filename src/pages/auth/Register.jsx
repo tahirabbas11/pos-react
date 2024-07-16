@@ -3,19 +3,19 @@ import {
   // Form,
   // Input,
   Carousel,
-  message,
+  // message,
   Card,
   Descriptions,
 } from "antd";
 import { Link } from "react-router-dom";
 import AuthCarousel from "../../components/auth/AuthCarousel";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Logo from "../../Images/logo.png";
 
 const Register = () => {
   // const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [contactInfo, setContactInfo] = useState(null);
 
   useEffect(() => {
