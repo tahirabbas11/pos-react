@@ -12,7 +12,7 @@ const PrintInvoice = ({ isModalOpen, setIsModalOpen, printData }) => {
 
   return (
     <Modal
-      title="Shaan Foods Invoice"
+      title="Shan Foods Invoice"
       open={isModalOpen}
       footer={false}
       onCancel={() => setIsModalOpen(false)}

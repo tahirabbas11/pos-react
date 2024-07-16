@@ -1,7 +1,7 @@
 import {
-  Button,
-  Form,
-  Input,
+  // Button,
+  // Form,
+  // Input,
   Carousel,
   message,
   Card,
@@ -14,7 +14,7 @@ import { useState, useEffect } from "react";
 import Logo from "../../Images/logo.png";
 
 const Register = () => {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [contactInfo, setContactInfo] = useState(null);
 
@@ -32,26 +32,26 @@ const Register = () => {
 
     fetchContactInfo();
   },[]);
-  const onFinish = async (values) => {
-    try {
-      setLoading(true);
-      const res = await fetch(
-        process.env.REACT_APP_SERVER_URL + "/api/auth/register",
-        {
-          method: "POST",
-          body: JSON.stringify(values),
-          headers: { "Content-type": "application/json; charset=UTF-8" },
-        }
-      );
-      if (res.status === 200) {
-        message.success("Registration process successful");
-        navigate("/login");
-        setLoading(false);
-      }
-    } catch (error) {
-      message.error("Something went wrong!");
-    }
-  };
+  // const onFinish = async (values) => {
+  //   try {
+  //     setLoading(true);
+  //     const res = await fetch(
+  //       process.env.REACT_APP_SERVER_URL + "/api/auth/register",
+  //       {
+  //         method: "POST",
+  //         body: JSON.stringify(values),
+  //         headers: { "Content-type": "application/json; charset=UTF-8" },
+  //       }
+  //     );
+  //     if (res.status === 200) {
+  //       message.success("Registration process successful");
+  //       navigate("/login");
+  //       setLoading(false);
+  //     }
+  //   } catch (error) {
+  //     message.error("Something went wrong!");
+  //   }
+  // };
 
   return (
     <div className="h-screen">

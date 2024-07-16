@@ -28,7 +28,7 @@ const Products = ({
       }
     };
     getProduct();
-  }, []);
+  }, [setProducts]);
 
   return (
     <div className="products-wrapper grid grid-cols-card gap-4">
