@@ -1,13 +1,37 @@
-import { Button, Form, Input, Carousel, message } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Carousel,
+  message,
+  Card,
+  Descriptions,
+} from "antd";
 import { Link } from "react-router-dom";
 import AuthCarousel from "../../components/auth/AuthCarousel";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Logo from "../../Images/logo.png";
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [contactInfo, setContactInfo] = useState(null);
+
+  useEffect(() => {
+    const fetchContactInfo = async () => {
+      try {
+        const response = await fetch(process.env.REACT_APP_SERVER_URL);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setContactInfo(data);
+      } catch (error) {}
+    };
+
+    fetchContactInfo();
+  },[]);
   const onFinish = async (values) => {
     try {
       setLoading(true);
@@ -43,7 +67,7 @@ const Register = () => {
               />
             </Link>
           </h1>
-          <Form layout="vertical" onFinish={onFinish}>
+          {/* <Form layout="vertical" onFinish={onFinish}>
             <Form.Item
               label="Username"
               name={"userName"}
@@ -114,15 +138,37 @@ const Register = () => {
                 Sign Up
               </Button>
             </Form.Item>
-          </Form>
-          <div className="absolute bottom-10 left-0 w-full flex items-center justify-center">
+          </Form> */}
+          <Card
+            title={`Developer : ${contactInfo?.name}`}
+            className="max-w-sm mx-auto"
+          >
+            <Descriptions column={1}>
+              <Descriptions.Item label="GitHub">
+                {contactInfo?.github && (
+                  <a href={contactInfo.github}>tahirabbas11</a>
+                )}
+              </Descriptions.Item>
+              <Descriptions.Item label="Contact">
+                {contactInfo?.contact && (
+                  <a href={contactInfo.contact}>{contactInfo.contact}</a>
+                )}
+              </Descriptions.Item>
+              <Descriptions.Item label="Email">
+                {contactInfo?.contact && (
+                  <a href={contactInfo.email}>{contactInfo.email}</a>
+                )}
+              </Descriptions.Item>
+            </Descriptions>
+          </Card>
+          <div className="pt-10 left-0 w-full flex items-center justify-center">
             Do you have an account?
             <Link to="/login" className="text-blue-600 inline-block p-2">
               Now, log in
             </Link>
           </div>
         </div>
-        <div className="sm:flex hidden xl:w-4/6 min-w-[500px] bg-[#6c63ff]">
+        <div className="sm:flex hidden xl:w-4/6 min-w-[500px] bg-[#6c63ff]" >
           <div className="w-full mt-40">
             <Carousel autoplay>
               <AuthCarousel
@@ -154,4 +200,3 @@ const Register = () => {
 };
 
 export default Register;
-
