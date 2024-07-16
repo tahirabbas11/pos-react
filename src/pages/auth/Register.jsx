@@ -148,28 +148,28 @@ const Register = () => {
             <Descriptions column={1}>
               <Descriptions.Item label={<span><FileOutlined /> &nbsp;Portfolio&nbsp;</span>}>
                 {contactInfo?.github && (
-                  <a href={contactInfo.portfolio} target="_blank">
+                  <a href={contactInfo.portfolio} target="_blank" rel="noreferrer">
                     Tahir Abbas
                   </a>
                 )}
               </Descriptions.Item>
               <Descriptions.Item label={<span><GithubOutlined /> &nbsp;Gihtub&nbsp;</span>}>
                 {contactInfo?.github && (
-                  <a href={contactInfo.github} target="_blank">
+                  <a href={contactInfo.github} target="_blank" rel="noreferrer">
                     tahirabbas11
                   </a>
                 )}
               </Descriptions.Item>
               <Descriptions.Item label={<span><WhatsAppOutlined /> &nbsp;WhatsApp&nbsp;</span>}>
                 {contactInfo?.contact && (
-                  <a href={`https://wa.me/+923213600429`} target="_blank">
+                  <a href={`https://wa.me/+923213600429`} target="_blank" rel="noreferrer">
                     {contactInfo.contact}
                   </a>
                 )}
               </Descriptions.Item>
               <Descriptions.Item label={<span><MailOutlined /> &nbsp;Mail&nbsp;</span>}>
                 {contactInfo?.contact && (
-                  <a href={`mailto:${contactInfo.email}`} target="_blank">
+                  <a href={`mailto:${contactInfo.email}`} target="_blank" rel="noreferrer">
                     {contactInfo.email}
                   </a>
                 )}
