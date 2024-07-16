@@ -108,7 +108,7 @@ const Login = () => {
               </Button>
             </Form.Item>
           </Form>
-          <div className="flex items-center justify-center md:hidden fixed bottom-0 left-0 w-full bg-white">
+          <div className="flex items-center justify-center">
           Do not have an account yet?
             <Link to="/register" className="text-blue-600 inline-block p-2">
             Sign up now!
