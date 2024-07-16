@@ -12,6 +12,7 @@ import AuthCarousel from "../../components/auth/AuthCarousel";
 // import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Logo from "../../Images/logo.png";
+import { UserOutlined, GithubOutlined, MailOutlined, WhatsAppOutlined, FileOutlined } from "@ant-design/icons";
 
 const Register = () => {
   // const [loading, setLoading] = useState(false);
@@ -140,23 +141,37 @@ const Register = () => {
             </Form.Item>
           </Form> */}
           <Card
-            title={`Developer : ${contactInfo?.name}`}
+            title={contactInfo?.name}
+            extra={<UserOutlined />}
             className="max-w-sm mx-auto"
           >
             <Descriptions column={1}>
-              <Descriptions.Item label="GitHub">
+              <Descriptions.Item label={<span><FileOutlined /> &nbsp;Portfolio&nbsp;</span>}>
                 {contactInfo?.github && (
-                  <a href={contactInfo.github}>tahirabbas11</a>
+                  <a href={contactInfo.portfolio} target="_blank">
+                    Tahir Abbas
+                  </a>
                 )}
               </Descriptions.Item>
-              <Descriptions.Item label="Contact">
-                {contactInfo?.contact && (
-                  <a href={contactInfo.contact}>{contactInfo.contact}</a>
+              <Descriptions.Item label={<span><GithubOutlined /> &nbsp;Gihtub&nbsp;</span>}>
+                {contactInfo?.github && (
+                  <a href={contactInfo.github} target="_blank">
+                    tahirabbas11
+                  </a>
                 )}
               </Descriptions.Item>
-              <Descriptions.Item label="Email">
+              <Descriptions.Item label={<span><WhatsAppOutlined /> &nbsp;WhatsApp&nbsp;</span>}>
                 {contactInfo?.contact && (
-                  <a href={contactInfo.email}>{contactInfo.email}</a>
+                  <a href={`https://wa.me/+923213600429`} target="_blank">
+                    {contactInfo.contact}
+                  </a>
+                )}
+              </Descriptions.Item>
+              <Descriptions.Item label={<span><MailOutlined /> &nbsp;Mail&nbsp;</span>}>
+                {contactInfo?.contact && (
+                  <a href={`mailto:${contactInfo.email}`} target="_blank">
+                    {contactInfo.email}
+                  </a>
                 )}
               </Descriptions.Item>
             </Descriptions>

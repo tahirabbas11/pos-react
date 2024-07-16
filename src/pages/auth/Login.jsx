@@ -108,12 +108,12 @@ const Login = () => {
               </Button>
             </Form.Item>
           </Form>
-          {/* <div className="absolute bottom-10 left-0 w-full flex items-center justify-center">
+          <div className="flex items-center justify-center md:hidden fixed bottom-0 left-0 w-full bg-white">
           Do not have an account yet?
             <Link to="/register" className="text-blue-600 inline-block p-2">
             Sign up now!
             </Link>
-          </div> */}
+          </div>
         </div>
         <div className="sm:flex hidden xl:w-4/6 min-w-[500px] bg-[#6c63ff]">
           <div className="w-full mt-40">
