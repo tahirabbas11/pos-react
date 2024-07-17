@@ -1,5 +1,6 @@
 import { Form, Table, Input, Button, message, Select, Modal } from "antd";
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 
 const Edit = () => {
   const [products, setProducts] = useState([]);
@@ -66,23 +67,58 @@ const Edit = () => {
     }
   };
 
+  // const deleteProduct = (id) => {
+  //   if (window.confirm("Are you sure you want to delete it?")) {
+  //     try {
+  //       fetch(
+  //         process.env.REACT_APP_SERVER_URL + "/api/products/delete-product",
+  //         {
+  //           method: "DELETE",
+  //           body: JSON.stringify({ productId: id }),
+  //           headers: { "Content-type": "application/json; charset=UTF-8" },
+  //         }
+  //       );
+  //       message.success("Product successfully deleted.");
+  //       setProducts(products.filter((item) => item._id !== id));
+  //     } catch (error) {
+  //       message.error("Something went wrong...");
+  //     }
+  //   }
+  // };
+
   const deleteProduct = (id) => {
-    if (window.confirm("Are you sure you want to delete it?")) {
-      try {
-        fetch(
-          process.env.REACT_APP_SERVER_URL + "/api/products/delete-product",
-          {
-            method: "DELETE",
-            body: JSON.stringify({ productId: id }),
-            headers: { "Content-type": "application/json; charset=UTF-8" },
-          }
-        );
-        message.success("Product successfully deleted.");
-        setProducts(products.filter((item) => item._id !== id));
-      } catch (error) {
-        message.error("Something went wrong...");
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete this product?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Confirm',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: "#2463EB",
+      cancelButtonColor: "gray-400",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        try {
+          fetch(
+            process.env.REACT_APP_SERVER_URL + "/api/products/delete-product",
+            {
+              method: "DELETE",
+              body: JSON.stringify({ productId: id }),
+              headers: { "Content-type": "application/json; charset=UTF-8" },
+            }
+          ).then((response) => {
+            if (response.ok) {
+              message.success("Product successfully deleted.");
+              setProducts(products.filter((item) => item._id !== id));
+            } else {
+              throw new Error("Network response was not ok.");
+            }
+          });
+        } catch (error) {
+          message.error("Something went wrong...");
+        }
       }
-    }
+    });
   };
 
   const columns = [

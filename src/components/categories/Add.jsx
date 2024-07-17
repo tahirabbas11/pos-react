@@ -5,6 +5,7 @@ const Add = ({
   setIsAddModalOpen,
   categories,
   setCategories,
+  getCategories
 }) => {
   const [form] = Form.useForm();
 
@@ -18,13 +19,14 @@ const Add = ({
       message.success("Category added successfully.");
       setIsAddModalOpen(false);
       form.resetFields();
-      setCategories([
-        ...categories,
-        {
-          _id: Math.random(),
-          title: value.title,
-        },
-      ]);
+      // setCategories([
+      //   ...categories,
+      //   {
+      //     _id: Math.random(),
+      //     title: value.title,
+      //   },
+      // ]);
+      getCategories();
     } catch (error) {
       console.log(error);
     }

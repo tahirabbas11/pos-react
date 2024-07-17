@@ -1,5 +1,6 @@
 import { Form, Modal, Table, Input, Button, message } from "antd";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 const Edit = ({
   isEditModalOpen,
@@ -33,23 +34,53 @@ const Edit = ({
     }
   };
 
+  // const handleDeleteCategory = (id) => {
+  //   if (window.confirm("Are you sure you want to delete?")) {
+      // try {
+      //   fetch(
+      //     process.env.REACT_APP_SERVER_URL + "/api/categories/delete-category",
+      //     {
+      //       method: "DELETE",
+      //       body: JSON.stringify({ categoryId: id }),
+      //       headers: { "Content-type": "application/json; charset=UTF-8" },
+      //     }
+      //   );
+      //   message.success("Category successfully deleted.");
+      //   setCategories(categories.filter((item) => item._id !== id));
+      // } catch (error) {
+      //   message.error("Something went wrong...");
+      // }
+  //   }
+  // };
+
   const handleDeleteCategory = (id) => {
-    if (window.confirm("Are you sure you want to delete?")) {
-      try {
-        fetch(
-          process.env.REACT_APP_SERVER_URL + "/api/categories/delete-category",
-          {
-            method: "DELETE",
-            body: JSON.stringify({ categoryId: id }),
-            headers: { "Content-type": "application/json; charset=UTF-8" },
-          }
-        );
-        message.success("Category successfully deleted.");
-        setCategories(categories.filter((item) => item._id !== id));
-      } catch (error) {
-        message.error("Something went wrong...");
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete this category?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Confirm',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: "#2463EB",
+      cancelButtonColor: "gray-400",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        try {
+                fetch(
+                  process.env.REACT_APP_SERVER_URL + "/api/categories/delete-category",
+                  {
+                    method: "DELETE",
+                    body: JSON.stringify({ categoryId: id }),
+                    headers: { "Content-type": "application/json; charset=UTF-8" },
+                  }
+                );
+                message.success("Category successfully deleted.");
+                setCategories(categories.filter((item) => item._id !== id));
+              } catch (error) {
+                message.error("Something went wrong...");
+              }
       }
-    }
+    });
   };
 
   const columns = [

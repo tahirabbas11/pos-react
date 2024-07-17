@@ -12,7 +12,8 @@ import {
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import "./index.css";
-import Logo from "../../Images/logo.png";
+// import Logo from "../../Images/logo.png";
+import Swal from "sweetalert2";
 
 const Header = ({ setSearched }) => {
   const cart = useSelector((state) => state.cart);
@@ -21,11 +22,21 @@ const Header = ({ setSearched }) => {
   const { pathname } = useLocation();
 
   const logout = () => {
-    if (window.confirm("Are you sure you want to log out?")) {
-      localStorage.removeItem("postUser");
-      navigate("/login");
-      message.success("Logout successful.");
-    }
+    Swal.fire({
+      title: "Log out?",
+      text: "Won't be able to access account.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#2463EB",
+      cancelButtonColor: "gray-400",
+      confirmButtonText: "Confirm",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem("postUser");
+        navigate("/login");
+        message.success("Logout successful.");
+      }
+    });
   };
 
   return (

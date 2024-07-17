@@ -12,19 +12,20 @@ function HomePage() {
   const [searched, setSearched] = useState("");
 
   useEffect(() => {
-    const getCategories = async () => {
-      try {
-        const res = await fetch(
-          process.env.REACT_APP_SERVER_URL + "/api/categories/get-all"
-        );
-        const data = await res.json();
-        setCategories(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     getCategories();
   }, []);
+
+  const getCategories = async () => {
+    try {
+      const res = await fetch(
+        process.env.REACT_APP_SERVER_URL + "/api/categories/get-all"
+      );
+      const data = await res.json();
+      setCategories(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -37,6 +38,7 @@ function HomePage() {
               setCategories={setCategories}
               products={products}
               setFiltered={setFiltered}
+              getCategories={getCategories}
             />
           </div>
           <div className="products flex-[8] max-h-[calc(100vh_-_112px)] overflow-y-auto pb-10 min-h-[500px]">
