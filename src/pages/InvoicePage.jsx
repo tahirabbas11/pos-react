@@ -47,7 +47,7 @@ const InvoicePage = () => {
           key: item._id,
         }));
 
-        console.log(newData);
+        // console.log(newData);
         setInvoices(newData);
         SetTotalEarning(data.reduce((sum, order) => sum + order.subTotal, 0));
       } catch (error) {

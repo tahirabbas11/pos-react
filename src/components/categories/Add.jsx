@@ -5,7 +5,7 @@ const Add = ({
   setIsAddModalOpen,
   categories,
   setCategories,
-  getCategories
+  getCategories,
 }) => {
   const [form] = Form.useForm();
 
@@ -19,6 +19,7 @@ const Add = ({
       message.success("Category added successfully.");
       setIsAddModalOpen(false);
       form.resetFields();
+      getCategories();
       // setCategories([
       //   ...categories,
       //   {
@@ -26,7 +27,6 @@ const Add = ({
       //     title: value.title,
       //   },
       // ]);
-      getCategories();
     } catch (error) {
       console.log(error);
     }
