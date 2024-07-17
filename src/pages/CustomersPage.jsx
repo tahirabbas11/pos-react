@@ -140,22 +140,21 @@ const InvoicePage = () => {
         text
       ),
   });
-
   const columns = [
     {
-      title: "Müşteri Adı",
+      title: "Customer Name",
       dataIndex: "customerName",
       key: "customerName",
       ...getColumnSearchProps("customerName"),
     },
     {
-      title: "Telefon Numarası",
+      title: "Phone Number",
       dataIndex: "customerPhoneNumber",
       key: "customerPhoneNumber",
       ...getColumnSearchProps("customerPhoneNumber"),
     },
     {
-      title: "İşlem Tarihi",
+      title: "Operation Date",
       dataIndex: "createdAt",
       key: "createdAt",
       render: (text, record) => {

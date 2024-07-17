@@ -31,10 +31,17 @@ const Header = ({ setSearched }) => {
   return (
     <div className="border-b mb-6">
       <header className="py-4 px-6 flex justify-between items-center gap-10">
-        <div className="logo">
-          {/* <Link to="/">
+        {/* <div className="logo">
+           <Link
+            to="/"
+            className={`menu-link ${pathname === "/" && " text-[#40a9ff]"} `}
+          >
+            <HomeOutlined className="md:text-5xl text-2xl" />
+            <span className="md:text-xs text-[10px]">Shan Foods</span>
+          </Link>
+          <Link to="/">
             <h2 className="text-2xl font-bold md:text-4xl">Shan Food</h2>
-          </Link> */}
+          </Link>
           <Link to="/">
           <div className="flex justify-center items-center">
             <img
@@ -45,7 +52,7 @@ const Header = ({ setSearched }) => {
             />
           </div>
             </Link>
-        </div>
+        </div> */}
         <div
           className="header-search flex-1"
           onClick={() => {
