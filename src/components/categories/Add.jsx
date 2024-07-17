@@ -5,31 +5,31 @@ const Add = ({
   setIsAddModalOpen,
   categories,
   setCategories,
-  getCategories,
 }) => {
   const [form] = Form.useForm();
 
   const onFinish = (value) => {
-    try {
-      fetch(process.env.REACT_APP_SERVER_URL + "/api/categories/add-category", {
-        method: "POST",
-        body: JSON.stringify(value),
-        headers: { "Content-type": "application/json; charset=UTF-8" },
+    fetch(process.env.REACT_APP_SERVER_URL + "/api/categories/add-category", {
+      method: "POST",
+      body: JSON.stringify(value),
+      headers: { "Content-type": "application/json; charset=UTF-8" },
+    })
+      .then(response => response.json())
+      .then(data => {
+        message.success("Category added successfully.");
+        setIsAddModalOpen(false);
+        form.resetFields();
+        setCategories([
+          ...categories,
+          {
+            _id: data.id || Math.random(),
+            title: value.title,
+          },
+        ]);
+      })
+      .catch(error => {
+        console.log(error);
       });
-      message.success("Category added successfully.");
-      setIsAddModalOpen(false);
-      form.resetFields();
-      getCategories();
-      // setCategories([
-      //   ...categories,
-      //   {
-      //     _id: Math.random(),
-      //     title: value.title,
-      //   },
-      // ]);
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   return (

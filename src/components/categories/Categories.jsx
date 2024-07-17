@@ -4,7 +4,7 @@ import Add from "./Add";
 import Edit from "./Edit";
 import "./style.css";
 
-const Categories = ({ categories, setCategories, products, setFiltered, getCategories }) => {
+const Categories = ({ categories, setCategories, products, setFiltered }) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [categoryTitle, setCategoryTitle] = useState("All");
@@ -54,7 +54,7 @@ const Categories = ({ categories, setCategories, products, setFiltered, getCateg
         setIsAddModalOpen={setIsAddModalOpen}
         categories={categories}
         setCategories={setCategories}
-        getCategories={getCategories}
+        // getCategories={getCategories}
       />
 
       <Edit
