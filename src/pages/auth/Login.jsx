@@ -4,49 +4,51 @@ import AuthCarousel from "../../components/auth/AuthCarousel";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Logo from "../../Images/logo.png";
-import axios from "axios";
+
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-const onFinish = async (values) => {
+  const onFinish = async (values) => {
     setLoading(true);
     try {
-        const res = await axios.post(
-            `${process.env.REACT_APP_SERVER_URL}/api/auth/login`,
-            values,
-            {
-                headers: { "Content-type": "application/json; charset=UTF-8" }
-            }
-        );
-
-        const user = res.data;
-
-        if (res.status === 200) {
-            message.success("Login process successful");
-            navigate("/");
-            setLoading(false);
-            localStorage.setItem(
-                "postUser",
-                JSON.stringify({
-                    username: user.userName,
-                    email: user.email,
-                    token: user.token,
-                })
-            );
-        } else if (res.status === 403) {
-            message.error("Invalid Password!");
-        } else if (res.status === 404) {
-            message.error("User not found!");
+      setLoading(true);
+      const res = await fetch(
+        process.env.REACT_APP_SERVER_URL + "/api/auth/login",
+        {
+          method: "POST",
+          body: JSON.stringify(values),
+          headers: { "Content-type": "application/json; charset=UTF-8" },
         }
+      );
 
+      const user = await res.json();
+
+      if (res.status === 200) {
+        message.success("Login process successful");
+        localStorage.setItem(
+          "postUser",
+          JSON.stringify({
+            username: user.userName,
+            email: user.email,
+            token: user.token,
+          })
+        );
+        navigate("/");
         setLoading(false);
+      } else if (res.status === 403) {
+        message.error("Invalid Password!");
+      } else if (res.status === 404) {
+        message.error("User not found!");
+      }
+
+      setLoading(false);
     } catch (error) {
-        console.log('Error', error);
-        message.error("Something went wrong!");
-        setLoading(false);
+      console.log('Error',error);
+      message.error("Something went wrong!");
+      setLoading(false);
     }
-};
+  };
 
   return (
     <div className="h-screen">
