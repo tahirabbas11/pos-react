@@ -3,8 +3,10 @@ import { Table, Button, Input, Space, Spin } from "antd";
 import { useEffect, useState, useRef } from "react";
 import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
+import { useNavigate } from 'react-router-dom';
 
 const InvoicePage = () => {
+  const navigate = useNavigate();
   const [invoices, setInvoices] = useState();
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
@@ -12,10 +14,24 @@ const InvoicePage = () => {
 
   useEffect(() => {
     const getInvoices = async () => {
+      const token = JSON.parse(localStorage.getItem("postUser"))?.token;
+
+      console.log("token", token);
+
       try {
         const res = await fetch(
-          process.env.REACT_APP_SERVER_URL + "/api/invoices/get-all"
+          process.env.REACT_APP_SERVER_URL + "/api/invoices/get-all",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // Using the retrieved token
+            },
+          }
         );
+        if (res.status === 401) {
+          localStorage.clear();
+          navigate('/login');
+        }
         const data = await res.json();
         const newData = data.map((item) => {
           return { ...item, key: item._id };
@@ -27,7 +43,7 @@ const InvoicePage = () => {
     };
 
     getInvoices();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -168,7 +184,7 @@ const InvoicePage = () => {
       <Header />
       {invoices ? (
         <div className="px-6 min-h-[550px]">
-<h1 className="text-4xl text-center font-bold mb-4">Customers</h1>
+          <h1 className="text-4xl text-center font-bold mb-4">Customers</h1>
           <Table
             dataSource={invoices}
             columns={columns}

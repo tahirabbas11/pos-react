@@ -33,6 +33,7 @@ const Login = () => {
           JSON.stringify({
             username: user.userName,
             email: user.email,
+            token: user.token,
           })
         );
       } else if (res.status === 403) {
@@ -60,7 +61,7 @@ const Login = () => {
                 alt="Logo"
               />
             </Link>
-            </h1>
+          </h1>
           <Form
             layout="vertical"
             onFinish={onFinish}
@@ -109,9 +110,9 @@ const Login = () => {
             </Form.Item>
           </Form>
           <div className="flex items-center justify-center">
-          Do not have an account yet?
+            Do not have an account yet?
             <Link to="/register" className="text-blue-600 inline-block p-2">
-            Sign up now!
+              Sign up now!
             </Link>
           </div>
         </div>
@@ -147,4 +148,3 @@ const Login = () => {
 };
 
 export default Login;
-

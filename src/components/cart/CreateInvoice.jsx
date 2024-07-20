@@ -2,7 +2,6 @@ import { Form, Modal, Input, Select, Card, Button, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { reset } from "../../redux/cartSlice";
 import { useNavigate } from "react-router-dom";
-
 const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
@@ -23,9 +22,19 @@ const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
             ),
             cartItems: cart.cartItems,
           }),
-          headers: { "Content-type": "application/json; charset=UTF-8" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("postUser"))?.token
+            }`,
+          },
         }
       );
+      
+      if (res.status === 401) {
+        localStorage.clear();
+        navigate('/login');
+      }
 
       if (res.status === 200) {
         message.success("Invoice created successfully.");
@@ -65,9 +74,7 @@ const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
         <Form.Item
           name={"customerPhoneNumber"}
           label="Phone Number"
-          rules={[
-            { required: false, message: "Please enter a phone number!" },
-          ]}
+          rules={[{ required: false, message: "Please enter a phone number!" }]}
         >
           <Input
             placeholder="Enter phone number..."
@@ -129,5 +136,4 @@ const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
   );
 };
 
-export default CreateInvoice
-
+export default CreateInvoice;

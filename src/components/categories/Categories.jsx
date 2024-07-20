@@ -3,8 +3,14 @@ import { PlusOutlined, EditOutlined } from "@ant-design/icons";
 import Add from "./Add";
 import Edit from "./Edit";
 import "./style.css";
+import { Button } from "antd";
 
-const Categories = ({ categories, setCategories, products, setFiltered }) => {
+const Categories = ({
+  categories = [],
+  setCategories,
+  products,
+  setFiltered,
+}) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [categoryTitle, setCategoryTitle] = useState("All");
@@ -18,36 +24,45 @@ const Categories = ({ categories, setCategories, products, setFiltered }) => {
       );
     }
   }, [products, setFiltered, categoryTitle]);
+  console.log("filtered");
 
   return (
-    <ul className="flex gap-1 md:flex-col flex-row text-sm overflow-x-auto rounded-lg">
-      {categories.map((item) => (
-        <li
-          className={`category-item  ${
-            item.title === categoryTitle
-              ? "!bg-blue-700"
-              : "!bg-gray-400 hover:opacity-50"
-          } p-2 rounded-md h-10 w-24 flex items-center justify-center cursor-pointer md:text-sm text-sm`}
-          key={item._id}
-          onClick={() => setCategoryTitle(item.title)}
-        >
-          <span>{item.title}</span>
-        </li>
-      ))}
+    <ul className="flex gap-1 md:flex-col flex-row text-sm overflow-x-auto rounded-lg ">
+      {categories?.length > 0 &&
+        categories.map((item) => (
+          <Button
+            className={`${
+              item.title === categoryTitle
+                ? "!bg-blue-700 text-white hover:!bg-blue-700 hover:text-white"
+                : " text-black hover:text-gray-900 hover:bg-gray-100"
+            } rounded-md h-10 w-24 flex items-center justify-center cursor-pointer`}
+            key={item._id}
+            onClick={() => setCategoryTitle(item.title)}
+          >
+            <span>{item.title}</span>
+          </Button>
+        ))}
 
-      <li
-        className="category-item !bg-gray-400 hover:opacity-50 p-2 rounded-md h-10 w-24 flex items-center justify-center cursor-pointer"
+      {/* <li className="category-item !bg-transparent hover:opacity-50 p-2 rounded-md h-10 w-24 flex items-center justify-center cursor-pointer"> */}
+      <li></li>
+      <li className="flex items-center justify-center cursor-pointer">
+      <Button
+        type="primary"
+        shape="circle"
+        icon={<PlusOutlined />}
         onClick={() => setIsAddModalOpen(true)}
-      >
-        <PlusOutlined className="md:text-sm text-sm" />
+      />
       </li>
 
-      <li
-        className="category-item !bg-gray-400 hover:opacity-50 p-2 rounded-md h-10 w-24 flex items-center justify-center cursor-pointer"
+      {/* <li className="category-item !bg-gray-400 hover:opacity-50 p-2 rounded-md h-10 w-24 flex items-center justify-center cursor-pointer"> */}
+      <li className="flex items-center justify-center cursor-pointer">
+      <Button
+        type="primary"
+        shape="circle"
+        icon={<EditOutlined />}
         onClick={() => setIsEditModalOpen(true)}
-      >
-        <EditOutlined className="md:text-sm text-sm" />
-      </li>
+      />
+      </li> 
 
       <Add
         isAddModalOpen={isAddModalOpen}

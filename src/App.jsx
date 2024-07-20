@@ -9,6 +9,7 @@ import Login from "./pages/auth/Login";
 import ProductPage from "./pages/ProductPage";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 
 function App() {
   const cart = useSelector((state) => state.cart);
@@ -76,8 +77,24 @@ function App() {
 export default App;
 
 export const RouteControl = ({ children }) => {
-  if (localStorage.getItem("postUser")) {
-    return children;
+  const token = JSON.parse(localStorage.getItem("postUser"))?.token;
+
+  if (token) {
+    // console.log("token", token);
+    try {
+      const decodedToken = jwtDecode(token);
+      const currentTime = (new Date().getTime() + 1) / 1000;
+
+      if (currentTime >= decodedToken.exp) {
+        localStorage.clear();
+        return <Navigate to="/login" />;
+      } else {
+        return children;
+      }
+    } catch (error) {
+      localStorage.clear();
+      return <Navigate to="/login" />;
+    }
   } else {
     return <Navigate to="/login" />;
   }

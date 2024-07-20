@@ -4,8 +4,10 @@ import Categories from "../components/categories/Categories";
 import Header from "../components/header/Header";
 import Products from "../components/products/Products";
 import { Spin } from "antd";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
+  const navigate = useNavigate();
   const [categories, setCategories] = useState();
   const [products, setProducts] = useState([]);
   const [filtered, setFiltered] = useState([]);
@@ -13,13 +15,25 @@ function HomePage() {
 
   useEffect(() => {
     getCategories();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
 
   const getCategories = async () => {
     try {
       const res = await fetch(
-        process.env.REACT_APP_SERVER_URL + "/api/categories/get-all"
+        process.env.REACT_APP_SERVER_URL + "/api/categories/get-all",
+        {
+          headers: {
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("postUser"))?.token
+            }`,
+          },
+        }
       );
+      if (res.status === 401) {
+        localStorage.clear();
+        navigate('/login');
+      }
       const data = await res.json();
       setCategories(data);
     } catch (error) {
@@ -32,7 +46,7 @@ function HomePage() {
       <Header setSearched={setSearched} />
       {products && categories ? (
         <div className="home px-6 flex md:flex-row flex-col justify-between gap-10 h-screen">
-          <div className="categories overflow-auto md:max-h-[calc(100vh_-_112px)] min-h-[125px] pb-10 ">
+          <div className="categories overflow-auto md:max-h-[calc(100vh_-_112px)] min-h-[15px] pb-10 ">
             <Categories
               categories={categories}
               setCategories={setCategories}

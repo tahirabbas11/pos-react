@@ -1,8 +1,11 @@
 import { Form, Table, Input, Button, message, Select, Modal } from "antd";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+
 
 const Edit = () => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -13,8 +16,19 @@ const Edit = () => {
     const getProduct = async () => {
       try {
         const res = await fetch(
-          process.env.REACT_APP_SERVER_URL + "/api/products/get-all"
+          process.env.REACT_APP_SERVER_URL + "/api/products/get-all",
+          {
+            headers: {
+              Authorization: `Bearer ${
+                JSON.parse(localStorage.getItem("postUser"))?.token
+              }`,
+            },
+          }
         );
+        if (res.status === 401) {
+          localStorage.clear();
+          navigate("/login");
+        }
         const data = await res.json();
         setProducts(data);
       } catch (error) {
@@ -22,14 +36,25 @@ const Edit = () => {
       }
     };
     getProduct();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const getCategory = async () => {
       try {
         const res = await fetch(
-          process.env.REACT_APP_SERVER_URL + "/api/categories/get-all"
+          process.env.REACT_APP_SERVER_URL + "/api/categories/get-all",
+          {
+            headers: {
+              Authorization: `Bearer ${
+                JSON.parse(localStorage.getItem("postUser"))?.token
+              }`,
+            },
+          }
         );
+        if (res.status === 401) {
+          localStorage.clear();
+          navigate('/login');
+        }
         const data = await res.json();
         setCategories(data);
       } catch (error) {
@@ -37,24 +62,38 @@ const Edit = () => {
       }
     };
     getCategory();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const onFinish = (values) => {
+
+  const onFinish = async (values) => {
     try {
-      fetch(process.env.REACT_APP_SERVER_URL + "/api/products/update-product", {
-        method: "PUT",
-        body: JSON.stringify({ ...values, productId: editingItem._id }),
-        headers: { "Content-type": "application/json; charset=UTF-8" },
-      });
+      const res = await fetch(
+        process.env.REACT_APP_SERVER_URL + "/api/products/update-product",
+        {
+          method: "PUT",
+          body: JSON.stringify({ ...values, productId: editingItem._id }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("postUser"))?.token
+            }`,
+          },
+        }
+      );
+      if (res.status === 401) {
+        localStorage.clear();
+        navigate('/login');
+      }
+      const data = await res.json();
       setProducts(
         products.map((item) => {
           if (item._id === editingItem._id) {
             return {
               ...item,
-              title: values.title,
-              img: values.img,
-              price: values.price,
-              category: values.category,
+              title: data.title,
+              img: data.img,
+              price: data.price,
+              category: data.category,
             };
           }
           return item;
@@ -75,7 +114,10 @@ const Edit = () => {
   //         {
   //           method: "DELETE",
   //           body: JSON.stringify({ productId: id }),
-  //           headers: { "Content-type": "application/json; charset=UTF-8" },
+  //           headers: {
+  //   'Content-Type': 'application/json',
+  //   'Authorization': `Bearer ${JSON.parse(localStorage.getItem("postUser"))?.token}`
+  // },
   //         }
   //       );
   //       message.success("Product successfully deleted.");
@@ -88,12 +130,12 @@ const Edit = () => {
 
   const deleteProduct = (id) => {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you want to delete this product?',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "Do you want to delete this product?",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Confirm',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: "Confirm",
+      cancelButtonText: "Cancel",
       confirmButtonColor: "#2463EB",
       cancelButtonColor: "gray-400",
     }).then((result) => {
@@ -104,14 +146,22 @@ const Edit = () => {
             {
               method: "DELETE",
               body: JSON.stringify({ productId: id }),
-              headers: { "Content-type": "application/json; charset=UTF-8" },
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${
+                  JSON.parse(localStorage.getItem("postUser"))?.token
+                }`,
+              },
             }
           ).then((response) => {
+
             if (response.ok) {
               message.success("Product successfully deleted.");
               setProducts(products.filter((item) => item._id !== id));
             } else {
-              throw new Error("Network response was not ok.");
+              localStorage.clear();
+              navigate('/login');
+              // throw new Error("Network response was not ok.");
             }
           });
         } catch (error) {
@@ -276,4 +326,3 @@ const Edit = () => {
 };
 
 export default Edit;
-

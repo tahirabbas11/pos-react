@@ -1,4 +1,5 @@
 import { Button, Form, Input, Modal, Select, message } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const Add = ({
   isAddModalOpen,
@@ -8,30 +9,40 @@ const Add = ({
   categories,
 }) => {
   const [form] = Form.useForm();
-  const onFinish = (value) => {
+  const navigate = useNavigate();
+const onFinish = async (value) => {
     try {
-      fetch(process.env.REACT_APP_SERVER_URL + "/api/products/add-product", {
-        method: "POST",
-        body: JSON.stringify(value),
-        headers: { "Content-type": "application/json; charset=UTF-8" },
-      });
-      message.success("Ürün başarıyla eklendi.");
-      setIsAddModalOpen(false);
-      form.resetFields();
-      setProducts([
-        ...products,
-        {
-          _id: Math.random(),
-          title: value.title,
-          img: value.img,
-          price: Number(value.price),
-          category: value.category,
-        },
-      ]);
+        const res = await fetch(process.env.REACT_APP_SERVER_URL + "/api/products/add-product", {
+            method: "POST",
+            body: JSON.stringify(value),
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${JSON.parse(localStorage.getItem("postUser"))?.token}`,
+            },
+        });
+
+        if (res.status === 401) {
+            localStorage.clear();
+            navigate('/login');
+        }
+
+        message.success("Ürün başarıyla eklendi.");
+        setIsAddModalOpen(false);
+        form.resetFields();
+        setProducts([
+            ...products,
+            {
+                _id: Math.random(),
+                title: value.title,
+                img: value.img,
+                price: Number(value.price),
+                category: value.category,
+            },
+        ]);
     } catch (error) {
-      console.log(error);
+        console.log(error);
     }
-  };
+};
 
   return (
     <Modal
@@ -99,7 +110,7 @@ const Add = ({
                 .toLowerCase()
                 .localeCompare((optionB?.title ?? "").toLowerCase())
             }
-            options={categories.map((item, i) => {
+            options={categories?.map((item, i) => {
               return { value: item.title, label: item.title };
             })}
           />

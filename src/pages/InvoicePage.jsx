@@ -5,8 +5,10 @@ import PrintInvoice from "../components/invoice/PrintInvoice";
 import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
+import { useNavigate } from 'react-router-dom';
 
 const InvoicePage = () => {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [invoices, setInvoices] = useState();
   const [printData, setPrintData] = useState([]);
@@ -31,12 +33,25 @@ const InvoicePage = () => {
           query.append("endDate", nextDay.toISOString());
         }
 
+        const requestOptions = {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("postUser"))?.token
+            }`,
+          },
+        };
         const res = await fetch(
           `${
             process.env.REACT_APP_SERVER_URL
-          }/api/invoices/get-all?${query.toString()}`
+          }/api/invoices/get-all?${query.toString()}`,
+          requestOptions
         );
-
+        if (res.status === 401) {
+          localStorage.clear();
+          navigate('/login');
+        }
         if (!res.ok) {
           throw new Error(`Failed to fetch invoices: ${res.statusText}`);
         }
@@ -59,7 +74,8 @@ const InvoicePage = () => {
     };
 
     getInvoices();
-  }, [startDate, endDate]);
+  }, [startDate, endDate]);  // eslint-disable-line react-hooks/exhaustive-deps
+
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();

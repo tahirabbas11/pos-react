@@ -3,8 +3,10 @@ import StatisticCard from "../components/statistic/StatisticCard";
 import React, { useState, useEffect } from "react";
 import { Area, Pie } from "@ant-design/plots";
 import { Spin } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const StatisticPage = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState();
   const [products, setProducts] = useState([]);
 
@@ -16,8 +18,19 @@ const StatisticPage = () => {
     const getProduct = async () => {
       try {
         const res = await fetch(
-          process.env.REACT_APP_SERVER_URL + "/api/products/get-all"
+          process.env.REACT_APP_SERVER_URL + "/api/products/get-all",
+          {
+            headers: {
+              Authorization: `Bearer ${
+                JSON.parse(localStorage.getItem("postUser"))?.token
+              }`,
+            },
+          }
         );
+        if (res.status === 401) {
+          localStorage.clear();
+          navigate('/login');
+        }
         const data = await res.json();
         setProducts(data);
       } catch (error) {
@@ -25,10 +38,16 @@ const StatisticPage = () => {
       }
     };
     getProduct();
-  }, []);
+  }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
   const asyncFetch = () => {
-    fetch(process.env.REACT_APP_SERVER_URL + "/api/invoices/get-all")
+    fetch(process.env.REACT_APP_SERVER_URL + "/api/invoices/get-all", {
+      headers: {
+        Authorization: `Bearer ${
+          JSON.parse(localStorage.getItem("postUser"))?.token
+        }`,
+      },
+    })
       .then((response) => response.json())
       .then((json) => setData(json))
       .catch((error) => {
@@ -37,7 +56,7 @@ const StatisticPage = () => {
   };
 
   const totalAmount = () => {
-    const amount = data.reduce((total, item) => item.totalAmount + total, 0);
+    const amount = data?.reduce((total, item) => item.totalAmount + total, 0);
     return `${amount.toFixed(2)} Rs`;
   };
 
@@ -98,7 +117,8 @@ const StatisticPage = () => {
           <h1 className="text-4xl text-center font-bold mb-4">Statistics</h1>
           <div>
             <h2 className="text-lg">
-              Welcome <span className="text-xl text-green-700 font-bold">
+              Welcome{" "}
+              <span className="text-xl text-green-700 font-bold">
                 {user.username}
               </span>
             </h2>

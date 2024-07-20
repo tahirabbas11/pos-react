@@ -20,6 +20,7 @@ import {
   FileOutlined,
 } from "@ant-design/icons";
 
+
 const Register = () => {
   // const [loading, setLoading] = useState(false);
   // const navigate = useNavigate();

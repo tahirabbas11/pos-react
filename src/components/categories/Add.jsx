@@ -1,4 +1,5 @@
 import { Button, Form, Input, Modal, message } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const Add = ({
   isAddModalOpen,
@@ -8,28 +9,44 @@ const Add = ({
 }) => {
   const [form] = Form.useForm();
 
-  const onFinish = (value) => {
-    fetch(process.env.REACT_APP_SERVER_URL + "/api/categories/add-category", {
-      method: "POST",
-      body: JSON.stringify(value),
-      headers: { "Content-type": "application/json; charset=UTF-8" },
-    })
-      .then(response => response.json())
-      .then(data => {
-        message.success("Category added successfully.");
-        setIsAddModalOpen(false);
-        form.resetFields();
-        setCategories([
-          ...categories,
-          {
-            _id: data.id || Math.random(),
-            title: value.title,
+  const navigate = useNavigate();
+
+  const onFinish = async (value) => {
+    try {
+      const res = await fetch(
+        process.env.REACT_APP_SERVER_URL + "/api/categories/add-category",
+        {
+          method: "POST",
+          body: JSON.stringify(value),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("postUser"))?.token
+            }`,
           },
-        ]);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+        }
+      );
+
+      if (res.status === 401) {
+        localStorage.clear();
+        navigate("/login");
+      }
+
+      const data = await res.json();
+
+      message.success("Category added successfully.");
+      setIsAddModalOpen(false);
+      form.resetFields();
+      setCategories([
+        ...categories,
+        {
+          _id: data.id || Math.random(),
+          title: value.title,
+        },
+      ]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -63,4 +80,3 @@ const Add = ({
 };
 
 export default Add;
-

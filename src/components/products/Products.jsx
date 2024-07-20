@@ -3,6 +3,7 @@ import ProductItem from "./ProductItem";
 import { PlusOutlined, EditOutlined } from "@ant-design/icons";
 import Add from "../products/Add";
 import { useNavigate } from "react-router-dom";
+import { Button } from "antd";
 
 const Products = ({
   products,
@@ -19,8 +20,19 @@ const Products = ({
     const getProduct = async () => {
       try {
         const res = await fetch(
-          process.env.REACT_APP_SERVER_URL + "/api/products/get-all"
+          process.env.REACT_APP_SERVER_URL + "/api/products/get-all",
+          {
+            headers: {
+              Authorization: `Bearer ${
+                JSON.parse(localStorage.getItem("postUser"))?.token
+              }`,
+            },
+          }
         );
+        if (res.status === 401) {
+          localStorage.clear();
+          navigate("/login");
+        }
         const data = await res.json();
         setProducts(data);
       } catch (error) {
@@ -28,7 +40,7 @@ const Products = ({
       }
     };
     getProduct();
-  }, [setProducts]);
+  }, [setProducts]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="products-wrapper grid grid-cols-card gap-4">
@@ -37,30 +49,34 @@ const Products = ({
         .map((item, i) => (
           <ProductItem item={item} key={i} />
         ))}
-      <div
-        className="product-item min-h-[180px] bg-gray-400	 border hover:shadow-lg cu Rsor-pointer transition-all select-none flex items-center justify-center md:text-3xl text-white p-10 hover:opacity-90"
+        <div className="products-wrapper grid grid-cols-card gap-2">
+      <Button
+        className="product-item min-h-[60px] bg-blue-700 border hover:shadow-lg cu Rsor-pointer transition-all select-none flex items-center justify-center md:text-3xl text-white p-10 hover:opacity-90"
+        // className="product-item min-h-[180px] bg-gray-400	 border hover:shadow-lg cu Rsor-pointer transition-all select-none flex items-center justify-center md:text-3xl text-white p-10 hover:opacity-90"
         onClick={() => setIsAddModalOpen(true)}
       >
         {/* <PlusOutlined /> */}
         <p className="text-base">
           <PlusOutlined
             className="inline-block"
-            style={{ marginBottom: "-4px" }}
+            style={{ marginBottom: "-2px" }}
           />
           &nbsp; Add Products
         </p>
-      </div>
-      <div
-        className="product-item min-h-[180px] bg-gray-400		 border hover:shadow-lg cu Rsor-pointer transition-all select-none flex items-center justify-center md:text-3xl text-white p-10 hover:opacity-90"
+      </Button>
+      <Button
+        className="product-item min-h-[60px] bg-blue-700 border hover:shadow-lg cu Rsor-pointer transition-all select-none flex items-center justify-center md:text-3xl text-white p-10 hover:opacity-90"
+        // className="product-item min-h-[180px] bg-gray-400		 border hover:shadow-lg cu Rsor-pointer transition-all select-none flex items-center justify-center md:text-3xl text-white p-10 hover:opacity-90"
         onClick={() => navigate("/products")}
       >
         <p className="text-base">
           <EditOutlined
             className="inline-block"
-            style={{ marginBottom: "-4px" }}
+            style={{ marginBottom: "-2px" }}
           />
           &nbsp; Edit Products
         </p>
+      </Button>
       </div>
 
       <Add
