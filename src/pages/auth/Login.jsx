@@ -44,6 +44,7 @@ const Login = () => {
 
       setLoading(false);
     } catch (error) {
+      console.log('Error',error);
       message.error("Something went wrong!");
       setLoading(false);
     }
