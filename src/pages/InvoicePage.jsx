@@ -57,10 +57,12 @@ const InvoicePage = () => {
         }
 
         const data = await res.json();
-        const newData = data.map((item) => ({
-          ...item,
-          key: item._id,
-        }));
+        const newData = data
+          .map((item) => ({
+            ...item,
+            key: item._id,
+          }))
+          .reverse();
 
         // console.log(newData);
         setInvoices(newData);
@@ -191,6 +193,12 @@ const InvoicePage = () => {
 
   const columns = [
     {
+      title: "Invoice Number",
+      dataIndex: "invoiceNumber",
+      key: "invoiceNumber",
+      ...getColumnSearchProps("invoiceNumber"),
+    },
+    {
       title: "Customer Name",
       dataIndex: "customerName",
       key: "customerName",
@@ -200,6 +208,7 @@ const InvoicePage = () => {
       title: "Phone Number",
       dataIndex: "customerPhoneNumber",
       key: "customerPhoneNumber",
+      render: (text) => (text ? text : "N/A"),
       ...getColumnSearchProps("customerPhoneNumber"),
     },
     {
@@ -214,6 +223,30 @@ const InvoicePage = () => {
       title: "Payment Method",
       dataIndex: "paymentMode",
       key: "paymentMode",
+    },
+    {
+      title: "Date",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (text) => {
+        const date = new Date(text);
+        const hour = date.getHours() % 12 || 12;
+        const ampm = date.getHours() >= 12 ? "pm" : "am";
+        return (
+          date.getDate() +
+          "/" +
+          (date.getMonth() + 1) +
+          "/" +
+          date.getFullYear() +
+          "  (" +
+          hour +
+          ":" +
+          date.getMinutes() +
+          " " +
+          ampm+
+          ") "
+        );
+      },
     },
     {
       title: "Total Price",
@@ -270,8 +303,11 @@ const InvoicePage = () => {
             dataSource={invoices}
             columns={columns}
             bordered
-            pagination={true}
-            scroll={{ x: 1200, y: 300 }}
+            pagination={{
+              pageSizeOptions: ['10', '20', '30'],
+              showSizeChanger: true,
+              pageSize: 10,
+            }} 
             rowKey="_id"
             className="pt-6"
           />

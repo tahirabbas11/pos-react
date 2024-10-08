@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import AuthCarousel from "../../components/auth/AuthCarousel";
 // import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Logo from "../../Images/logo.png";
+import Logo from "../../Images/4.png";
 import {
   UserOutlined,
   GithubOutlined,

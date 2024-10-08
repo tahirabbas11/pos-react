@@ -47,6 +47,7 @@ const Add = ({
     } catch (error) {
       console.log(error);
     }
+    navigate(0);
   };
 
   return (

@@ -15,12 +15,13 @@ const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
           method: "POST",
           body: JSON.stringify({
             ...values,
-            subTotal: cart?.total?.toFixed(2),
+            subTotal: cart?.subtotal?.toFixed(2),
             tax: ((cart.total * cart.tax) / 100).toFixed(2),
             totalAmount: (cart.total + (cart.total * cart.tax) / 100).toFixed(
               2
             ),
             cartItems: cart.cartItems,
+            discount: cart.discount,
           }),
           headers: {
             "Content-Type": "application/json",
@@ -40,12 +41,22 @@ const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
         message.success("Invoice created successfully.");
         setIsModalOpen(false);
         dispatch(reset());
-        navigate("/invoices");
+        navigate("/");
       }
     } catch (error) {
       message.error("Operation failed.");
       console.log(error);
     }
+    console.log(JSON.stringify({
+      ...values,
+      subTotal: cart?.subtotal?.toFixed(2),
+      tax: ((cart.total * cart.tax) / 100).toFixed(2),
+      totalAmount: (cart.total + (cart.total * cart.tax) / 100).toFixed(
+        2
+      ),
+      cartItems: cart.cartItems,
+      discount: cart.discount,
+    }),)
   };
 
   return (
@@ -59,8 +70,8 @@ const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
         layout="vertical"
         onFinish={onFinish}
         initialValues={{
-          customerName: "User",
-          customerPhoneNumber: "12345678",
+          customerName: "Walkin Customer",
+          customerPhoneNumber: "",
           paymentMode: "Cash",
         }}
       >
@@ -69,7 +80,7 @@ const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
           label="Customer Name"
           rules={[{ required: false, message: "Please enter a name!" }]}
         >
-          <Input placeholder="Enter customer name..." />
+          <Input placeholder="Enter customer name" />
         </Form.Item>
         <Form.Item
           name={"customerPhoneNumber"}
@@ -77,9 +88,9 @@ const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
           rules={[{ required: false, message: "Please enter a phone number!" }]}
         >
           <Input
-            placeholder="Enter phone number..."
+            placeholder="Enter phone number"
             maxLength={11}
-            type="number"
+            // type="number"
           />
         </Form.Item>
         <Form.Item
@@ -91,6 +102,7 @@ const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
         >
           <Select placeholder="Select a payment method...">
             <Select.Option value="Cash">Cash</Select.Option>
+            <Select.Option value="Credit Card">Online</Select.Option>
             <Select.Option value="Credit Card">Credit Card</Select.Option>
           </Select>
         </Form.Item>

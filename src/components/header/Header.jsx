@@ -9,6 +9,9 @@ import {
   UserOutlined,
   BarChartOutlined,
   LogoutOutlined,
+  UserSwitchOutlined,
+  UsergroupDeleteOutlined,
+  DollarOutlined
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import "./index.css";
@@ -48,7 +51,7 @@ const Header = ({ setSearched }) => {
             className={`menu-link ${pathname === "/" && " text-[#40a9ff]"} `}
           >
             <HomeOutlined className="md:text-5xl text-2xl" />
-            <span className="md:text-xs text-[10px]">Shan Foods</span>
+            <span className="md:text-xs text-[10px]">Bachat Xpress</span>
           </Link>
           <Link to="/">
             <h2 className="text-2xl font-bold md:text-4xl">Shan Food</h2>
@@ -118,6 +121,24 @@ const Header = ({ setSearched }) => {
           >
             <UserOutlined className="md:text-2xl text-xl" />
             <span className="md:text-xs text-[10px]">customers</span>
+          </Link>
+          <Link
+            to="/vendor"
+            className={`menu-link ${
+              pathname === "/vendor" && " text-[#40a9ff]"
+            } `}
+          >
+            <UsergroupDeleteOutlined className="md:text-2xl text-xl" />
+            <span className="md:text-xs text-[10px]">Vendors</span>
+          </Link>
+          <Link
+            to="/expense"
+            className={`menu-link ${
+              pathname === "/daily-expense" && " text-[#40a9ff]"
+            } `}
+          >
+            <DollarOutlined className="md:text-2xl text-xl" />
+            <span className="md:text-xs text-[10px]">Expense</span>
           </Link>
           <Link
             to="/statistics"

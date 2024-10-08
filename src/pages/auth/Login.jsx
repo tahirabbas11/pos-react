@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import AuthCarousel from "../../components/auth/AuthCarousel";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Logo from "../../Images/logo.png";
+import Logo from "../../Images/4.png";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -121,11 +121,10 @@ const Login = () => {
           <div className="w-full mt-40">
             <Carousel autoplay>
               <AuthCarousel
-                img={"images/responsive.svg"}
+                img={"images/4.svg"}
                 title={"Responsive"}
                 desc={"Compatibility with all device sizes"}
-              />
-              <AuthCarousel
+              />              <AuthCarousel
                 img={"images/statistic.svg"}
                 title={"Statistics"}
                 desc={"Wide-ranging statistics"}

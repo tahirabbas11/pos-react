@@ -16,7 +16,7 @@ const InvoicePage = () => {
     const getInvoices = async () => {
       const token = JSON.parse(localStorage.getItem("postUser"))?.token;
 
-      console.log("token", token);
+      // console.log("token", token);
 
       try {
         const res = await fetch(
@@ -189,8 +189,11 @@ const InvoicePage = () => {
             dataSource={invoices}
             columns={columns}
             bordered
-            pagination={false}
-            scroll={{ x: 1200, y: 300 }}
+            pagination={{
+              pageSizeOptions: ['10', '20', '30'],
+              showSizeChanger: true,
+              pageSize: 10,
+            }}
             rowKey="_id"
           />
         </div>

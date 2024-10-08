@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Input, Modal, Select, message, Upload, Image } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
 import { storage } from "../../utils/firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-const Add = ({
-  isAddModalOpen,
-  setIsAddModalOpen,
+const EditProductModal = ({
+  isEditModalOpen,
+  setIsEditModalOpen,
   getProduct,
   categories,
+  editingItem,
+  onFinish
 }) => {
   const [form] = Form.useForm();
-  const navigate = useNavigate();
   const [vendors, setVendors] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -20,7 +20,19 @@ const Add = ({
 
   useEffect(() => {
     fetchVendors();
-  }, [isAddModalOpen]);
+    if (editingItem) {
+      form.setFieldsValue(editingItem); // Populate form with editingItem values
+      setFileList([{ url: editingItem.img }]); // Set the image for preview
+    }
+  }, [isEditModalOpen, editingItem]);
+
+  const beforeUpload = (file) => {
+    const isImage = file.type.startsWith("image/");
+    if (!isImage) {
+      message.error("You can only upload image files (JPG, PNG, GIF, etc.)!");
+    }
+    return isImage; // Only allow image uploads
+  };
 
   const fetchVendors = async () => {
     try {
@@ -61,12 +73,13 @@ const Add = ({
   const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
 
   const handleImageUpload = async (file) => {
+    if (!file) return null;
     const storageRef = ref(storage, `images/${file.name}`);
     await uploadBytes(storageRef, file);
     return await getDownloadURL(storageRef);
   };
 
-  const onFinish = async (values) => {
+  const onFinished = async (values) => {
     const { price, vendorPrice, quantity } = values;
     const numPrice = Number(price);
     const numVendorPrice = Number(vendorPrice);
@@ -84,16 +97,13 @@ const Add = ({
       return;
     }
 
-    let uploadedImageUrl = null;
-    if (fileList.length > 0) {
+    let uploadedImageUrl = editingItem.img; // Default to existing image
+    if (fileList.length > 0 && fileList[0].originFileObj) {
       const file = fileList[0].originFileObj;
       uploadedImageUrl = await handleImageUpload(file);
-    } else {
-      message.error("You must upload an image.");
-      return;
     }
+    console.log(uploadedImageUrl);
 
-    try {
       const productData = {
         ...values,
         price: numPrice,
@@ -102,34 +112,7 @@ const Add = ({
         img: uploadedImageUrl,
       };
 
-      const res = await fetch(
-        `${process.env.REACT_APP_SERVER_URL}/api/products/add-product`,
-        {
-          method: "POST",
-          body: JSON.stringify(productData),
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem("postUser"))?.token}`,
-          },
-        }
-      );
-
-      if (res.status === 401) {
-        localStorage.clear();
-        navigate("/login");
-        return;
-      }
-
-      message.success("Product added successfully.");
-      // Clear modal and reset form
-      setIsAddModalOpen(false);
-      form.resetFields();
-      setFileList([]); // Clear file list
-      getProduct();
-    } catch (error) {
-      console.error(error);
-      message.error("Error adding product: " + error.message);
-    }
+      onFinish(productData)
   };
 
   const uploadButton = (
@@ -141,28 +124,28 @@ const Add = ({
 
   return (
     <Modal
-      title="Add New Product"
-      open={isAddModalOpen}
-      onCancel={() => setIsAddModalOpen(false)}
+      title="Edit Product"
+      open={isEditModalOpen}
+      onCancel={() => setIsEditModalOpen(false)}
       footer={false}
     >
-      <Form layout="vertical" onFinish={onFinish} form={form}>
+      <Form layout="vertical" onFinish={onFinished} form={form}>
         <Form.Item
           label="Product Name"
           name="title"
-          rules={[{ required: true, message: "This field is required!" }]}
+          rules={[{ required: true, message: "This field cannot be empty!" }]}
         >
           <Input placeholder="Enter product name" />
         </Form.Item>
-
+        
         <Form.Item label="Product Image">
           <Upload
             listType="picture-card"
             fileList={fileList}
             onPreview={handlePreview}
             onChange={handleChange}
+            beforeUpload={beforeUpload}
             accept="image/*"
-            beforeUpload={() => false} // Disable automatic upload
           >
             {fileList.length >= 1 ? null : uploadButton}
           </Upload>
@@ -170,7 +153,7 @@ const Add = ({
             <Image
               preview={{
                 visible: previewOpen,
-                onVisibleChange: (visible) => setPreviewOpen(visible),
+                onVisibleChange: setPreviewOpen,
               }}
               src={previewImage}
             />
@@ -180,49 +163,60 @@ const Add = ({
         <Form.Item
           label="Product Price"
           name="price"
-          rules={[{ required: true, message: "This field cannot be left blank!" }]}
+          rules={[{ required: true, message: "This field cannot be empty!" }]}
         >
           <Input placeholder="Enter product price" type="number" />
         </Form.Item>
-
+        
         <Form.Item
           label="Product Quantity"
           name="quantity"
-          rules={[{ required: true, message: "This field cannot be left blank!" }]}
+          rules={[{ required: true, message: "This field cannot be empty!" }]}
         >
           <Input placeholder="Enter product quantity" type="number" />
         </Form.Item>
-
+        
         <Form.Item
           label="Select Category"
           name="category"
-          rules={[{ required: true, message: "This field cannot be left blank!" }]}
+          rules={[{ required: true, message: "This field cannot be empty!" }]}
         >
           <Select
             showSearch
-            placeholder="Type to select category"
+            placeholder="Select Category"
             optionFilterProp="children"
-            options={categories?.map((item) => ({
-              value: item.title,
-              label: item.title,
-            }))}
-          />
+            allowClear
+          >
+            {categories.map((cat) => (
+              <Select.Option key={cat._id} value={cat.title}>
+                {cat.title}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
 
         <Form.Item
-          label="Select Vendor"
           name="vendor"
-          rules={[{ required: true, message: "This field cannot be left blank!" }]}
+          label="Vendor"
+          rules={[{ required: true, message: "Please select the vendor!" }]}
         >
           <Select
             showSearch
-            placeholder="Type to select vendor"
             optionFilterProp="children"
-            options={vendors?.map((item) => ({
-              value: item._id,
-              label: item.name,
-            }))}
-          />
+            filterOption={(input, option) =>
+              (option?.children ?? "").toLowerCase().includes(input.toLowerCase())
+            }
+            filterSort={(optionA, optionB) =>
+              (optionA?.children ?? "").toLowerCase().localeCompare((optionB?.children ?? "").toLowerCase())
+            }
+            allowClear
+          >
+            {vendors.map((vendor) => (
+              <Select.Option key={vendor._id} value={vendor._id}>
+                {vendor.name}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
 
         <Form.Item
@@ -235,7 +229,7 @@ const Add = ({
 
         <Form.Item className="flex justify-end mb-0">
           <Button type="primary" htmlType="submit">
-            Create
+            Update
           </Button>
         </Form.Item>
       </Form>
@@ -243,4 +237,4 @@ const Add = ({
   );
 };
 
-export default Add;
+export default EditProductModal;

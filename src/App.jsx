@@ -7,6 +7,9 @@ import StatisticPage from "./pages/StatisticPage";
 import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
 import ProductPage from "./pages/ProductPage";
+import VendorPage from "./pages/Vendors";
+import VendorsList from "./pages/VendorsList";
+import NotFoundPage from "./pages/NotFoundPage";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
@@ -67,8 +70,27 @@ function App() {
             </RouteControl>
           }
         />
+        <Route
+          path="/vendor"
+          element={
+            <RouteControl>
+              <VendorPage />
+            </RouteControl>
+          }
+          
+        />
+         <Route
+          path="/vendor-list"
+          element={
+            <RouteControl>
+              <VendorsList />
+            </RouteControl>
+          }
+          
+        />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );

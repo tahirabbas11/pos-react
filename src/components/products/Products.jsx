@@ -17,30 +17,31 @@ const Products = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getProduct = async () => {
-      try {
-        const res = await fetch(
-          process.env.REACT_APP_SERVER_URL + "/api/products/get-all",
-          {
-            headers: {
-              Authorization: `Bearer ${
-                JSON.parse(localStorage.getItem("postUser"))?.token
-              }`,
-            },
-          }
-        );
-        if (res.status === 401) {
-          localStorage.clear();
-          navigate("/login");
-        }
-        const data = await res.json();
-        setProducts(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     getProduct();
   }, [setProducts]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const getProduct = async () => {
+    try {
+      const res = await fetch(
+        process.env.REACT_APP_SERVER_URL + "/api/products/get-all",
+        {
+          headers: {
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("postUser"))?.token
+            }`,
+          },
+        }
+      );
+      if (res.status === 401) {
+        localStorage.clear();
+        navigate("/login");
+      }
+      const data = await res.json();
+      setProducts(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="products-wrapper grid grid-cols-card gap-4">
@@ -85,6 +86,7 @@ const Products = ({
         products={products}
         setProducts={setProducts}
         categories={categories}
+        getProduct={getProduct}
       />
     </div>
   );

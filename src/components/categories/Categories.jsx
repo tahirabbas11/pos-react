@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { PlusOutlined, EditOutlined } from "@ant-design/icons";
+import { PlusOutlined, EditOutlined, CloseOutlined } from "@ant-design/icons";
 import Add from "./Add";
 import Edit from "./Edit";
 import "./style.css";
@@ -13,63 +13,82 @@ const Categories = ({
 }) => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [categoryTitle, setCategoryTitle] = useState("All");
+  const [categoryTitle, setCategoryTitle] = useState(null);
 
   useEffect(() => {
     if (categoryTitle === "Tümü") {
       setFiltered(products);
     } else {
-      setFiltered(
-        products.filter((product) => product.category === categoryTitle)
-      );
+      if (!categoryTitle || categoryTitle.length <= 0) {
+        setFiltered(products);
+      } else {
+        setFiltered(
+          products.filter((product) => product.category === categoryTitle)
+        );
+      }
     }
   }, [products, setFiltered, categoryTitle]);
-  console.log("filtered");
 
   return (
-    <ul className="flex gap-1 md:flex-col flex-row text-sm overflow-x-auto rounded-lg ">
-      {categories?.length > 0 &&
-        categories.map((item) => (
+    <div className="categories-container">
+      <ul className="flex gap-2 md:flex-col flex-row text-sm overflow-x-auto rounded-lg p-2 bg-white shadow-md border border-gray-200">
+        {categories?.length > 0 &&
+          categories.map((item) => (
+            <li key={item._id} className="flex flex-col">
+              <Button
+                className={`${
+                  item.title === categoryTitle
+                    ? "bg-blue-600 text-white hover:bg-blue-700"
+                    : "bg-gray-100 text-black hover:bg-gray-200"
+                } rounded-md h-10 w-28 flex items-center justify-center transition-colors duration-200 ease-in-out`}
+                onClick={() => setCategoryTitle(item.title)}
+              >
+                <span>{item.title}</span>
+              </Button>
+            </li>
+          ))}
+      </ul>
+
+      {/* Clear button to reset categoryTitle */}
+      {categoryTitle && (
+        <div className="flex justify-center mt-3">
           <Button
-            className={`${
-              item.title === categoryTitle
-                ? "!bg-blue-700 text-white hover:!bg-blue-700 hover:text-white"
-                : " text-black hover:text-gray-900 hover:bg-gray-100"
-            } rounded-md h-10 w-24 flex items-center justify-center cursor-pointer`}
-            key={item._id}
-            onClick={() => setCategoryTitle(item.title)}
-          >
-            <span>{item.title}</span>
-          </Button>
-        ))}
+            type="default"
+            shape="circle"
+            icon={<CloseOutlined />}
+            onClick={() => setCategoryTitle(null)} // Reset category title to null
+            className="hover:bg-red-500 hover:text-white transition-colors duration-200 ease-in-out"
+            size="large"
+            style={{ marginRight: '8px' }} // Add some spacing
+          />
+        </div>
+      )}
 
-      {/* <li className="category-item !bg-transparent hover:opacity-50 p-2 rounded-md h-10 w-24 flex items-center justify-center cursor-pointer"> */}
-      <li></li>
-      <li className="flex items-center justify-center cursor-pointer">
-      <Button
-        type="primary"
-        shape="circle"
-        icon={<PlusOutlined />}
-        onClick={() => setIsAddModalOpen(true)}
-      />
-      </li>
+      <div className="flex justify-center gap-4 mt-3">
+        <Button
+          type="primary"
+          shape="circle"
+          icon={<PlusOutlined />}
+          onClick={() => setIsAddModalOpen(true)}
+          className="hover:bg-green-600 transition-colors duration-200 ease-in-out"
+          size="large"
+        />
 
-      {/* <li className="category-item !bg-gray-400 hover:opacity-50 p-2 rounded-md h-10 w-24 flex items-center justify-center cursor-pointer"> */}
-      <li className="flex items-center justify-center cursor-pointer">
-      <Button
-        type="primary"
-        shape="circle"
-        icon={<EditOutlined />}
-        onClick={() => setIsEditModalOpen(true)}
-      />
-      </li> 
+        <Button
+          type="primary"
+          shape="circle"
+          icon={<EditOutlined />}
+          onClick={() => setIsEditModalOpen(true)}
+          className="hover:bg-blue-600 transition-colors duration-200 ease-in-out"
+          size="large"
+        />
+      </div>
 
       <Add
         isAddModalOpen={isAddModalOpen}
         setIsAddModalOpen={setIsAddModalOpen}
         categories={categories}
         setCategories={setCategories}
-        // getCategories={getCategories}
       />
 
       <Edit
@@ -78,7 +97,7 @@ const Categories = ({
         categories={categories}
         setCategories={setCategories}
       />
-    </ul>
+    </div>
   );
 };
 
