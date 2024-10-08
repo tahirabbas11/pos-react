@@ -41,7 +41,7 @@ const Login = () => {
       } else if (res.status === 404) {
         message.error("User not found!");
       }
-
+      message.error("Invalid Credentials!");
       setLoading(false);
     } catch (error) {
       console.log('Error',error);
