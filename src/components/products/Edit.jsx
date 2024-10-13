@@ -5,22 +5,22 @@ import {
   Button,
   message,
   Select,
-  Modal,
+  // Modal,
   Image,
   Space,
   Popconfirm,
   Menu,
-} from "antd";
-import { useState, useEffect } from "react";
-import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+} from 'antd';
+import { useState, useEffect } from 'react';
+// import Swal from "sweetalert2";
+import { useNavigate } from 'react-router-dom';
 import {
   SearchOutlined,
   SortAscendingOutlined,
   SortDescendingOutlined,
   ClearOutlined,
-} from "@ant-design/icons";
-import EditModal from "./EditModal";
+} from '@ant-design/icons';
+import EditModal from './EditModal';
 
 const Edit = () => {
   const navigate = useNavigate();
@@ -29,15 +29,17 @@ const Edit = () => {
   const [categories, setCategories] = useState([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState({});
+  // eslint-disable-next-line no-unused-vars
   const [form] = Form.useForm();
   const [vendors, setVendors] = useState([]);
   const [filters, setFilters] = useState({
-    name: "",
-    price: "",
+    name: '',
+    price: '',
     vendor: null,
-    category: "",
+    category: '',
   });
-  const [sortOrder, setSortOrder] = useState("ascend"); // 'ascend' or 'descend'
+  // eslint-disable-next-line no-unused-vars
+  const [sortOrder, setSortOrder] = useState('ascend'); // 'ascend' or 'descend'
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
 
   const fetchData = async () => {
@@ -47,14 +49,14 @@ const Edit = () => {
         {
           headers: {
             Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("postUser"))?.token
+              JSON.parse(localStorage.getItem('postUser'))?.token
             }`,
           },
         }
       );
       if (res.status === 401) {
         localStorage.clear();
-        navigate("/login");
+        navigate('/login');
       }
       const data = await res.json();
       setProducts(data);
@@ -71,14 +73,14 @@ const Edit = () => {
         {
           headers: {
             Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("postUser"))?.token
+              JSON.parse(localStorage.getItem('postUser'))?.token
             }`,
           },
         }
       );
       if (res.status === 401) {
         localStorage.clear();
-        navigate("/login");
+        navigate('/login');
       }
       const data = await res.json();
       setCategories(data);
@@ -93,22 +95,23 @@ const Edit = () => {
         `${process.env.REACT_APP_SERVER_URL}/api/vendors/get-all`,
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("postUser"))?.token
+              JSON.parse(localStorage.getItem('postUser'))?.token
             }`,
           },
         }
       );
-      if (!response.ok) throw new Error("Failed to fetch vendors");
+      if (!response.ok) throw new Error('Failed to fetch vendors');
       const data = await response.json();
       setVendors(data.vendors);
     } catch (error) {
-      message.error("Error fetching vendors: " + error.message);
+      message.error('Error fetching vendors: ' + error.message);
     }
   };
 
   // Fetch products, categories, and vendors on mount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchData();
     fetchCategories();
@@ -143,19 +146,19 @@ const Edit = () => {
       const res = await fetch(
         `${process.env.REACT_APP_SERVER_URL}/api/products/update-product`,
         {
-          method: "PUT",
+          method: 'PUT',
           body: JSON.stringify({ ...values, productId: editingItem._id }),
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("postUser"))?.token
+              JSON.parse(localStorage.getItem('postUser'))?.token
             }`,
           },
         }
       );
       if (res.status === 401) {
         localStorage.clear();
-        navigate("/login");
+        navigate('/login');
       }
       const data = await res.json();
       setProducts((prevProducts) =>
@@ -164,10 +167,10 @@ const Edit = () => {
       setFilteredProducts((prevFiltered) =>
         prevFiltered.map((item) => (item._id === editingItem._id ? data : item))
       );
-      message.success("Product successfully updated.");
+      message.success('Product successfully updated.');
       setIsEditModalOpen(false);
     } catch (error) {
-      message.error("Something went wrong...");
+      message.error('Something went wrong...');
     }
 
     fetchData();
@@ -177,52 +180,52 @@ const Edit = () => {
 
   const deleteProduct = (id) => {
     fetch(`${process.env.REACT_APP_SERVER_URL}/api/products/delete-product`, {
-      method: "DELETE",
+      method: 'DELETE',
       body: JSON.stringify({ productId: id }),
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${
-          JSON.parse(localStorage.getItem("postUser"))?.token
+          JSON.parse(localStorage.getItem('postUser'))?.token
         }`,
       },
     })
       .then((response) => {
         if (response.ok) {
-          message.success("Product successfully deleted.");
+          message.success('Product successfully deleted.');
           setProducts((prev) => prev.filter((item) => item._id !== id));
           setFilteredProducts((prev) => prev.filter((item) => item._id !== id));
         } else {
           localStorage.clear();
-          navigate("/login");
+          navigate('/login');
         }
       })
       .catch(() => {
-        message.error("Something went wrong...");
+        message.error('Something went wrong...');
       });
   };
 
   const handleSort = (order) => {
     const sorted = [...filteredProducts].sort((a, b) =>
-      order === "ascend" ? a.price - b.price : b.price - a.price
+      order === 'ascend' ? a.price - b.price : b.price - a.price
     );
     setFilteredProducts(sorted);
     setSortOrder(order);
   };
 
   const handleClearFilters = () => {
-    setFilters({ name: "", price: "", vendor: null, category: "" });
+    setFilters({ name: '', price: '', vendor: null, category: '' });
     setFilteredProducts(products);
   };
 
   const handleTableChange = (pagination) => {
     setPagination(pagination);
   };
-
+  // eslint-disable-next-line no-unused-vars
   const categoryMenu = (
     <Menu>
       <Menu.Item
         key="all"
-        onClick={() => setFilters((prev) => ({ ...prev, category: "" }))}
+        onClick={() => setFilters((prev) => ({ ...prev, category: '' }))}
       >
         All Categories
       </Menu.Item>
@@ -241,61 +244,59 @@ const Edit = () => {
 
   const columns = [
     {
-      title: "Product Image",
-      dataIndex: "img",
-      width: "10%",
-      render: (img) => (
-        <Image src={img} alt=""  width={30}  />
-      ),
+      title: 'Product Image',
+      dataIndex: 'img',
+      width: '10%',
+      render: (img) => <Image src={img} alt="" width={30} />,
     },
     {
-      title: "Product Name",
-      dataIndex: "title",
-      width: "15%",
+      title: 'Product Name',
+      dataIndex: 'title',
+      width: '15%',
     },
     {
-      title: "Product Price",
-      dataIndex: "price",
-      width: "15%",
+      title: 'Product Price',
+      dataIndex: 'price',
+      width: '15%',
     },
     {
-      title: "Available Quantity",
-      dataIndex: "quantity",
-      width: "15%",
+      title: 'Available Quantity',
+      dataIndex: 'quantity',
+      width: '15%',
     },
     {
-      title: "Category",
-      dataIndex: "category",
-      width: "15%",
+      title: 'Category',
+      dataIndex: 'category',
+      width: '15%',
     },
     {
-      title: "Vendor",
-      dataIndex: "vendor",
-      width: "15%",
+      title: 'Vendor',
+      dataIndex: 'vendor',
+      width: '15%',
       render: (vendorId) => {
         const vendor = vendors.find((v) => v._id === vendorId);
-        return vendor ? vendor.name : "Unknown";
+        return vendor ? vendor.name : 'Unknown';
       },
     },
     {
-      title: "Date Added",
-      dataIndex: "createdAt",
-      width: "15%",
+      title: 'Date Added',
+      dataIndex: 'createdAt',
+      width: '15%',
       render: (dateString) => {
         const date = new Date(dateString);
         return (
           date.getDate() +
-          "/" +
+          '/' +
           (date.getMonth() + 1) +
-          "/" +
+          '/' +
           date.getFullYear()
         );
       },
     },
     {
-      title: "Action",
-      dataIndex: "action",
-      width: "15%",
+      title: 'Action',
+      dataIndex: 'action',
+      width: '15%',
       render: (_, record) => (
         <div>
           <Button
@@ -326,7 +327,7 @@ const Edit = () => {
   return (
     <>
       <Space
-        style={{ marginBottom: 16, justifyContent: "flex-end", float: "right" }}
+        style={{ marginBottom: 16, justifyContent: 'flex-end', float: 'right' }}
       >
         <Input
           placeholder="Search by name"
@@ -379,13 +380,13 @@ const Edit = () => {
           ))}
         </Select>
         <Button
-          onClick={() => handleSort("ascend")}
+          onClick={() => handleSort('ascend')}
           icon={<SortAscendingOutlined />}
         >
           Sort Ascending
         </Button>
         <Button
-          onClick={() => handleSort("descend")}
+          onClick={() => handleSort('descend')}
           icon={<SortDescendingOutlined />}
         >
           Sort Descending
@@ -394,20 +395,22 @@ const Edit = () => {
           Clear Filters
         </Button>
       </Space>
-      <Table
-        columns={columns}
-        dataSource={filteredProducts}
-        // pagination={pagination}
-        onChange={handleTableChange}
-        // scroll={{ y: '100%' }}
-        pagination={{
-          ...pagination,
-          pageSizeOptions: ["10", "20", "30"],
-          showSizeChanger: true,
-          onChange: (page, pageSize) =>
-            setPagination({ current: page, pageSize }),
-        }}
-      />
+      <div className="overflow-x-auto">
+        {' '}
+        {/* Makes the table scrollable horizontally on small screens */}
+        <Table
+          columns={columns}
+          dataSource={filteredProducts}
+          onChange={handleTableChange}
+          pagination={{
+            ...pagination,
+            pageSizeOptions: ['10', '20', '30'],
+            showSizeChanger: true,
+            onChange: (page, pageSize) =>
+              setPagination({ current: page, pageSize }),
+          }}
+        />
+      </div>
       {/* <Modal
   title="Edit Product"
   open={isEditModalOpen}

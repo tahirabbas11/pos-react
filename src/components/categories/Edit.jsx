@@ -1,6 +1,6 @@
-import { Form, Modal, Table, Input, Button, message, Popconfirm } from "antd";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Form, Modal, Table, Input, Button, message, Popconfirm } from 'antd';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Edit = ({
   isEditModalOpen,
@@ -14,14 +14,14 @@ const Edit = ({
   const handleFinish = async (values) => {
     try {
       const res = await fetch(
-        process.env.REACT_APP_SERVER_URL + "/api/categories/update-category",
+        process.env.REACT_APP_SERVER_URL + '/api/categories/update-category',
         {
-          method: "PUT",
+          method: 'PUT',
           body: JSON.stringify({ ...values, categoryId: editingRow._id }),
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("postUser"))?.token
+              JSON.parse(localStorage.getItem('postUser'))?.token
             }`,
           },
         }
@@ -30,7 +30,7 @@ const Edit = ({
         localStorage.clear();
         navigate('/login');
       }
-      message.success("Category successfully updated.");
+      message.success('Category successfully updated.');
       setCategories(
         categories.map((item) => {
           if (item._id === editingRow._id) {
@@ -41,20 +41,20 @@ const Edit = ({
       );
       setEditingRow(null); // Reset editing row after saving
     } catch (error) {
-      message.error("Something went wrong...");
+      message.error('Something went wrong...');
     }
   };
 
   const handleDeleteCategory = (id) => {
     fetch(
-      process.env.REACT_APP_SERVER_URL + "/api/categories/delete-category",
+      process.env.REACT_APP_SERVER_URL + '/api/categories/delete-category',
       {
-        method: "DELETE",
+        method: 'DELETE',
         body: JSON.stringify({ categoryId: id }),
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem("postUser"))?.token
+            JSON.parse(localStorage.getItem('postUser'))?.token
           }`,
         },
       }
@@ -62,31 +62,34 @@ const Edit = ({
       .then((res) => {
         if (res.status === 401) {
           localStorage.clear();
-          navigate("/login");
+          navigate('/login');
         }
         return res.json();
       })
       .then((data) => {
-        message.success("Category successfully deleted.");
+        message.success('Category successfully deleted.');
         setCategories(categories.filter((item) => item._id !== id));
       })
       .catch((error) => {
-        message.error("Something went wrong...");
+        message.error('Something went wrong...');
       });
   };
 
   const columns = [
     {
-      title: "Category Name",
-      dataIndex: "title",
+      title: 'Category Name',
+      dataIndex: 'title',
       render: (_, record) => {
-        if (record._id === editingRow?._id) { // Check if editing the current row
+        if (record._id === editingRow?._id) {
+          // Check if editing the current row
           return (
             <Form.Item
               className="mb-0"
               name="title"
               style={{ margin: 0 }} // Ensure no margin for inputs
-              rules={[{ required: true, message: 'Please input the category name!' }]}
+              rules={[
+                { required: true, message: 'Please input the category name!' },
+              ]}
             >
               <Input placeholder="Enter category name" />
             </Form.Item>
@@ -97,8 +100,8 @@ const Edit = ({
       },
     },
     {
-      title: "Action",
-      dataIndex: "action",
+      title: 'Action',
+      dataIndex: 'action',
       render: (text, record) => {
         return (
           <div style={{ display: 'flex', gap: '10px' }}>
@@ -110,7 +113,12 @@ const Edit = ({
             >
               Edit
             </Button>
-            <Button type="primary" htmlType="submit" onClick={() => handleFinish({ title: record.title })} disabled={!editingRow}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              onClick={() => handleFinish({ title: record.title })}
+              disabled={!editingRow}
+            >
               Save
             </Button>
             <Popconfirm
@@ -144,7 +152,7 @@ const Edit = ({
           bordered
           dataSource={categories}
           columns={columns}
-          rowKey={"_id"}
+          rowKey={'_id'}
           pagination={false} // Disable pagination for better responsiveness
           // scroll={{ y: 500 }}
         />

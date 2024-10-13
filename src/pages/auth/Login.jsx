@@ -1,9 +1,9 @@
-import { Button, Form, Input, Carousel, Checkbox, message } from "antd";
-import { Link } from "react-router-dom";
-import AuthCarousel from "../../components/auth/AuthCarousel";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import Logo from "../../Images/4.png";
+import { Button, Form, Input, Carousel, Checkbox, message } from 'antd';
+import { Link } from 'react-router-dom';
+import AuthCarousel from '../../components/auth/AuthCarousel';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import Logo from '../../Images/4.png';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -14,38 +14,39 @@ const Login = () => {
     try {
       setLoading(true);
       const res = await fetch(
-        process.env.REACT_APP_SERVER_URL + "/api/auth/login",
+        process.env.REACT_APP_SERVER_URL + '/api/auth/login',
         {
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify(values),
-          headers: { "Content-type": "application/json; charset=UTF-8" },
+          headers: { 'Content-type': 'application/json; charset=UTF-8' },
         }
       );
 
       const user = await res.json();
 
       if (res.status === 200) {
-        message.success("Login process successful");
+        message.success('Login process successful');
         localStorage.setItem(
-          "postUser",
+          'postUser',
           JSON.stringify({
             username: user.userName,
             email: user.email,
             token: user.token,
           })
         );
-        navigate("/");
+        navigate('/');
         setLoading(false);
       } else if (res.status === 403) {
-        message.error("Invalid Password!");
+        message.error('Invalid Password!');
       } else if (res.status === 404) {
-        message.error("User not found!");
+        message.error('User not found!');
+      } else {
+        message.error('Invalid Credentials!');
       }
-      message.error("Invalid Credentials!");
       setLoading(false);
     } catch (error) {
-      console.log('Error',error);
-      message.error("Something went wrong!");
+      console.log('Error', error);
+      message.error('Something went wrong!');
       setLoading(false);
     }
   };
@@ -70,11 +71,11 @@ const Login = () => {
           >
             <Form.Item
               label="Email"
-              name={"email"}
+              name={'email'}
               rules={[
                 {
                   required: true,
-                  message: "Email Field Cannot Be Left Blank!",
+                  message: 'Email Field Cannot Be Left Blank!',
                 },
               ]}
             >
@@ -82,20 +83,20 @@ const Login = () => {
             </Form.Item>
             <Form.Item
               label="Password"
-              name={"password"}
+              name={'password'}
               rules={[
                 {
                   required: true,
-                  message: "Password Field Cannot Be Left Blank!",
+                  message: 'Password Field Cannot Be Left Blank!',
                 },
               ]}
             >
               <Input.Password />
             </Form.Item>
-            <Form.Item name={"remember"} valuePropName="checked">
+            <Form.Item name={'remember'} valuePropName="checked">
               <div className="flex justify-between items-center">
                 <Checkbox>Remember me</Checkbox>
-                <Link to={"/login"}>Forgot Password!</Link>
+                <Link to={'/login'}>Forgot Password!</Link>
               </div>
             </Form.Item>
             <Form.Item>
@@ -121,23 +122,24 @@ const Login = () => {
           <div className="w-full mt-40">
             <Carousel autoplay>
               <AuthCarousel
-                img={"images/4.svg"}
-                title={"Responsive"}
-                desc={"Compatibility with all device sizes"}
-              />              <AuthCarousel
-                img={"images/statistic.svg"}
-                title={"Statistics"}
-                desc={"Wide-ranging statistics"}
+                img={'images/4.svg'}
+                title={'Responsive'}
+                desc={'Compatibility with all device sizes'}
+              />{' '}
+              <AuthCarousel
+                img={'images/statistic.svg'}
+                title={'Statistics'}
+                desc={'Wide-ranging statistics'}
               />
               <AuthCarousel
-                img={"images/customer.svg"}
-                title={"Customer Satisfaction"}
-                desc={"Satisfied customers at the end of the product journey"}
+                img={'images/customer.svg'}
+                title={'Customer Satisfaction'}
+                desc={'Satisfied customers at the end of the product journey'}
               />
               <AuthCarousel
-                img={"images/admin.svg"}
-                title={"Admin Panel"}
-                desc={"Single place management"}
+                img={'images/admin.svg'}
+                title={'Admin Panel'}
+                desc={'Single place management'}
               />
             </Carousel>
           </div>

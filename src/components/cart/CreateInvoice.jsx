@@ -1,7 +1,7 @@
-import { Form, Modal, Input, Select, Card, Button, message } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { reset } from "../../redux/cartSlice";
-import { useNavigate } from "react-router-dom";
+import { Form, Modal, Input, Select, Card, Button, message } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { reset } from '../../redux/cartSlice';
+import { useNavigate } from 'react-router-dom';
 const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
@@ -10,9 +10,9 @@ const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
   const onFinish = async (values) => {
     try {
       var res = await fetch(
-        process.env.REACT_APP_SERVER_URL + "/api/invoices/add-invoice",
+        process.env.REACT_APP_SERVER_URL + '/api/invoices/add-invoice',
         {
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify({
             ...values,
             subTotal: cart?.subtotal?.toFixed(2),
@@ -24,39 +24,39 @@ const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
             discount: cart.discount,
           }),
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("postUser"))?.token
+              JSON.parse(localStorage.getItem('postUser'))?.token
             }`,
           },
         }
       );
-      
+
       if (res.status === 401) {
         localStorage.clear();
         navigate('/login');
       }
 
       if (res.status === 200) {
-        message.success("Invoice created successfully.");
+        message.success('Invoice created successfully.');
         setIsModalOpen(false);
         dispatch(reset());
-        navigate("/");
+        navigate('/');
       }
     } catch (error) {
-      message.error("Operation failed.");
+      message.error('Operation failed.');
       console.log(error);
     }
-    console.log(JSON.stringify({
-      ...values,
-      subTotal: cart?.subtotal?.toFixed(2),
-      tax: ((cart.total * cart.tax) / 100).toFixed(2),
-      totalAmount: (cart.total + (cart.total * cart.tax) / 100).toFixed(
-        2
-      ),
-      cartItems: cart.cartItems,
-      discount: cart.discount,
-    }),)
+    console.log(
+      JSON.stringify({
+        ...values,
+        subTotal: cart?.subtotal?.toFixed(2),
+        tax: ((cart.total * cart.tax) / 100).toFixed(2),
+        totalAmount: (cart.total + (cart.total * cart.tax) / 100).toFixed(2),
+        cartItems: cart.cartItems,
+        discount: cart.discount,
+      })
+    );
   };
 
   return (
@@ -70,22 +70,22 @@ const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
         layout="vertical"
         onFinish={onFinish}
         initialValues={{
-          customerName: "Walkin Customer",
-          customerPhoneNumber: "",
-          paymentMode: "Cash",
+          customerName: 'Walkin Customer',
+          customerPhoneNumber: '',
+          paymentMode: 'Cash',
         }}
       >
         <Form.Item
-          name={"customerName"}
+          name={'customerName'}
           label="Customer Name"
-          rules={[{ required: false, message: "Please enter a name!" }]}
+          rules={[{ required: false, message: 'Please enter a name!' }]}
         >
           <Input placeholder="Enter customer name" />
         </Form.Item>
         <Form.Item
-          name={"customerPhoneNumber"}
+          name={'customerPhoneNumber'}
           label="Phone Number"
-          rules={[{ required: false, message: "Please enter a phone number!" }]}
+          rules={[{ required: false, message: 'Please enter a phone number!' }]}
         >
           <Input
             placeholder="Enter phone number"
@@ -94,10 +94,10 @@ const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
           />
         </Form.Item>
         <Form.Item
-          name={"paymentMode"}
+          name={'paymentMode'}
           label="Payment Method"
           rules={[
-            { required: false, message: "Please select a payment method!" },
+            { required: false, message: 'Please select a payment method!' },
           ]}
         >
           <Select placeholder="Select a payment method...">

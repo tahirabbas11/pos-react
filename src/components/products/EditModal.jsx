@@ -1,8 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { Button, Form, Input, Modal, Select, message, Upload, Image } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import { storage } from "../../utils/firebase";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import React, { useState, useEffect } from 'react';
+import {
+  Button,
+  Form,
+  Input,
+  Modal,
+  Select,
+  message,
+  Upload,
+  Image,
+} from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import { storage } from '../../utils/firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const EditProductModal = ({
   isEditModalOpen,
@@ -10,13 +19,13 @@ const EditProductModal = ({
   getProduct,
   categories,
   editingItem,
-  onFinish
+  onFinish,
 }) => {
   const [form] = Form.useForm();
   const [vendors, setVendors] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
+  const [previewImage, setPreviewImage] = useState('');
 
   useEffect(() => {
     fetchVendors();
@@ -24,12 +33,12 @@ const EditProductModal = ({
       form.setFieldsValue(editingItem); // Populate form with editingItem values
       setFileList([{ url: editingItem.img }]); // Set the image for preview
     }
-  }, [isEditModalOpen, editingItem]);
+  }, [isEditModalOpen, editingItem, form]);
 
   const beforeUpload = (file) => {
-    const isImage = file.type.startsWith("image/");
+    const isImage = file.type.startsWith('image/');
     if (!isImage) {
-      message.error("You can only upload image files (JPG, PNG, GIF, etc.)!");
+      message.error('You can only upload image files (JPG, PNG, GIF, etc.)!');
     }
     return isImage; // Only allow image uploads
   };
@@ -40,16 +49,16 @@ const EditProductModal = ({
         `${process.env.REACT_APP_SERVER_URL}/api/vendors/get-all`,
         {
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem("postUser"))?.token}`,
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem('postUser'))?.token}`,
           },
         }
       );
-      if (!response.ok) throw new Error("Failed to fetch vendors");
+      if (!response.ok) throw new Error('Failed to fetch vendors');
       const data = await response.json();
       setVendors(data.vendors);
     } catch (error) {
-      message.error("Error fetching vendors: " + error.message);
+      message.error('Error fetching vendors: ' + error.message);
     }
   };
 
@@ -87,13 +96,15 @@ const EditProductModal = ({
 
     // Quantity validation
     if (numQuantity < 1) {
-      message.error("Quantity must be greater than or equal to 1.");
+      message.error('Quantity must be greater than or equal to 1.');
       return;
     }
 
     // Price validation
     if (numPrice <= 0 || numPrice <= numVendorPrice) {
-      message.error("Product price must be greater than vendor price and cannot be 0.");
+      message.error(
+        'Product price must be greater than vendor price and cannot be 0.'
+      );
       return;
     }
 
@@ -104,15 +115,15 @@ const EditProductModal = ({
     }
     console.log(uploadedImageUrl);
 
-      const productData = {
-        ...values,
-        price: numPrice,
-        vendorPrice: numVendorPrice,
-        quantity: numQuantity,
-        img: uploadedImageUrl,
-      };
+    const productData = {
+      ...values,
+      price: numPrice,
+      vendorPrice: numVendorPrice,
+      quantity: numQuantity,
+      img: uploadedImageUrl,
+    };
 
-      onFinish(productData)
+    onFinish(productData);
   };
 
   const uploadButton = (
@@ -133,11 +144,11 @@ const EditProductModal = ({
         <Form.Item
           label="Product Name"
           name="title"
-          rules={[{ required: true, message: "This field cannot be empty!" }]}
+          rules={[{ required: true, message: 'This field cannot be empty!' }]}
         >
           <Input placeholder="Enter product name" />
         </Form.Item>
-        
+
         <Form.Item label="Product Image">
           <Upload
             listType="picture-card"
@@ -163,23 +174,23 @@ const EditProductModal = ({
         <Form.Item
           label="Product Price"
           name="price"
-          rules={[{ required: true, message: "This field cannot be empty!" }]}
+          rules={[{ required: true, message: 'This field cannot be empty!' }]}
         >
           <Input placeholder="Enter product price" type="number" />
         </Form.Item>
-        
+
         <Form.Item
           label="Product Quantity"
           name="quantity"
-          rules={[{ required: true, message: "This field cannot be empty!" }]}
+          rules={[{ required: true, message: 'This field cannot be empty!' }]}
         >
           <Input placeholder="Enter product quantity" type="number" />
         </Form.Item>
-        
+
         <Form.Item
           label="Select Category"
           name="category"
-          rules={[{ required: true, message: "This field cannot be empty!" }]}
+          rules={[{ required: true, message: 'This field cannot be empty!' }]}
         >
           <Select
             showSearch
@@ -198,16 +209,20 @@ const EditProductModal = ({
         <Form.Item
           name="vendor"
           label="Vendor"
-          rules={[{ required: true, message: "Please select the vendor!" }]}
+          rules={[{ required: true, message: 'Please select the vendor!' }]}
         >
           <Select
             showSearch
             optionFilterProp="children"
             filterOption={(input, option) =>
-              (option?.children ?? "").toLowerCase().includes(input.toLowerCase())
+              (option?.children ?? '')
+                .toLowerCase()
+                .includes(input.toLowerCase())
             }
             filterSort={(optionA, optionB) =>
-              (optionA?.children ?? "").toLowerCase().localeCompare((optionB?.children ?? "").toLowerCase())
+              (optionA?.children ?? '')
+                .toLowerCase()
+                .localeCompare((optionB?.children ?? '').toLowerCase())
             }
             allowClear
           >
@@ -222,7 +237,9 @@ const EditProductModal = ({
         <Form.Item
           label="Vendor Price"
           name="vendorPrice"
-          rules={[{ required: true, message: "This field cannot be left blank!" }]}
+          rules={[
+            { required: true, message: 'This field cannot be left blank!' },
+          ]}
         >
           <Input placeholder="Enter vendor price" type="number" />
         </Form.Item>

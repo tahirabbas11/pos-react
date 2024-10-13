@@ -1,23 +1,24 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import CartPage from "./pages/CartPage";
-import InvoicePage from "./pages/InvoicePage";
-import CustomersPage from "./pages/CustomersPage";
-import StatisticPage from "./pages/StatisticPage";
-import Register from "./pages/auth/Register";
-import Login from "./pages/auth/Login";
-import ProductPage from "./pages/ProductPage";
-import VendorPage from "./pages/Vendors";
-import VendorsList from "./pages/VendorsList";
-import NotFoundPage from "./pages/NotFoundPage";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import CartPage from './pages/CartPage';
+import InvoicePage from './pages/InvoicePage';
+import CustomersPage from './pages/CustomersPage';
+import StatisticPage from './pages/StatisticPage';
+import Register from './pages/auth/Register';
+import Login from './pages/auth/Login';
+import ProductPage from './pages/ProductPage';
+import VendorPage from './pages/Vendors';
+import VendorsList from './pages/VendorsList';
+import Expenses from './pages/Expenses';
+import NotFoundPage from './pages/NotFoundPage';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
 
 function App() {
   const cart = useSelector((state) => state.cart);
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
+    localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
   return (
     <BrowserRouter>
@@ -77,16 +78,22 @@ function App() {
               <VendorPage />
             </RouteControl>
           }
-          
         />
-         <Route
+        <Route
           path="/vendor-list"
           element={
             <RouteControl>
               <VendorsList />
             </RouteControl>
           }
-          
+        />
+        <Route
+          path="/expenses"
+          element={
+            <RouteControl>
+              <Expenses />
+            </RouteControl>
+          }
         />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
@@ -99,7 +106,7 @@ function App() {
 export default App;
 
 export const RouteControl = ({ children }) => {
-  const token = JSON.parse(localStorage.getItem("postUser"))?.token;
+  const token = JSON.parse(localStorage.getItem('postUser'))?.token;
 
   if (token) {
     // console.log("token", token);

@@ -1,6 +1,6 @@
-import React from "react";
-import { Badge, Input, message } from "antd";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React from 'react';
+import { Badge, Input, message } from 'antd';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   SearchOutlined,
   HomeOutlined,
@@ -9,14 +9,12 @@ import {
   UserOutlined,
   BarChartOutlined,
   LogoutOutlined,
-  UserSwitchOutlined,
   UsergroupDeleteOutlined,
-  DollarOutlined
-} from "@ant-design/icons";
-import { useSelector } from "react-redux";
-import "./index.css";
-// import Logo from "../../Images/logo.png";
-import Swal from "sweetalert2";
+  DollarOutlined,
+} from '@ant-design/icons';
+import { useSelector } from 'react-redux';
+import './index.css';
+import Swal from 'sweetalert2';
 
 const Header = ({ setSearched }) => {
   const cart = useSelector((state) => state.cart);
@@ -26,65 +24,43 @@ const Header = ({ setSearched }) => {
 
   const logout = () => {
     Swal.fire({
-      title: "Log out?",
+      title: 'Log out?',
       text: "Won't be able to access account.",
-      icon: "warning",
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#2463EB",
-      cancelButtonColor: "gray-400",
-      confirmButtonText: "Confirm",
+      confirmButtonColor: '#2463EB',
+      cancelButtonColor: 'gray-400',
+      confirmButtonText: 'Confirm',
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem("postUser");
-        navigate("/login");
-        message.success("Logout successful.");
+        localStorage.removeItem('postUser');
+        navigate('/login');
+        message.success('Logout successful.');
       }
     });
   };
 
   return (
     <div className="border-b mb-6">
-      <header className="py-4 px-6 flex justify-between items-center gap-10">
-        {/* <div className="logo">
-           <Link
-            to="/"
-            className={`menu-link ${pathname === "/" && " text-[#40a9ff]"} `}
-          >
-            <HomeOutlined className="md:text-5xl text-2xl" />
-            <span className="md:text-xs text-[10px]">Bachat Xpress</span>
-          </Link>
-          <Link to="/">
-            <h2 className="text-2xl font-bold md:text-4xl">Shan Food</h2>
-          </Link>
-          <Link to="/">
-          <div className="flex justify-center items-center">
-            <img
-              className="object-contain"
-              src={Logo}
-              alt="Logo"
-              style={{ width: "120px", height: "auto" }} // Set the desired width and height
-            />
-          </div>
-            </Link>
-        </div> */}
+      <header className="py-4 px-6 flex justify-between items-center">
         <div
           className="header-search flex-1"
           onClick={() => {
-            pathname !== "/" && navigate("/");
+            pathname !== '/' && navigate('/');
           }}
         >
           <Input
             size="large"
             placeholder="Search product ..."
             prefix={<SearchOutlined />}
-            className="rounded-full max-w-[auto]"
+            className="rounded-full max-w-[auto] px-4"
             onChange={(e) => setSearched(e.target.value.toLowerCase())}
           />
         </div>
         <div className="menu-links">
           <Link
             to="/"
-            className={`menu-link ${pathname === "/" && " text-[#40a9ff]"} `}
+            className={`menu-link ${pathname === '/' && ' text-[#40a9ff]'} `}
           >
             <HomeOutlined className="md:text-2xl text-xl" />
             <span className="md:text-xs text-[10px]">Homepage</span>
@@ -97,7 +73,7 @@ const Header = ({ setSearched }) => {
             <Link
               to="/cart"
               className={`menu-link ${
-                pathname === "/cart" && " text-[#40a9ff]"
+                pathname === '/cart' && ' text-[#40a9ff]'
               } `}
             >
               <ShoppingCartOutlined className="md:text-2xl text-xl" />
@@ -107,7 +83,7 @@ const Header = ({ setSearched }) => {
           <Link
             to="/invoices"
             className={`menu-link ${
-              pathname === "/invoices" && " text-[#40a9ff]"
+              pathname === '/invoices' && ' text-[#40a9ff]'
             } `}
           >
             <CopyOutlined className="md:text-2xl text-xl" />
@@ -116,25 +92,25 @@ const Header = ({ setSearched }) => {
           <Link
             to="/customers"
             className={`menu-link ${
-              pathname === "/customers" && " text-[#40a9ff]"
+              pathname === '/customers' && ' text-[#40a9ff]'
             } `}
           >
             <UserOutlined className="md:text-2xl text-xl" />
-            <span className="md:text-xs text-[10px]">customers</span>
+            <span className="md:text-xs text-[10px]">Customers</span>
           </Link>
           <Link
             to="/vendor"
             className={`menu-link ${
-              pathname === "/vendor" && " text-[#40a9ff]"
+              pathname === '/vendor' && ' text-[#40a9ff]'
             } `}
           >
             <UsergroupDeleteOutlined className="md:text-2xl text-xl" />
             <span className="md:text-xs text-[10px]">Vendors</span>
           </Link>
           <Link
-            to="/expense"
+            to="/expenses"
             className={`menu-link ${
-              pathname === "/daily-expense" && " text-[#40a9ff]"
+              pathname === '/daily-expense' && ' text-[#40a9ff]'
             } `}
           >
             <DollarOutlined className="md:text-2xl text-xl" />
@@ -143,7 +119,7 @@ const Header = ({ setSearched }) => {
           <Link
             to="/statistics"
             className={`menu-link ${
-              pathname === "/statistics" && " text-[#40a9ff]"
+              pathname === '/statistics' && ' text-[#40a9ff]'
             } `}
           >
             <BarChartOutlined className="md:text-2xl text-xl" />
@@ -160,7 +136,7 @@ const Header = ({ setSearched }) => {
           <Link
             to="/cart"
             className={`menu-link ${
-              pathname === "/cart" && " text-[#40a9ff]"
+              pathname === '/cart' && ' text-[#40a9ff]'
             } `}
           >
             <ShoppingCartOutlined className="text-2xl" />

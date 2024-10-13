@@ -1,10 +1,11 @@
-import Header from "../components/header/Header";
-import StatisticCard from "../components/statistic/StatisticCard";
-import React, { useState, useEffect } from "react";
-import { Area, Pie } from "@ant-design/plots";
-import { Spin, DatePicker, Button, message } from "antd";
-import { useNavigate } from "react-router-dom";
-import dayjs from "dayjs"; // Ensure dayjs is installed
+import Header from '../components/header/Header';
+import StatisticCard from '../components/statistic/StatisticCard';
+import React, { useState, useEffect } from 'react';
+import { Area, Pie } from '@ant-design/plots';
+import { Spin, DatePicker, Button, message } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs'; // Ensure dayjs is installed
+import { ClearOutlined } from '@ant-design/icons';
 
 const { RangePicker } = DatePicker;
 
@@ -24,10 +25,10 @@ const StatisticPage = () => {
   const getProduct = async () => {
     try {
       const res = await fetch(
-        process.env.REACT_APP_SERVER_URL + "/api/products/get-all",
+        process.env.REACT_APP_SERVER_URL + '/api/products/get-all',
         {
           headers: {
-            Authorization: `Bearer ${JSON.parse(localStorage.getItem("postUser"))?.token}`,
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem('postUser'))?.token}`,
           },
         }
       );
@@ -43,9 +44,9 @@ const StatisticPage = () => {
   };
 
   const asyncFetch = () => {
-    fetch(process.env.REACT_APP_SERVER_URL + "/api/invoices/get-all", {
+    fetch(process.env.REACT_APP_SERVER_URL + '/api/invoices/get-all', {
       headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem("postUser"))?.token}`,
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem('postUser'))?.token}`,
       },
     })
       .then((response) => response.json())
@@ -54,13 +55,13 @@ const StatisticPage = () => {
         setFilteredData(json); // Initialize with all data
       })
       .catch((error) => {
-        console.log("fetch data failed", error);
+        console.log('fetch data failed', error);
       });
   };
 
   const filterDataByDate = () => {
     const start = startDate ? new Date(startDate).getTime() : null; // Start date in milliseconds
-    const end = endDate ? new Date(endDate).getTime()+86400000 : null; // End date in milliseconds
+    const end = endDate ? new Date(endDate).getTime() + 86400000 : null; // End date in milliseconds
 
     // // Log the start and end dates
     // console.log("Start Date:", start ? new Date(start).toISOString().split('T')[0] : "Not selected");
@@ -69,7 +70,7 @@ const StatisticPage = () => {
     // Check the conditions for filtering
     if (!start && !end) {
       // No dates selected
-      message.error("Please select at least one date.");
+      message.error('Please select at least one date.');
       return;
     }
 
@@ -87,14 +88,17 @@ const StatisticPage = () => {
   };
 
   const totalAmount = () => {
-    const amount = filteredData.reduce((total, item) => item.totalAmount + total, 0);
+    const amount = filteredData.reduce(
+      (total, item) => item.totalAmount + total,
+      0
+    );
     return `${amount.toFixed(2)} Rs`;
   };
 
   const config = {
     data: filteredData,
-    xField: "customerName",
-    yField: "subTotal",
+    xField: 'customerName',
+    yField: 'subTotal',
     xAxis: {
       range: [0, 1],
     },
@@ -103,41 +107,41 @@ const StatisticPage = () => {
   const config2 = {
     appendPadding: 10,
     data: filteredData,
-    angleField: "subTotal",
-    colorField: "customerName",
+    angleField: 'subTotal',
+    colorField: 'customerName',
     radius: 1,
     innerRadius: 0.6,
     label: {
-      type: "inner",
-      offset: "-50%",
-      content: "{value}",
+      type: 'inner',
+      offset: '-50%',
+      content: '{value}',
       style: {
-        textAlign: "center",
+        textAlign: 'center',
         fontSize: 14,
       },
     },
     interactions: [
       {
-        type: "element-selected",
+        type: 'element-selected',
       },
       {
-        type: "element-active",
+        type: 'element-active',
       },
     ],
     statistic: {
       title: false,
       content: {
         style: {
-          whiteSpace: "pre-wrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
+          whiteSpace: 'pre-wrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
         },
-        content: "Total Sales",
+        content: 'Total Sales',
       },
     },
   };
 
-  const localStr = localStorage.getItem("postUser");
+  const localStr = localStorage.getItem('postUser');
   const user = JSON.parse(localStr);
 
   return (
@@ -147,57 +151,82 @@ const StatisticPage = () => {
         <div className="px-6 md:pb-0 pb-20">
           <h1 className="text-4xl text-center font-bold mb-4">Statistics</h1>
           <div>
-            <h2 className="text-lg">
+            {/* <h2 className="text-lg">
               Welcome{" "}
               <span className="text-xl text-green-700 font-bold">
                 {user.username}
               </span>
-            </h2>
-            <div className="flex justify-end mb-4">
-              <DatePicker
-                value={startDate ? dayjs(startDate) : null} // Control the start date picker with the state
-                onChange={(date) => {
-                  console.log("Start Date:", date);
-                  setStartDate(date); // Update the start date state
-                }}
-                format="YYYY-MM-DD"
-                placeholder="Select Start Date"
-                className="mr-4"
-              />
-              <DatePicker
-                value={endDate ? dayjs(endDate) : null} // Control the end date picker with the state
-                onChange={(date) => {
-                  console.log("End Date:", date);
-                  setEndDate(date); // Update the end date state
-                }}
-                format="YYYY-MM-DD"
-                placeholder="Select End Date"
-                 className="mr-4"
-              />
-              <Button type="primary" onClick={filterDataByDate} className="ml-2">
-                Filter
-              </Button>
+            </h2> */}
+            <div className="flex flex-col md:flex-row justify-end mb-4 w-full">
+              <div className="flex items-center w-full md:w-auto mb-2 md:mb-0 md:mr-2">
+                <DatePicker
+                  value={startDate ? dayjs(startDate) : null} // Control the start date picker with the state
+                  onChange={(date) => {
+                    console.log('Start Date:', date);
+                    setStartDate(date); // Update the start date state
+                  }}
+                  format="YYYY-MM-DD"
+                  placeholder="Select Start Date"
+                  className="w-full" // Full width on mobile
+                />
+              </div>
+              <div className="flex items-center w-full md:w-auto mb-2 md:mb-0 md:mr-2">
+                <DatePicker
+                  value={endDate ? dayjs(endDate) : null} // Control the end date picker with the state
+                  onChange={(date) => {
+                    console.log('End Date:', date);
+                    setEndDate(date); // Update the end date state
+                  }}
+                  format="YYYY-MM-DD"
+                  placeholder="Select End Date"
+                  className="w-full" // Full width on mobile
+                />
+              </div>
+              <div className="flex items-center w-full md:w-auto mb-2 md:mb-0 md:mr-2">
+                <Button
+                  onClick={() => {
+                    setEndDate(null);
+                    setStartDate(null);
+                    asyncFetch();
+                  }}
+                  className="w-full"
+                  variant="outlined"
+                  icon={<ClearOutlined />}
+                >
+                  Clear Filter
+                </Button>
+              </div>
+              <div className="flex items-center w-full md:w-auto mb-2 md:mb-0 md:mr-2">
+                <Button
+                  type="primary"
+                  onClick={filterDataByDate}
+                  className="w-full md:w-auto"
+                >
+                  Filter
+                </Button>
+              </div>
             </div>
+
             <div className="statistic-cards grid xl:grid-cols-4 md:grid-cols-2 my-10 md:gap-10 gap-4">
               <StatisticCard
-                title={"Total Customers"}
+                title={'Total Customers'}
                 amount={filteredData.length}
-                image={"images/user.png"}
+                image={'images/user.png'}
               />
               <StatisticCard
-                title={"Total Profit"}
+                title={'Total Profit'}
                 amount={totalAmount()}
-                image={"images/money.png"}
+                image={'images/money.png'}
               />
               <StatisticCard
-                title={"Total Sales"}
+                title={'Total Sales'}
                 amount={filteredData.length}
-                image={"images/sale.png"}
+                image={'images/sale.png'}
               />
               <StatisticCard
-                title={"Total Products"}
+                title={'Total Products'}
                 amount={products.length}
-                image={"images/product.png"}
+                image={'images/product.png'}
               />
             </div>
             <div className="flex justify-between gap-10 lg:flex-row flex-col md:p-10 p-4">
