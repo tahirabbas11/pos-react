@@ -1,5 +1,5 @@
 import React from 'react';
-import { Badge, Input, message } from 'antd';
+import { Badge, Input, message, Modal } from 'antd';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   SearchOutlined,
@@ -14,7 +14,7 @@ import {
 } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import './index.css';
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 
 const Header = ({ setSearched }) => {
   const cart = useSelector((state) => state.cart);
@@ -22,21 +22,48 @@ const Header = ({ setSearched }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const logout = () => {
-    Swal.fire({
+  const logout = async () => {
+  
+    Modal.confirm({
       title: 'Log out?',
-      text: "Won't be able to access account.",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#2463EB',
-      cancelButtonColor: 'gray-400',
-      confirmButtonText: 'Confirm',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        localStorage.removeItem('postUser');
-        navigate('/login');
-        message.success('Logout successful.');
-      }
+      content: "Won't be able to access account.",
+      okText: 'Confirm',
+      cancelText: 'Cancel',
+      onOk: async () => {
+        const token = JSON.parse(localStorage.getItem('postUser'))?.token; // Get the stored token
+  
+        if (token) {
+          try {
+            const response = await fetch(
+              `${process.env.REACT_APP_SERVER_URL}/api/auth/logout`,
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+                },
+              }
+            );
+  
+            if (!response.ok) {
+              throw new Error('Logout failed.');
+            }
+  
+            const data = await response.json(); // Parse response JSON
+            localStorage.removeItem('postUser'); // Clear the token from local storage
+            navigate('/login'); // Navigate to login page
+            message.success(data.message || 'Logout successful.'); // Show success message
+          } catch (error) {
+            message.error(error.message || 'Something went wrong.'); // Show error message
+          }
+        } else {
+          message.warning('There is no Session.'); // Warn if no session exists
+          navigate('/login'); // Navigate to login page
+        }
+      },
+      onCancel() {
+        // Optional: Handle any actions on cancel if needed
+      },
     });
   };
 

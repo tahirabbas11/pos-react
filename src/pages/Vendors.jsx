@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Header from '../components/header/Header';
-import Highlighter from 'react-highlight-words';
+// import Highlighter from 'react-highlight-words';
 import {
   Table,
   Button,
@@ -34,6 +34,7 @@ const VendorPage = () => {
   const [products, setProducts] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
+  //eslint-disable-next-line 
   const [selectedProductPrice, setSelectedProductPrice] = useState(0);
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [selectedVendorId, setSelectedVendorId] = useState(null);
@@ -45,8 +46,11 @@ const VendorPage = () => {
   const [endDate, setEndDate] = useState(null);
   const [selectedProductImage, setSelectedProductImage] = useState(''); // State to hold selected product image
 
-  const [searchText, setSearchText] = useState('');
+// eslint-disable-next-line
+const [searchText, setSearchText] = useState('');
+// eslint-disable-next-line
   const [searchedColumn, setSearchedColumn] = useState('');
+  // eslint-disable-next-line
   const searchInput = useRef(null);
 
   // Fetch vendors, products, and purchases on component mount
@@ -54,12 +58,12 @@ const VendorPage = () => {
     fetchVendors();
     fetchProducts();
     fetchPurchases();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Fetch purchases and filter them based on selected filters
   useEffect(() => {
     fetchPurchases();
-  }, [vendorFilter, productFilter, startDate, endDate]);
+  }, [vendorFilter, productFilter, startDate, endDate]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchPurchases = async () => {
     try {
@@ -212,6 +216,7 @@ const VendorPage = () => {
     return currentDate && currentDate > dayjs().endOf('day');
   };
 
+  //eslint-disable-next-line
   const resetFilters = () => {
     setVendorFilter('');
     setProductFilter('');
@@ -219,6 +224,7 @@ const VendorPage = () => {
     setEndDate(null);
   };
 
+    //eslint-disable-next-line
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -233,6 +239,7 @@ const VendorPage = () => {
     setSearchText('');
   };
 
+    //eslint-disable-next-line
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,

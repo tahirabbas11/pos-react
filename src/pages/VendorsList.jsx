@@ -33,7 +33,7 @@ const VendorPage = () => {
 
   useEffect(() => {
     fetchVendors();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchVendors = async () => {
     try {

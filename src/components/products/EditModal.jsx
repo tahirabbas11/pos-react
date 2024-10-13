@@ -26,8 +26,10 @@ const EditProductModal = ({
   const [fileList, setFileList] = useState([]);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
+  const [Loading, setLoading] = useState(false);
 
   useEffect(() => {
+    console.log(editingItem);
     fetchVendors();
     if (editingItem) {
       form.setFieldsValue(editingItem); // Populate form with editingItem values
@@ -110,10 +112,11 @@ const EditProductModal = ({
 
     let uploadedImageUrl = editingItem.img; // Default to existing image
     if (fileList.length > 0 && fileList[0].originFileObj) {
+      setLoading(true);
       const file = fileList[0].originFileObj;
       uploadedImageUrl = await handleImageUpload(file);
     }
-    console.log(uploadedImageUrl);
+    // console.log(uploadedImageUrl);
 
     const productData = {
       ...values,
@@ -124,6 +127,7 @@ const EditProductModal = ({
     };
 
     onFinish(productData);
+    setLoading(false);
   };
 
   const uploadButton = (
@@ -198,7 +202,7 @@ const EditProductModal = ({
             optionFilterProp="children"
             allowClear
           >
-            {categories.map((cat) => (
+            {categories?.map((cat) => (
               <Select.Option key={cat._id} value={cat.title}>
                 {cat.title}
               </Select.Option>
@@ -245,8 +249,8 @@ const EditProductModal = ({
         </Form.Item>
 
         <Form.Item className="flex justify-end mb-0">
-          <Button type="primary" htmlType="submit">
-            Update
+          <Button type="primary" htmlType="submit" disabled={Loading}>
+            {Loading? 'Updating...' : "Update"}
           </Button>
         </Form.Item>
       </Form>

@@ -65,34 +65,26 @@ const Products = ({
 
   return (
     <>
-      <div className="flex justify-end space-x-4 mb-4">
-        {' '}
-        {/* Container for alignment */}
-        <Button
-          className="product-item min-h-[40px] bg-blue-700 border hover:shadow-lg cursor-pointer transition-all select-none flex items-center justify-center text-sm text-white px-4 py-2 hover:opacity-90"
-          onClick={() => setIsAddModalOpen(true)}
-        >
-          <p className="text-base">
-            <PlusOutlined
-              className="inline-block"
-              style={{ marginBottom: '-2px' }}
-            />
-            &nbsp; Add Products
-          </p>
-        </Button>
-        <Button
-          className="product-item min-h-[40px] bg-blue-700 border hover:shadow-lg cursor-pointer transition-all select-none flex items-center justify-center text-sm text-white px-4 py-2 hover:opacity-90"
-          onClick={() => navigate('/products')}
-        >
-          <p className="text-base">
-            <EditOutlined
-              className="inline-block"
-              style={{ marginBottom: '-2px' }}
-            />
-            &nbsp; Edit Products
-          </p>
-        </Button>
-      </div>
+    <div className="flex flex-wrap justify-end gap-4 mb-4">
+  {/* Add Products Button */}
+  <Button
+    className="bg-blue-700 border hover:shadow-lg cursor-pointer transition-all select-none flex items-center justify-center text-sm text-white px-4 py-2 sm:px-6 sm:py-3 hover:opacity-90"
+    onClick={() => setIsAddModalOpen(true)}
+  >
+    <PlusOutlined className="inline-block mb-[-2px]" />
+    <span className="ml-2 text-sm sm:text-base">Add Products</span>
+  </Button>
+
+  {/* Edit Products Button */}
+  <Button
+    className="bg-blue-700 border hover:shadow-lg cursor-pointer transition-all select-none flex items-center justify-center text-sm text-white px-4 py-2 sm:px-6 sm:py-3 hover:opacity-90"
+    onClick={() => navigate('/products')}
+  >
+    <EditOutlined className="inline-block mb-[-2px]" />
+    <span className="ml-2 text-sm sm:text-base">Edit Products</span>
+  </Button>
+</div>
+
 
       <div className="products-wrapper grid grid-cols-card gap-4">
         {searchResults

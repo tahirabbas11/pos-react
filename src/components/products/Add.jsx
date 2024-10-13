@@ -20,6 +20,7 @@ const Add = ({ isAddModalOpen, setIsAddModalOpen, getProduct, categories }) => {
   const [vendors, setVendors] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [Loading, setLoading] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
 
   useEffect(() => {
@@ -92,13 +93,11 @@ const Add = ({ isAddModalOpen, setIsAddModalOpen, getProduct, categories }) => {
     }
 
     let uploadedImageUrl = null;
-    // if (fileList.length > 0) {
-    //   const file = fileList[0].originFileObj;
-    //   uploadedImageUrl = await handleImageUpload(file);
-    // } else {
-    //   message.error("You must upload an image.");
-    //   return;
-    // }
+    if (fileList.length > 0) {
+      setLoading(true)
+      const file = fileList[0].originFileObj;
+      uploadedImageUrl = await handleImageUpload(file);
+    }
 
     try {
       const productData = {
@@ -137,6 +136,7 @@ const Add = ({ isAddModalOpen, setIsAddModalOpen, getProduct, categories }) => {
       console.error(error);
       message.error('Error adding product: ' + error.message);
     }
+    setLoading(false);
   };
 
   const uploadButton = (
@@ -257,8 +257,8 @@ const Add = ({ isAddModalOpen, setIsAddModalOpen, getProduct, categories }) => {
         </Form.Item>
 
         <Form.Item className="flex justify-end mb-0">
-          <Button type="primary" htmlType="submit">
-            Create
+          <Button type="primary" htmlType="submit" disabled={Loading}>
+            {Loading? 'Uploading..' : 'Add'}
           </Button>
         </Form.Item>
       </Form>

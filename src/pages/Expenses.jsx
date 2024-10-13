@@ -10,7 +10,7 @@ import {
   Popconfirm,
   message,
   DatePicker,
-  Badge,
+  // Badge,
 } from 'antd';
 import {
   SearchOutlined,
@@ -18,7 +18,7 @@ import {
   ClearOutlined,
 } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
@@ -44,7 +44,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 const ExpensePage = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [expenses, setExpenses] = useState([]);
   const [filteredExpenses, setFilteredExpenses] = useState([]); // New state for filtered expenses
   const [searchText, setSearchText] = useState('');
@@ -65,12 +65,12 @@ const ExpensePage = () => {
 
   useEffect(() => {
     fetchExpenses();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Update filtered expenses whenever startDate, endDate, or expenses change
   useEffect(() => {
     filterExpensesByDate();
-  }, [startDate, endDate, expenses]);
+  }, [startDate, endDate, expenses]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const disableFutureDates = (currentDate) => {
     return currentDate && currentDate > dayjs().endOf('day');

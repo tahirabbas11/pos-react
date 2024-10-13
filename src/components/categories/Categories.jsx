@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   PlusOutlined,
   EditOutlined,
-  CloseOutlined,
+  // CloseOutlined,
   ClearOutlined,
 } from '@ant-design/icons';
 import Add from './Add';
@@ -59,7 +59,7 @@ const Categories = ({
             option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
           }
         >
-          {categories.map((item) => (
+          {categories?.map((item) => (
             <Select.Option key={item._id} value={item.title}>
               {item.title}
             </Select.Option>

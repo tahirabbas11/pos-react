@@ -32,7 +32,7 @@ const Edit = ({
       }
       message.success('Category successfully updated.');
       setCategories(
-        categories.map((item) => {
+        categories?.map((item) => {
           if (item._id === editingRow._id) {
             return { ...item, title: values.title };
           }

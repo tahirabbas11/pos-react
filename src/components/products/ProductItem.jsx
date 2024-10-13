@@ -1,6 +1,6 @@
 import { addProduct } from '../../redux/cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { Badge, Card, Space, message, Skeleton } from 'antd';
+import { Badge, message, Skeleton } from 'antd';
 
 const ProductItem = ({ item, loading }) => {
   const dispatch = useDispatch();

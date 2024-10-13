@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs'; // Ensure dayjs is installed
 import { ClearOutlined } from '@ant-design/icons';
 
-const { RangePicker } = DatePicker;
+// const { RangePicker } = DatePicker; 
 
 const StatisticPage = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const StatisticPage = () => {
   useEffect(() => {
     asyncFetch();
     getProduct();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const getProduct = async () => {
     try {
@@ -142,6 +142,7 @@ const StatisticPage = () => {
   };
 
   const localStr = localStorage.getItem('postUser');
+  //eslint-disable-next-line
   const user = JSON.parse(localStr);
 
   return (

@@ -17,10 +17,12 @@ const InvoicePage = () => {
   const [searchedColumn, setSearchedColumn] = useState('');
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  //eslint-disable-next-line
   const [totalEarning, SetTotalEarning] = useState(0);
   const searchInput = useRef(null);
 
   useEffect(() => {
+
     const getInvoices = async () => {
       try {
         // Build query parameters conditionally
