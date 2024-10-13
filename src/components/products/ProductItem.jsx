@@ -1,6 +1,7 @@
 import { addProduct } from '../../redux/cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Badge, message, Skeleton } from 'antd';
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const ProductItem = ({ item, loading }) => {
   const dispatch = useDispatch();
@@ -47,7 +48,8 @@ const ProductItem = ({ item, loading }) => {
           color={remainingQuantity > 0 ? 'green' : 'red'}
         >
           <div className="product-image">
-            <img
+            
+            <LazyLoadImage
               src={item.img ? item.img : 'https://via.placeholder.com/150'}
               alt={item.title}
               className="h-28 object-cover w-full border-b"

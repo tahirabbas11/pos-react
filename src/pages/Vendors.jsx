@@ -23,6 +23,8 @@ import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+import { LazyLoadImage } from "react-lazy-load-image-component";
+
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -306,7 +308,7 @@ const [searchText, setSearchText] = useState('');
         // Placeholder image URL (replace with your placeholder image path)
         const placeholderImg = 'https://via.placeholder.com/150';
         const imageSrc = img ? img : placeholderImg;
-        return <Image width={30} src={imageSrc} alt="Product Image" />;
+        return <LazyLoadImage width={30} src={imageSrc} alt="Product Image" />;
       },
     },
     {
@@ -317,6 +319,11 @@ const [searchText, setSearchText] = useState('');
     {
       title: 'Product',
       dataIndex: ['product', 'title'],
+      // ...getColumnSearchProps('product.title'),
+    },
+    {
+      title: 'Category',
+      dataIndex: ['product', 'category'],
       // ...getColumnSearchProps('product.title'),
     },
     {
@@ -486,7 +493,7 @@ const [searchText, setSearchText] = useState('');
               {products.map((product) => (
                 <Select.Option key={product._id} value={product.title}>
                   <div className="flex items-center">
-                    <img
+                    <LazyLoadImage
                       src={product.img}
                       alt={product.title}
                       className="w-5 h-5 mr-2"

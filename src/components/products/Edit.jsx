@@ -20,6 +20,7 @@ import {
   ClearOutlined,
 } from '@ant-design/icons';
 import EditModal from './EditModal';
+// import LazyLoadImage from 'react-lazy-load-image-component';
 
 const Edit = () => {
   const navigate = useNavigate();
@@ -342,6 +343,7 @@ const Edit = () => {
           editingItem={editingItem}
           isEditModalOpen={isEditModalOpen}
           setIsEditModalOpen={setIsEditModalOpen}
+          categories={categories}
         />
       )}
     </>

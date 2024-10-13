@@ -3,6 +3,7 @@ import { Table, Card, Button, message, Popconfirm, Input, Space } from 'antd';
 import { useRef, useState } from 'react';
 import CreateInvoice from '../components/cart/CreateInvoice';
 import { useDispatch, useSelector } from 'react-redux';
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import {
   PlusCircleOutlined,
   MinusCircleOutlined,
@@ -122,7 +123,7 @@ const CartPage = () => {
       key: 'img',
       width: '120px',
       render: (text) => (
-        <img src={text} alt="" className="w-full h-20 object-cover" />
+        <LazyLoadImage src={text} alt="" className="w-full h-20 object-cover" />
       ),
     },
     {

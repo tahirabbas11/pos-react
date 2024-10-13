@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from 'antd'; // Import Ant Design Button
 import { CalculatorOutlined } from '@ant-design/icons'; // Import Ant Design Calculator Icon
-// import { motion } from 'framer-motion'; // Import Framer Motion for animations
 
 const CalculatorWidget = () => {
   const [originalAmount, setOriginalAmount] = useState('');
   const [targetAmount, setTargetAmount] = useState('');
   const [discountPercentage, setDiscountPercentage] = useState(null);
   const [isOpen, setIsOpen] = useState(false); // State to toggle visibility
+  const calculatorRef = useRef(null); // Ref for the calculator widget
 
   const calculateDiscount = () => {
     const original = parseFloat(originalAmount);
@@ -21,12 +21,39 @@ const CalculatorWidget = () => {
     }
   };
 
+  // Function to close the modal and clear inputs
+  const closeModal = () => {
+    setIsOpen(false);
+    setOriginalAmount('');
+    setTargetAmount('');
+    setDiscountPercentage(null);
+  };
+
+  // Handle clicks outside the calculator widget
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (calculatorRef.current && !calculatorRef.current.contains(event.target)) {
+        closeModal();
+      }
+    };
+
+    if (isOpen) {
+      window.addEventListener('mousedown', handleClickOutside);
+    } else {
+      window.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      window.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
   return (
     <div>
       {/* Floating Button */}
       <button
         onClick={() => setIsOpen(!isOpen)} // Toggle calculator visibility
-        className="fixed bottom-4 animate-bounce left-4 bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 transition duration-300"
+        className="fixed bottom-4 left-4 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition duration-300"
         aria-label="Open Calculator"
       >
         <CalculatorOutlined className="text-2xl" />
@@ -34,34 +61,48 @@ const CalculatorWidget = () => {
 
       {/* Calculator Widget */}
       {isOpen && (
-        <div className="fixed bottom-16 left-4 max-w-xs mx-auto p-6 bg-white rounded-lg shadow-lg mb-4 border border-gray-300">
-          <h2 className="text-xl font-bold text-center mb-4">
+        <div
+          ref={calculatorRef} // Attach the ref to the calculator widget
+          className="fixed bottom-16 left-4 max-w-xs mx-auto p-6 bg-white rounded-lg shadow-lg border border-gray-200"
+        >
+          <h2 className="text-xl font-semibold text-center mb-4 text-gray-800">
             Discount Calculator
           </h2>
           <input
             type="number"
             placeholder="Original Amount"
             value={originalAmount}
-            onChange={(e) => setOriginalAmount(e.target.value)}
-            className="block w-full p-2 border border-gray-300 rounded mb-2"
+            onChange={(e) => {
+              const value = e.target.value;
+              if (value === '' || parseFloat(value) >= 0) {
+                setOriginalAmount(value);
+              }
+            }}
+            min="0" // Ensures input is non-negative
+            className="block w-full p-2 border border-gray-300 rounded-md mb-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
           <input
             type="number"
             placeholder="Target Amount"
             value={targetAmount}
-            onChange={(e) => setTargetAmount(e.target.value)}
-            className="block w-full p-2 border border-gray-300 rounded mb-4"
+            onChange={(e) => {
+              const value = e.target.value;
+              if (value === '' || parseFloat(value) >= 0) {
+                setTargetAmount(value);
+              }
+            }}
+            min="0" // Ensures input is non-negative
+            className="block w-full p-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
           <Button
             onClick={calculateDiscount}
-            className="w-full bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300"
+            className="w-full bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300"
           >
             Calculate Discount
           </Button>
           {discountPercentage !== null && (
-            <p className="mt-4 text-center text-lg">
-              Required Discount:{' '}
-              <span className="font-bold">{discountPercentage}%</span>
+            <p className="mt-4 text-center text-sm text-gray-800">
+              Discount: <span className="font-bold">{discountPercentage}%</span>
             </p>
           )}
         </div>
