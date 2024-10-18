@@ -67,12 +67,14 @@ const Add = ({ isAddModalOpen, setIsAddModalOpen, getProduct, categories }) => {
 
   // eslint-disable-next-line no-unused-vars
   const handleImageUpload = async (file) => {
-    const storageRef = ref(storage, `images/${file.name}`);
+    const timestamp = Date.now() / 1000;
+    const storageRef = ref(storage, `images/${file.name}-${timestamp}`);
     await uploadBytes(storageRef, file);
     return await getDownloadURL(storageRef);
   };
 
   const onFinish = async (values) => {
+    setLoading(true);
     const { price, vendorPrice, quantity } = values;
     const numPrice = Number(price);
     const numVendorPrice = Number(vendorPrice);
@@ -94,7 +96,7 @@ const Add = ({ isAddModalOpen, setIsAddModalOpen, getProduct, categories }) => {
 
     let uploadedImageUrl = null;
     if (fileList.length > 0) {
-      setLoading(true)
+      // setLoading(true)
       const file = fileList[0].originFileObj;
       uploadedImageUrl = await handleImageUpload(file);
     }

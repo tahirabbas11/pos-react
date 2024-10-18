@@ -39,7 +39,7 @@ const ProductItem = ({ item, loading }) => {
   return (
     <Skeleton loading={loading} active>
       <div
-        className="product-item border hover:shadow-lg cursor-pointer transition-all select-none"
+        className="product-item border hover:shadow-lg hover:border-blue-500 hover:shadow-blue-300 cursor-pointer transition-all select-none "
         onClick={handleClick}
         style={{ maxWidth: '95%' }}
       >

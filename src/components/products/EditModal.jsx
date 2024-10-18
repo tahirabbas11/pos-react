@@ -85,12 +85,15 @@ const EditProductModal = ({
 
   const handleImageUpload = async (file) => {
     if (!file) return null;
-    const storageRef = ref(storage, `images/${file.name}`);
+    const timestamp = Date.now() / 1000;
+    const storageRef = ref(storage, `images/${file.name}-${timestamp}`);
+    // const storageRef = ref(storage, `images/${file.name}`);
     await uploadBytes(storageRef, file);
     return await getDownloadURL(storageRef);
   };
 
   const onFinished = async (values) => {
+    setLoading(true);
     const { price, vendorPrice, quantity } = values;
     const numPrice = Number(price);
     const numVendorPrice = Number(vendorPrice);
@@ -112,7 +115,6 @@ const EditProductModal = ({
 
     let uploadedImageUrl = editingItem.img; // Default to existing image
     if (fileList.length > 0 && fileList[0].originFileObj) {
-      setLoading(true);
       const file = fileList[0].originFileObj;
       uploadedImageUrl = await handleImageUpload(file);
     }

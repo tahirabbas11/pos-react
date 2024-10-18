@@ -89,8 +89,8 @@ const Header = ({ setSearched }) => {
             to="/"
             className={`menu-link ${pathname === '/' && ' text-[#40a9ff]'} `}
           >
-            <HomeOutlined className="md:text-2xl text-xl" />
-            <span className="md:text-xs text-[10px]">Homepage</span>
+            <HomeOutlined className="md:text-2xl text-xl ml-4" />
+            <span className="md:text-xs text-[10px] ml-4">Home</span>
           </Link>
           <Badge
             count={basketNumber}
