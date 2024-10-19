@@ -102,7 +102,7 @@ const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
         >
           <Select placeholder="Select a payment method...">
             <Select.Option value="Cash">Cash</Select.Option>
-            <Select.Option value="Credit Card">Online</Select.Option>
+            <Select.Option value="Online">Online</Select.Option>
             <Select.Option value="Credit Card">Credit Card</Select.Option>
           </Select>
         </Form.Item>
