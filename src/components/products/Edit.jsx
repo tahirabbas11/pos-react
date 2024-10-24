@@ -10,6 +10,7 @@ import {
   Popconfirm,
   Row,
   Col,
+  InputNumber
 } from 'antd';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -37,6 +38,7 @@ const Edit = () => {
     price: '',
     vendor: null,
     category: null,
+    quantity: null
   });
   const [sortOrder, setSortOrder] = useState('ascend');
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
@@ -106,7 +108,9 @@ const Edit = () => {
       const matchPrice = product.price?.toString().includes(filters.price) || false;
       const matchVendor = filters.vendor ? product.vendor === filters.vendor : true;
       const matchCategory = filters.category ? product.category === filters.category : true;
-      return matchName && matchPrice && matchVendor && matchCategory;
+      const matchQuantity = filters.quantity !== null && filters.quantity !== undefined
+      ? product.quantity === filters.quantity
+      : true;      return matchName && matchPrice && matchVendor && matchCategory && matchQuantity;
     });
     setFilteredProducts(filtered);
   };
@@ -180,7 +184,7 @@ const Edit = () => {
   };
 
   const handleClearFilters = () => {
-    setFilters({ name: '', price: '', vendor: null, category: '' });
+    setFilters({ name: '', price: '', vendor: null, category: '', quantity: null });
     setFilteredProducts(products);
   };
 
@@ -280,6 +284,14 @@ const Edit = () => {
       value={filters.price}
       onChange={(e) => setFilters((prev) => ({ ...prev, price: e.target.value }))}
       prefix={<SearchOutlined />}
+    />
+  </Col>
+  <Col xs={24} sm={12} md={8} lg={4}>
+    <InputNumber
+      placeholder="Filter by Quantity"
+      value={filters.quantity}
+      onChange={(value) => setFilters((prev) => ({ ...prev, quantity: value }))}
+      style={{ width: '100%' }}
     />
   </Col>
   <Col xs={24} sm={12} md={8} lg={4}>

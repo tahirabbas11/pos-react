@@ -115,7 +115,7 @@ const PrintInvoice = ({ isModalOpen, setIsModalOpen, printData }) => {
                     >
                       <td className="py-4 sm:table-cell hidden">
                         <img
-                          src={item.img}
+                          src={item.img || 'https://via.placeholder.com/150'}
                           alt={item.title}
                           className="w-12 h-12 object-cover"
                         />

@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs'; // Ensure dayjs is installed
 import { ClearOutlined } from '@ant-design/icons';
 
-// const { RangePicker } = DatePicker; 
+// const { RangePicker } = DatePicker;
 
 const StatisticPage = () => {
   const navigate = useNavigate();
@@ -94,6 +94,26 @@ const StatisticPage = () => {
     );
     return `${amount.toFixed(2)} Rs`;
   };
+
+  const totalRevenue = () => {
+    let totalSales = 0;
+    let totalCost = 0;
+  
+    filteredData.forEach(order => {
+      order.cartItems.forEach(item => {
+        // Calculate the total sales and total cost for each item
+        totalSales += item.price * item.quantity;
+        totalCost += item.vendorPrice * item.quantity;
+      });
+    });
+  
+    // Calculate total profit and profit percentage
+    const profit = totalSales - totalCost;
+    const profitPercentage = (profit / totalSales) * 100;
+  
+    return `${profit.toFixed(2)} Rs (${profitPercentage.toFixed(2)}%)`;
+  };
+  
 
   const config = {
     data: filteredData,
@@ -228,6 +248,11 @@ const StatisticPage = () => {
                 title={'Total Products'}
                 amount={products.length}
                 image={'images/product.png'}
+              />
+              <StatisticCard
+                title={'Total Revenue'}
+                amount={totalRevenue()}
+                image={'images/money.png'}
               />
             </div>
             <div className="flex justify-between gap-10 lg:flex-row flex-col md:p-10 p-4">
