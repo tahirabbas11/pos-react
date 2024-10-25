@@ -6,14 +6,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   PlusCircleOutlined,
   MinusCircleOutlined,
-  ClearOutlined,
+  // ClearOutlined,
   SearchOutlined,
 } from '@ant-design/icons';
 import {
   increase,
   decrease,
   deleteProduct,
-  reset,
+  // reset,
   applyDiscount,
   updateQuantity,
 } from '../redux/cartSlice';
