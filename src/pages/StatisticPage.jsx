@@ -16,11 +16,26 @@ const StatisticPage = () => {
   const [products, setProducts] = useState([]);
   const [startDate, setStartDate] = useState(null); // Start date
   const [endDate, setEndDate] = useState(null); // End date
+  const [expenses, setExpenses] = useState([]);
+  const [filteredExpenses, setFilteredExpenses] = useState([]);
+  const [totals, setTotals] = useState({
+    totalSales: 0,
+    totalCost: 0,
+    profit: 0,
+    profitPercentage: 0,
+    totalAmount: 0,
+    totalExpenses: 0,
+  });
 
   useEffect(() => {
     asyncFetch();
     getProduct();
+    fetchExpenses();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    calculateTotals();
+  }, [filteredData, filteredExpenses]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const getProduct = async () => {
     try {
@@ -40,6 +55,27 @@ const StatisticPage = () => {
       setProducts(data);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const fetchExpenses = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}/api/expenses/get-all`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem('postUser'))?.token}`,
+          },
+        }
+      );
+      if (!response.ok) throw new Error('Failed to fetch expenses');
+      const data = await response.json();
+      console.log(data);
+      setExpenses(data);
+      setFilteredExpenses(data);
+    } catch (error) {
+      message.error('Error fetching expenses: ' + error.message);
     }
   };
 
@@ -79,41 +115,98 @@ const StatisticPage = () => {
 
       // Apply filtering logic based on the start and end date selections
       const isStartValid = start ? invoiceDate >= start : true; // If start date is selected
-      const isEndValid = end ? invoiceDate <= end : true; // If end date is selected
+      const isEndValid = end ? invoiceDate <= end : true;
 
-      return isStartValid && isEndValid; // Return true if both conditions are satisfied
+      return isStartValid && isEndValid;
     });
 
+    const filteredExpense = expenses.filter((item) => {
+      const expenseDate = new Date(item.date).getTime();
+      const isStartValid = start ? expenseDate >= start : true;
+      const isEndValid = end ? expenseDate <= end : true;
+
+      return isStartValid && isEndValid;
+    });
     setFilteredData(filtered);
+    setFilteredExpenses(filteredExpense);
   };
 
-  const totalAmount = () => {
-    const amount = filteredData.reduce(
-      (total, item) => item.totalAmount + total,
-      0
-    );
-    return `${amount.toFixed(2)} Rs`;
-  };
+  // const totalAmount = () => {
+  //   const amount = filteredData.reduce(
+  //     (total, item) => item.totalAmount + total,
+  //     0
+  //   );
+  //   return amount;
+  // };
 
-  const totalRevenue = () => {
+  // const totalExpenses = () => {
+  //   const amount = filteredExpenses.reduce(
+  //     (total, item) => item.amount + total,
+  //     0
+  //   );
+  //   return amount;
+  // };
+
+  // const totalRevenue = () => {
+  //   let totalSales = 0;
+  //   let totalCost = 0;
+
+  //   filteredData.forEach((order) => {
+  //     order.cartItems.forEach((item) => {
+  //       // Calculate the total sales and total cost for each item
+  //       totalSales += item.price * item.quantity;
+  //       totalCost += item.vendorPrice * item.quantity;
+  //     });
+  //   });
+
+  //   // Calculate total profit and profit percentage
+  //   const profit = totalSales - totalCost;
+  //   const profitPercentage = (profit / totalSales) * 100;
+
+  //   // return `${profit.toFixed(2)} Rs (${profitPercentage.toFixed(2)}%)`;
+  //   return {profit , profitPercentage};
+  // };
+
+  const calculateTotals = () => {
     let totalSales = 0;
     let totalCost = 0;
-  
-    filteredData.forEach(order => {
-      order.cartItems.forEach(item => {
+
+    filteredData.forEach((order) => {
+      order.cartItems.forEach((item) => {
         // Calculate the total sales and total cost for each item
         totalSales += item.price * item.quantity;
         totalCost += item.vendorPrice * item.quantity;
       });
     });
-  
-    // Calculate total profit and profit percentage
+
+    // Calculate profit and profit percentage
     const profit = totalSales - totalCost;
-    const profitPercentage = (profit / totalSales) * 100;
-  
-    return `${profit.toFixed(2)} Rs (${profitPercentage.toFixed(2)}%)`;
+    const profitPercentage = totalSales ? (profit / totalSales) * 100 : 0;
+
+    // Calculate total amount
+    const totalAmount = filteredData.reduce(
+      (total, item) => item.totalAmount + total,
+      0
+    );
+
+    // Calculate total expenses
+    const totalExpenses = filteredExpenses.reduce(
+      (total, item) => item.amount + total,
+      0
+    );
+
+    // Update state with calculated values
+    setTotals({
+      totalSales,
+      totalCost,
+      profit,
+      profitPercentage,
+      totalAmount,
+      totalExpenses,
+    });
   };
-  
+
+  // Call `calculateTotals` when necessary, such as in a useEffect or based on an event
 
   const config = {
     data: filteredData,
@@ -229,16 +322,16 @@ const StatisticPage = () => {
             </div>
 
             <div className="statistic-cards grid xl:grid-cols-4 md:grid-cols-2 my-10 md:gap-10 gap-4">
-              <StatisticCard
+              {/* <StatisticCard
                 title={'Total Customers'}
                 amount={filteredData.length}
                 image={'images/user.png'}
-              />
-              <StatisticCard
-                title={'Total Profit'}
-                amount={totalAmount()}
-                image={'images/money.png'}
-              />
+              /> */}
+              {/* <StatisticCard
+                  title={'Total Profit'}
+                  amount={totals.amount}
+                  image={'images/money.png'}
+                /> */}
               <StatisticCard
                 title={'Total Sales'}
                 amount={filteredData.length}
@@ -249,9 +342,51 @@ const StatisticPage = () => {
                 amount={products.length}
                 image={'images/product.png'}
               />
-              <StatisticCard
+             {/*  <StatisticCard
                 title={'Total Revenue'}
-                amount={totalRevenue()}
+                amount={totals.profit}
+                image={'images/money.png'}
+              />
+              <StatisticCard
+                title={'Total Expense'}
+                amount={totals.totalExpenses}
+                image={'images/money.png'}
+              />
+              <StatisticCard
+                title={'Net Profit'}
+                amount={totals.totalSales}
+                image={'images/money.png'}
+              /> */}
+
+              {/* <StatisticCard
+    title="Total Sales"
+    amount={totals.totalSales}
+    image={'images/money.png'}
+/> */}
+              {/* <StatisticCard
+    title="Total Cost"
+    amount={totals.totalCost}
+    image={'images/money.png'}
+/> */}
+              
+              <StatisticCard
+                title="Total Sales"
+                amount={`${totals.totalAmount.toFixed(2)} Rs`}
+                image={'images/money.png'}
+              />
+              <StatisticCard
+                title="Total Profit"
+                amount={`${totals.profit.toFixed(2)} Rs (${totals.profitPercentage.toFixed(2)}%)`}
+                image={'images/money.png'}
+              />
+              <StatisticCard
+                title="Total Expenses"
+                amount={`${totals.totalExpenses.toFixed(2)} Rs`}
+                image={'images/money.png'}
+              />
+              <StatisticCard
+                title="Net Profit"
+                amount={`${(totals.profit - totals.totalExpenses).toFixed(2)} Rs`}
                 image={'images/money.png'}
               />
             </div>

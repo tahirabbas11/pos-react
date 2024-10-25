@@ -367,8 +367,8 @@ const ExpensePage = () => {
           {/* <div className="bg-gray-200 p-2 rounded"> */}
           <strong style={{ marginRight: 10 }}>Total Expense:</strong>
           {filteredExpenses
-            .reduce((acc, curr) => acc + curr.amount, 0)
-            .toFixed(2)}
+            ?.reduce((acc, curr) => acc + curr.amount, 0)
+            ?.toFixed(2) || 0}
           {/* </div> */}
         </div>
 

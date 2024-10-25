@@ -2,12 +2,17 @@ import { Form, Modal, Input, Select, Card, Button, message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { reset } from '../../redux/cartSlice';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { set } from 'firebase/database';
 const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false); ;
 
   const onFinish = async (values) => {
+    setIsLoading(true);
+
     try {
       var res = await fetch(
         process.env.REACT_APP_SERVER_URL + '/api/invoices/add-invoice',
@@ -47,16 +52,17 @@ const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
       message.error('Operation failed.');
       console.log(error);
     }
-    console.log(
-      JSON.stringify({
-        ...values,
-        subTotal: cart?.subtotal?.toFixed(2),
-        tax: ((cart.total * cart.tax) / 100).toFixed(2),
-        totalAmount: (cart.total + (cart.total * cart.tax) / 100).toFixed(2),
-        cartItems: cart.cartItems,
-        discount: cart.discount,
-      })
-    );
+    // console.log(
+    //   JSON.stringify({
+    //     ...values,
+    //     subTotal: cart?.subtotal?.toFixed(2),
+    //     tax: ((cart.total * cart.tax) / 100).toFixed(2),
+    //     totalAmount: (cart.total + (cart.total * cart.tax) / 100).toFixed(2),
+    //     cartItems: cart.cartItems,
+    //     discount: cart.discount,
+    //   })
+    // );
+    setIsLoading(false);
   };
 
   return (
@@ -136,10 +142,11 @@ const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
               size="medium"
               type="primary"
               className="mt-4"
+              disabled={isLoading}
               onClick={() => setIsModalOpen(true)}
               htmlType="submit"
             >
-              Create Order
+              {isLoading ? 'Creating...' : 'Create Invoice'}
             </Button>
           </div>
         </Card>

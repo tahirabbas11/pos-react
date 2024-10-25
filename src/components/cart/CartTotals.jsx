@@ -1,21 +1,19 @@
-import {
-  Button,
-  Popconfirm,
+import { Button, Popconfirm, 
   // message
-} from 'antd';
+ } from "antd";
 import {
   ClearOutlined,
   PlusCircleOutlined,
   MinusCircleOutlined,
-} from '@ant-design/icons';
-import { useSelector, useDispatch } from 'react-redux';
+} from "@ant-design/icons";
+import { useSelector, useDispatch } from "react-redux";
 import {
   deleteProduct,
   increase,
   decrease,
   reset,
-} from '../../redux/cartSlice';
-import { useNavigate } from 'react-router-dom';
+} from "../../redux/cartSlice";
+import { useNavigate } from "react-router-dom";
 
 const CartTotals = () => {
   const dispatch = useDispatch();
@@ -34,9 +32,7 @@ const CartTotals = () => {
               <li className="cart-item flex justify-between" key={item._id}>
                 <div className="flex items-center">
                   <img
-                    src={
-                      item.img ? item.img : 'https://via.placeholder.com/150'
-                    }
+                    src={item.img ? item.img : "https://via.placeholder.com/150"}
                     alt={item.title}
                     className="h-16 w-16 object-cover cursor-pointer"
                     onClick={() => dispatch(deleteProduct(item))}
@@ -88,9 +84,7 @@ const CartTotals = () => {
             ))
             .reverse()
         ) : (
-          <div className="text-center mt-2 font-bold">
-            No items in the cart...
-          </div>
+          <div className="text-center mt-2 font-bold">No items in the cart...</div>
         )}
       </ul>
       <div className="cart-totals mt-auto">
@@ -128,7 +122,7 @@ const CartTotals = () => {
             size="large"
             className="w-full"
             disabled={cart.cartItems.length > 0 ? false : true}
-            onClick={() => navigate('/cart')}
+            onClick={() => navigate("/cart")}
           >
             Create Order
           </Button>
@@ -153,7 +147,7 @@ const CartTotals = () => {
                 Delete All
               </Button>
             ) : (
-              ''
+              ""
             )}
           </Popconfirm>
         </div>
