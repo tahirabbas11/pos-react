@@ -232,7 +232,7 @@ const InvoicePage = () => {
                       text === 'Credit Card' ? 'blue' :
                       'default';
 
-        return <Tag color={color}>{text}</Tag>;
+        return <Tag bordered={false} color={color}>{text}</Tag>;
       },
     },
     {
