@@ -207,11 +207,13 @@ const Edit = () => {
     {
       title: 'Product Price',
       dataIndex: 'price',
+      sorter: (a, b) => a.price - b.price,
       width: '15%',
     },
     {
       title: 'Available Quantity',
       dataIndex: 'quantity',
+      sorter: (a, b) => a.quantity - b.quantity,
       width: '15%',
     },
     {
