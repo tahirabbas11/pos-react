@@ -511,11 +511,11 @@ const [searchText, setSearchText] = useState('');
               {products.map((product) => (
                 <Select.Option key={product._id} value={product.title}>
                   <div className="flex items-center">
-                    <Image
+                    {/* <Image
                       src={product.img}
                       alt={product.title}
                       className="w-5 h-5 mr-2"
-                    />
+                    /> */}
                     {product.title}
                   </div>
                 </Select.Option>
@@ -593,12 +593,12 @@ const [searchText, setSearchText] = useState('');
           {/* Display Selected Product Image */}
           {selectedProductImage && (
             <div className="mb-4 flex items-center justify-center">
-              <Image
+              {/* <Image
                 src={selectedProductImage}
                 alt="Selected Product"
                 width={200}
                 height={200}
-              />
+              /> */}
             </div>
           )}
 
