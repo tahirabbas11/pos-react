@@ -334,6 +334,7 @@ const [searchText, setSearchText] = useState('');
     {
       title: 'quantity',
       dataIndex: 'quantity',
+      sorter: (a, b) => a.quantity - b.quantity,
       // ...getColumnSearchProps('product.title'),
     },
     {
@@ -431,13 +432,25 @@ const [searchText, setSearchText] = useState('');
           </div>
           <div className="mb-4 mr-4 text-right">
             <strong className="mr-2">Total Retail Amount:</strong>{' '}
-            {purchases
-              .reduce(
-                (acc, purchase) =>
-                  acc + purchase?.product?.price * purchase.quantity,
-                0
-              )
-              .toFixed(2)}
+            {!isNaN(
+              purchases
+                .reduce(
+                  (acc, purchase) =>
+                    acc + (purchase?.product?.price || 0) * purchase.quantity,
+                  0
+                )
+                .toFixed(2)
+            ) ? (
+              purchases
+                .reduce(
+                  (acc, purchase) =>
+                    acc + (purchase?.product?.price || 0) * purchase.quantity,
+                  0
+                )
+                .toFixed(2)
+            ) : (
+              'N/A'
+            )}
           </div>
           <Button type="primary" onClick={showModal} className="mb-4 ml-4">
             Add Purchase

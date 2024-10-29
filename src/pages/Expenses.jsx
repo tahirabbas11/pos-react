@@ -88,7 +88,8 @@ const ExpensePage = () => {
         }
       );
       if (!response.ok) throw new Error('Failed to fetch expenses');
-      const data = await response.json();
+      let data = await response.json();
+      data.reverse();
       setExpenses(data);
       setFilteredExpenses(data); // Initialize filtered expenses
     } catch (error) {
@@ -280,6 +281,7 @@ const ExpensePage = () => {
       title: 'Amount',
       dataIndex: 'amount',
       key: 'amount',
+      sorter: (a, b) => a.amount - b.amount,
       ...getColumnSearchProps('amount'),
     },
     {
