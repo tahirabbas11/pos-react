@@ -71,7 +71,6 @@ const StatisticPage = () => {
       );
       if (!response.ok) throw new Error('Failed to fetch expenses');
       const data = await response.json();
-      console.log(data);
       setExpenses(data);
       setFilteredExpenses(data);
     } catch (error) {
