@@ -1,5 +1,5 @@
 import Header from '../components/header/Header';
-import { Table, Button, Input, Space, DatePicker } from 'antd';
+import { Table, Button, Input, Space, DatePicker, Tag } from 'antd';
 import { useEffect, useState, useRef } from 'react';
 import PrintInvoice from '../components/invoice/PrintInvoice';
 import Highlighter from 'react-highlight-words';
@@ -225,6 +225,15 @@ const InvoicePage = () => {
       title: 'Payment Method',
       dataIndex: 'paymentMode',
       key: 'paymentMode',
+      render: (text) => {
+        // Inline color mapping for the payment methods
+        const color = text === 'Online' ? 'green' :
+                      text === 'Cash' ? 'volcano' :
+                      text === 'Credit Card' ? 'blue' :
+                      'default';
+
+        return <Tag color={color}>{text}</Tag>;
+      },
     },
     {
       title: 'Date',

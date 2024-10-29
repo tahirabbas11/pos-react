@@ -98,11 +98,6 @@ const StatisticPage = () => {
   const filterDataByDate = () => {
     const start = startDate ? new Date(startDate).getTime() : null; // Start date in milliseconds
     const end = endDate ? new Date(endDate).getTime() + 86400000 : null; // End date in milliseconds
-
-    // // Log the start and end dates
-    // console.log("Start Date:", start ? new Date(start).toISOString().split('T')[0] : "Not selected");
-    // console.log("End Date:", end ? new Date(end).toISOString().split('T')[0] : "Not selected");
-
     // Check the conditions for filtering
     if (!start && !end) {
       // No dates selected
@@ -130,42 +125,6 @@ const StatisticPage = () => {
     setFilteredData(filtered);
     setFilteredExpenses(filteredExpense);
   };
-
-  // const totalAmount = () => {
-  //   const amount = filteredData.reduce(
-  //     (total, item) => item.totalAmount + total,
-  //     0
-  //   );
-  //   return amount;
-  // };
-
-  // const totalExpenses = () => {
-  //   const amount = filteredExpenses.reduce(
-  //     (total, item) => item.amount + total,
-  //     0
-  //   );
-  //   return amount;
-  // };
-
-  // const totalRevenue = () => {
-  //   let totalSales = 0;
-  //   let totalCost = 0;
-
-  //   filteredData.forEach((order) => {
-  //     order.cartItems.forEach((item) => {
-  //       // Calculate the total sales and total cost for each item
-  //       totalSales += item.price * item.quantity;
-  //       totalCost += item.vendorPrice * item.quantity;
-  //     });
-  //   });
-
-  //   // Calculate total profit and profit percentage
-  //   const profit = totalSales - totalCost;
-  //   const profitPercentage = (profit / totalSales) * 100;
-
-  //   // return `${profit.toFixed(2)} Rs (${profitPercentage.toFixed(2)}%)`;
-  //   return {profit , profitPercentage};
-  // };
 
   const calculateTotals = () => {
     let totalSales = 0;
@@ -265,12 +224,6 @@ const StatisticPage = () => {
         <div className="px-6 md:pb-0 pb-20">
           <h1 className="text-4xl text-center font-bold mb-4">Statistics</h1>
           <div>
-            {/* <h2 className="text-lg">
-              Welcome{" "}
-              <span className="text-xl text-green-700 font-bold">
-                {user.username}
-              </span>
-            </h2> */}
             <div className="flex flex-col md:flex-row justify-end mb-4 w-full">
               <div className="flex items-center w-full md:w-auto mb-2 md:mb-0 md:mr-2">
                 <DatePicker
@@ -321,75 +274,41 @@ const StatisticPage = () => {
               </div>
             </div>
 
-            <div className="statistic-cards grid xl:grid-cols-4 md:grid-cols-2 my-10 md:gap-10 gap-4">
-              {/* <StatisticCard
-                title={'Total Customers'}
-                amount={filteredData.length}
-                image={'images/user.png'}
-              /> */}
-              {/* <StatisticCard
-                  title={'Total Profit'}
-                  amount={totals.amount}
-                  image={'images/money.png'}
-                /> */}
-              <StatisticCard
-                title={'Total Sales'}
-                amount={filteredData.length}
-                image={'images/sale.png'}
-              />
-              <StatisticCard
-                title={'Total Products'}
-                amount={products.length}
-                image={'images/product.png'}
-              />
-             {/*  <StatisticCard
-                title={'Total Revenue'}
-                amount={totals.profit}
-                image={'images/money.png'}
-              />
-              <StatisticCard
-                title={'Total Expense'}
-                amount={totals.totalExpenses}
-                image={'images/money.png'}
-              />
-              <StatisticCard
-                title={'Net Profit'}
-                amount={totals.totalSales}
-                image={'images/money.png'}
-              /> */}
-
-              {/* <StatisticCard
+            <div className="statistic-cards grid xl:grid-cols-6 md:grid-cols-4 my-10 md:gap-2 gap-1">
+  <StatisticCard
     title="Total Sales"
-    amount={totals.totalSales}
-    image={'images/money.png'}
-/> */}
-              {/* <StatisticCard
-    title="Total Cost"
-    amount={totals.totalCost}
-    image={'images/money.png'}
-/> */}
-              
-              <StatisticCard
-                title="Total Sales"
-                amount={`${totals.totalAmount.toFixed(2)} Rs`}
-                image={'images/money.png'}
-              />
-              <StatisticCard
-                title="Total Profit"
-                amount={`${totals.profit.toFixed(2)} Rs (${totals.profitPercentage.toFixed(2)}%)`}
-                image={'images/money.png'}
-              />
-              <StatisticCard
-                title="Total Expenses"
-                amount={`${totals.totalExpenses.toFixed(2)} Rs`}
-                image={'images/money.png'}
-              />
-              <StatisticCard
-                title="Net Profit"
-                amount={`${(totals.profit - totals.totalExpenses).toFixed(2)} Rs`}
-                image={'images/money.png'}
-              />
-            </div>
+    amount={filteredData.length}
+    image="images/sale.png"
+  />
+  <StatisticCard
+    title="Total Products"
+    amount={products.length}
+    image="images/product.png"
+  />
+  <StatisticCard
+    title="Total Sales"
+    amount={`${totals.totalAmount.toFixed(2)} Rs`}
+    image="images/money.png"
+  />
+
+  <StatisticCard
+    title="Total Expenses"
+    amount={`${totals.totalExpenses.toFixed(2)} Rs`}
+    image="images/money.png"
+  />
+    <StatisticCard
+    title="Total Profit"
+    amount={`${totals.profit.toFixed(2)} Rs`}
+    image="images/money.png"
+    percentage={totals.profitPercentage.toFixed(2)}
+  />
+  <StatisticCard
+    title="Net Profit"
+    amount={`${(totals.profit - totals.totalExpenses).toFixed(2)} Rs`}
+    image="images/money.png"
+  />
+</div>
+
             <div className="flex justify-between gap-10 lg:flex-row flex-col md:p-10 p-4">
               <div className="lg:w-1/2 lg:h-72 h-72">
                 <Area {...config} />
