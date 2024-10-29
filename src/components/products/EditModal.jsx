@@ -252,7 +252,7 @@ const EditProductModal = ({
 
         <Form.Item className="flex justify-end mb-0">
           <Button type="primary" htmlType="submit" disabled={Loading}>
-            {Loading? 'Updating...' : "Update"}
+            {Loading ? 'Updating...' : 'Update'}
           </Button>
         </Form.Item>
       </Form>

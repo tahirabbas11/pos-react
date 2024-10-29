@@ -8,7 +8,7 @@ const CreateInvoice = ({ isModalOpen, setIsModalOpen }) => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false); ;
+  const [isLoading, setIsLoading] = useState(false);
 
   const onFinish = async (values) => {
     setIsLoading(true);

@@ -145,8 +145,6 @@ const Categories = ({
 
 export default Categories;
 
-
-
 // import { useEffect, useState } from 'react';
 // import { PlusOutlined, EditOutlined, ClearOutlined } from '@ant-design/icons';
 // import Add from './Add';

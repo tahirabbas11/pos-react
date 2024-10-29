@@ -274,39 +274,39 @@ const StatisticPage = () => {
             </div>
 
             <div className="statistic-cards grid xl:grid-cols-6 md:grid-cols-4 my-10 md:gap-2 gap-1">
-  <StatisticCard
-    title="Total Sales"
-    amount={filteredData.length}
-    image="images/sale.png"
-  />
-  <StatisticCard
-    title="Total Products"
-    amount={products.length}
-    image="images/product.png"
-  />
-  <StatisticCard
-    title="Total Sales"
-    amount={`${totals.totalAmount.toFixed(2)} Rs`}
-    image="images/money.png"
-  />
+              <StatisticCard
+                title="Total Sales"
+                amount={filteredData.length}
+                image="images/sale.png"
+              />
+              <StatisticCard
+                title="Total Products"
+                amount={products.length}
+                image="images/product.png"
+              />
+              <StatisticCard
+                title="Total Sales"
+                amount={`${totals.totalAmount.toFixed(2)} Rs`}
+                image="images/money.png"
+              />
 
-  <StatisticCard
-    title="Total Expenses"
-    amount={`${totals.totalExpenses.toFixed(2)} Rs`}
-    image="images/money.png"
-  />
-    <StatisticCard
-    title="Total Profit"
-    amount={`${totals.profit.toFixed(2)} Rs`}
-    image="images/money.png"
-    percentage={totals.profitPercentage.toFixed(2)}
-  />
-  <StatisticCard
-    title="Net Profit"
-    amount={`${(totals.profit - totals.totalExpenses).toFixed(2)} Rs`}
-    image="images/money.png"
-  />
-</div>
+              <StatisticCard
+                title="Total Expenses"
+                amount={`${totals.totalExpenses.toFixed(2)} Rs`}
+                image="images/money.png"
+              />
+              <StatisticCard
+                title="Total Profit"
+                amount={`${totals.profit.toFixed(2)} Rs`}
+                image="images/money.png"
+                percentage={totals.profitPercentage.toFixed(2)}
+              />
+              <StatisticCard
+                title="Net Profit"
+                amount={`${(totals.profit - totals.totalExpenses).toFixed(2)} Rs`}
+                image="images/money.png"
+              />
+            </div>
 
             <div className="flex justify-between gap-10 lg:flex-row flex-col md:p-10 p-4">
               <div className="lg:w-1/2 lg:h-72 h-72">

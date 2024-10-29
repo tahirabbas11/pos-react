@@ -22,7 +22,6 @@ const InvoicePage = () => {
   const searchInput = useRef(null);
 
   useEffect(() => {
-
     const getInvoices = async () => {
       try {
         // Build query parameters conditionally
@@ -227,12 +226,20 @@ const InvoicePage = () => {
       key: 'paymentMode',
       render: (text) => {
         // Inline color mapping for the payment methods
-        const color = text === 'Online' ? 'green' :
-                      text === 'Cash' ? 'volcano' :
-                      text === 'Credit Card' ? 'blue' :
-                      'default';
+        const color =
+          text === 'Online'
+            ? 'green'
+            : text === 'Cash'
+              ? 'volcano'
+              : text === 'Credit Card'
+                ? 'blue'
+                : 'default';
 
-        return <Tag bordered={false} color={color}>{text}</Tag>;
+        return (
+          <Tag bordered={false} color={color}>
+            {text}
+          </Tag>
+        );
       },
     },
     {

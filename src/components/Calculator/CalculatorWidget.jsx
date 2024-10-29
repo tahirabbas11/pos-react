@@ -32,7 +32,10 @@ const CalculatorWidget = () => {
   // Handle clicks outside the calculator widget
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (calculatorRef.current && !calculatorRef.current.contains(event.target)) {
+      if (
+        calculatorRef.current &&
+        !calculatorRef.current.contains(event.target)
+      ) {
         closeModal();
       }
     };

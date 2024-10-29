@@ -10,7 +10,7 @@ import {
   Popconfirm,
   Row,
   Col,
-  InputNumber
+  InputNumber,
 } from 'antd';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -38,7 +38,7 @@ const Edit = () => {
     price: '',
     vendor: null,
     category: null,
-    quantity: null
+    quantity: null,
   });
   const [sortOrder, setSortOrder] = useState('ascend');
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
@@ -51,11 +51,14 @@ const Edit = () => {
 
   const fetchData = async () => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/products/get-all`, {
-        headers: {
-          Authorization: `Bearer ${JSON.parse(localStorage.getItem('postUser'))?.token}`,
-        },
-      });
+      const res = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}/api/products/get-all`,
+        {
+          headers: {
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem('postUser'))?.token}`,
+          },
+        }
+      );
       if (res.status === 401) {
         localStorage.clear();
         navigate('/login');
@@ -70,11 +73,14 @@ const Edit = () => {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/categories/get-all`, {
-        headers: {
-          Authorization: `Bearer ${JSON.parse(localStorage.getItem('postUser'))?.token}`,
-        },
-      });
+      const res = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}/api/categories/get-all`,
+        {
+          headers: {
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem('postUser'))?.token}`,
+          },
+        }
+      );
       if (res.status === 401) {
         localStorage.clear();
         navigate('/login');
@@ -88,12 +94,15 @@ const Edit = () => {
 
   const fetchVendors = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/vendors/get-all`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${JSON.parse(localStorage.getItem('postUser'))?.token}`,
-        },
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}/api/vendors/get-all`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem('postUser'))?.token}`,
+          },
+        }
+      );
       if (!response.ok) throw new Error('Failed to fetch vendors');
       const data = await response.json();
       setVendors(data.vendors);
@@ -104,13 +113,24 @@ const Edit = () => {
 
   const handleSearch = () => {
     const filtered = products.filter((product) => {
-      const matchName = product.title?.toLowerCase().includes(filters.name.toLowerCase()) || false;
-      const matchPrice = product.price?.toString().includes(filters.price) || false;
-      const matchVendor = filters.vendor ? product.vendor === filters.vendor : true;
-      const matchCategory = filters.category ? product.category === filters.category : true;
-      const matchQuantity = filters.quantity !== null && filters.quantity !== undefined
-      ? product.quantity === filters.quantity
-      : true;      return matchName && matchPrice && matchVendor && matchCategory && matchQuantity;
+      const matchName =
+        product.title?.toLowerCase().includes(filters.name.toLowerCase()) ||
+        false;
+      const matchPrice =
+        product.price?.toString().includes(filters.price) || false;
+      const matchVendor = filters.vendor
+        ? product.vendor === filters.vendor
+        : true;
+      const matchCategory = filters.category
+        ? product.category === filters.category
+        : true;
+      const matchQuantity =
+        filters.quantity !== null && filters.quantity !== undefined
+          ? product.quantity === filters.quantity
+          : true;
+      return (
+        matchName && matchPrice && matchVendor && matchCategory && matchQuantity
+      );
     });
     setFilteredProducts(filtered);
   };
@@ -121,14 +141,17 @@ const Edit = () => {
 
   const onFinish = async (values) => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/products/update-product`, {
-        method: 'PUT',
-        body: JSON.stringify({ ...values, productId: editingItem._id }),
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${JSON.parse(localStorage.getItem('postUser'))?.token}`,
-        },
-      });
+      const res = await fetch(
+        `${process.env.REACT_APP_SERVER_URL}/api/products/update-product`,
+        {
+          method: 'PUT',
+          body: JSON.stringify({ ...values, productId: editingItem._id }),
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${JSON.parse(localStorage.getItem('postUser'))?.token}`,
+          },
+        }
+      );
       if (res.status === 401) {
         localStorage.clear();
         navigate('/login');
@@ -184,7 +207,13 @@ const Edit = () => {
   };
 
   const handleClearFilters = () => {
-    setFilters({ name: '', price: '', vendor: null, category: '', quantity: null });
+    setFilters({
+      name: '',
+      price: '',
+      vendor: null,
+      category: '',
+      quantity: null,
+    });
     setFilteredProducts(products);
   };
 
@@ -197,7 +226,13 @@ const Edit = () => {
       title: 'Product Image',
       dataIndex: 'img',
       width: '10%',
-      render: (img) => <Image src={img ?? 'https://via.placeholder.com/150'} alt="" width={30} />,
+      render: (img) => (
+        <Image
+          src={img ?? 'https://via.placeholder.com/150'}
+          alt=""
+          width={30}
+        />
+      ),
     },
     {
       title: 'Product Name',
@@ -266,90 +301,106 @@ const Edit = () => {
           </Popconfirm>
         </div>
       ),
-    },    
+    },
   ];
 
   return (
     <>
       <Row gutter={[8, 8]} style={{ marginBottom: 16 }}>
-  <Col xs={24} sm={12} md={8} lg={4}>
-    <Input
-      placeholder="Search by name"
-      value={filters.name}
-      onChange={(e) => setFilters((prev) => ({ ...prev, name: e.target.value }))}
-      prefix={<SearchOutlined />}
-    />
-  </Col>
-  <Col xs={24} sm={12} md={8} lg={4}>
-    <Input
-      placeholder="Search by price"
-      value={filters.price}
-      onChange={(e) => setFilters((prev) => ({ ...prev, price: e.target.value }))}
-      prefix={<SearchOutlined />}
-    />
-  </Col>
-  <Col xs={24} sm={12} md={8} lg={4}>
-    <InputNumber
-      placeholder="Filter by Quantity"
-      value={filters.quantity}
-      onChange={(value) => setFilters((prev) => ({ ...prev, quantity: value }))}
-      style={{ width: '100%' }}
-    />
-  </Col>
-  <Col xs={24} sm={12} md={8} lg={4}>
-    <Select
-      placeholder="Filter by vendor"
-      value={filters.vendor}
-      onChange={(value) => setFilters((prev) => ({ ...prev, vendor: value }))}
-      allowClear
-      style={{ width: '100%' }}
-      options={vendors.map((vendor) => ({ label: vendor.name, value: vendor._id }))}
-    />
-  </Col>
-  <Col xs={24} sm={12} md={8} lg={4}>
-    <Select
-      placeholder="Filter by category"
-      value={filters.category}
-      onChange={(value) => setFilters((prev) => ({ ...prev, category: value }))}
-      allowClear
-      style={{ width: '100%' }}
-      options={categories?.map((category) => ({
-        label: category.title,
-        value: category.title,
-      }))}
-    />
-  </Col>
-  <Col xs={24} sm={12} md={8} lg={4}>
-    <Button
-      onClick={() =>
-        handleSort(sortOrder === 'ascend' ? 'descend' : 'ascend')
-      }
-      icon={
-        sortOrder === 'ascend' ? <SortDescendingOutlined /> : <SortAscendingOutlined />
-      }
-      block
-    >
-      Sort by Price
-    </Button>
-  </Col>
-  <Col xs={24} sm={12} md={8} lg={4}>
-    <Button onClick={handleClearFilters} icon={<ClearOutlined />} block>
-      Clear Filters
-    </Button>
-  </Col>
-</Row>
+        <Col xs={24} sm={12} md={8} lg={4}>
+          <Input
+            placeholder="Search by name"
+            value={filters.name}
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, name: e.target.value }))
+            }
+            prefix={<SearchOutlined />}
+          />
+        </Col>
+        <Col xs={24} sm={12} md={8} lg={4}>
+          <Input
+            placeholder="Search by price"
+            value={filters.price}
+            onChange={(e) =>
+              setFilters((prev) => ({ ...prev, price: e.target.value }))
+            }
+            prefix={<SearchOutlined />}
+          />
+        </Col>
+        <Col xs={24} sm={12} md={8} lg={4}>
+          <InputNumber
+            placeholder="Filter by Quantity"
+            value={filters.quantity}
+            onChange={(value) =>
+              setFilters((prev) => ({ ...prev, quantity: value }))
+            }
+            style={{ width: '100%' }}
+          />
+        </Col>
+        <Col xs={24} sm={12} md={8} lg={4}>
+          <Select
+            placeholder="Filter by vendor"
+            value={filters.vendor}
+            onChange={(value) =>
+              setFilters((prev) => ({ ...prev, vendor: value }))
+            }
+            allowClear
+            style={{ width: '100%' }}
+            options={vendors.map((vendor) => ({
+              label: vendor.name,
+              value: vendor._id,
+            }))}
+          />
+        </Col>
+        <Col xs={24} sm={12} md={8} lg={4}>
+          <Select
+            placeholder="Filter by category"
+            value={filters.category}
+            onChange={(value) =>
+              setFilters((prev) => ({ ...prev, category: value }))
+            }
+            allowClear
+            style={{ width: '100%' }}
+            options={categories?.map((category) => ({
+              label: category.title,
+              value: category.title,
+            }))}
+          />
+        </Col>
+        <Col xs={24} sm={12} md={8} lg={4}>
+          <Button
+            onClick={() =>
+              handleSort(sortOrder === 'ascend' ? 'descend' : 'ascend')
+            }
+            icon={
+              sortOrder === 'ascend' ? (
+                <SortDescendingOutlined />
+              ) : (
+                <SortAscendingOutlined />
+              )
+            }
+            block
+          >
+            Sort by Price
+          </Button>
+        </Col>
+        <Col xs={24} sm={12} md={8} lg={4}>
+          <Button onClick={handleClearFilters} icon={<ClearOutlined />} block>
+            Clear Filters
+          </Button>
+        </Col>
+      </Row>
 
-<Table
-  columns={columns}
-  dataSource={filteredProducts}
-  rowKey="_id"
-  pagination={pagination}
-  onChange={handleTableChange}
-  scroll={{ x: 'max-content' }}  // Makes the table scroll horizontally if needed
-/>
+      <Table
+        columns={columns}
+        dataSource={filteredProducts}
+        rowKey="_id"
+        pagination={pagination}
+        onChange={handleTableChange}
+        scroll={{ x: 'max-content' }} // Makes the table scroll horizontally if needed
+      />
 
       {isEditModalOpen && (
-        
         <EditModal
           visible={isEditModalOpen}
           onCancel={() => setIsEditModalOpen(false)}

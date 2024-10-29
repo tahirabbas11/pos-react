@@ -23,7 +23,6 @@ const Header = ({ setSearched }) => {
   const { pathname } = useLocation();
 
   const logout = async () => {
-  
     Modal.confirm({
       title: 'Log out?',
       content: "Won't be able to access account.",
@@ -31,7 +30,7 @@ const Header = ({ setSearched }) => {
       cancelText: 'Cancel',
       onOk: async () => {
         const token = JSON.parse(localStorage.getItem('postUser'))?.token; // Get the stored token
-  
+
         if (token) {
           try {
             const response = await fetch(
@@ -40,15 +39,15 @@ const Header = ({ setSearched }) => {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+                  Authorization: `Bearer ${token}`, // Include the token in the Authorization header
                 },
               }
             );
-  
+
             if (!response.ok) {
               throw new Error('Logout failed.');
             }
-  
+
             const data = await response.json(); // Parse response JSON
             localStorage.removeItem('postUser'); // Clear the token from local storage
             navigate('/login'); // Navigate to login page

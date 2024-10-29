@@ -25,7 +25,6 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 // import { LazyLoadImage } from "react-lazy-load-image-component";
 
-
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -36,7 +35,7 @@ const VendorPage = () => {
   const [products, setProducts] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
-  //eslint-disable-next-line 
+  //eslint-disable-next-line
   const [selectedProductPrice, setSelectedProductPrice] = useState(0);
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [selectedVendorId, setSelectedVendorId] = useState(null);
@@ -48,9 +47,9 @@ const VendorPage = () => {
   const [endDate, setEndDate] = useState(null);
   const [selectedProductImage, setSelectedProductImage] = useState(''); // State to hold selected product image
 
-// eslint-disable-next-line
-const [searchText, setSearchText] = useState('');
-// eslint-disable-next-line
+  // eslint-disable-next-line
+  const [searchText, setSearchText] = useState('');
+  // eslint-disable-next-line
   const [searchedColumn, setSearchedColumn] = useState('');
   // eslint-disable-next-line
   const searchInput = useRef(null);
@@ -226,7 +225,7 @@ const [searchText, setSearchText] = useState('');
     setEndDate(null);
   };
 
-    //eslint-disable-next-line
+  //eslint-disable-next-line
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -241,7 +240,7 @@ const [searchText, setSearchText] = useState('');
     setSearchText('');
   };
 
-    //eslint-disable-next-line
+  //eslint-disable-next-line
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,
@@ -440,17 +439,15 @@ const [searchText, setSearchText] = useState('');
                   0
                 )
                 .toFixed(2)
-            ) ? (
-              purchases
-                .reduce(
-                  (acc, purchase) =>
-                    acc + (purchase?.product?.price || 0) * purchase.quantity,
-                  0
-                )
-                .toFixed(2)
-            ) : (
-              'N/A'
-            )}
+            )
+              ? purchases
+                  .reduce(
+                    (acc, purchase) =>
+                      acc + (purchase?.product?.price || 0) * purchase.quantity,
+                    0
+                  )
+                  .toFixed(2)
+              : 'N/A'}
           </div>
           <Button type="primary" onClick={showModal} className="mb-4 ml-4">
             Add Purchase

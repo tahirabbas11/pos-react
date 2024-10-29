@@ -260,7 +260,7 @@ const Add = ({ isAddModalOpen, setIsAddModalOpen, getProduct, categories }) => {
 
         <Form.Item className="flex justify-end mb-0">
           <Button type="primary" htmlType="submit" disabled={Loading}>
-            {Loading? 'Uploading..' : 'Add'}
+            {Loading ? 'Uploading..' : 'Add'}
           </Button>
         </Form.Item>
       </Form>
