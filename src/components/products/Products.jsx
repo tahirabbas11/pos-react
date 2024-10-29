@@ -3,7 +3,7 @@ import ProductItem from './ProductItem';
 import { PlusOutlined, EditOutlined } from '@ant-design/icons';
 import Add from '../products/Add';
 import { useNavigate } from 'react-router-dom';
-import { Button } from 'antd';
+import { Button, Spin } from 'antd'; // Added Spin for loading indicator
 import Fuse from 'fuse.js';
 
 const Products = ({
@@ -43,6 +43,7 @@ const Products = ({
       setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false); // Ensure loading is false on error
     }
   };
 
@@ -65,44 +66,51 @@ const Products = ({
 
   return (
     <>
-    <div className="flex flex-wrap justify-end gap-4 mb-4">
-  {/* Add Products Button */}
-  <Button
-    className="bg-blue-700 border hover:shadow-lg cursor-pointer transition-all select-none flex items-center justify-center text-sm text-white px-4 py-2 sm:px-6 sm:py-3 hover:opacity-90"
-    onClick={() => setIsAddModalOpen(true)}
-  >
-    <PlusOutlined className="inline-block mb-[-2px]" />
-    <span className="ml-2 text-sm sm:text-base">Add Products</span>
-  </Button>
+      <div className="flex flex-col md:flex-row justify-end gap-4 mb-4">
+        {/* Add Products Button */}
+        <Button
+          className="flex items-center justify-center text-sm text-white bg-[#2463EB] hover:bg-[#1e4bb1] transition duration-200"
+          icon={<PlusOutlined />}
+          onClick={() => setIsAddModalOpen(true)}
+          size="large" // Adjust size as needed
+        >
+          Add Product
+        </Button>
 
-  {/* Edit Products Button */}
-  <Button
-    className="bg-blue-700 border hover:shadow-lg cursor-pointer transition-all select-none flex items-center justify-center text-sm text-white px-4 py-2 sm:px-6 sm:py-3 hover:opacity-90"
-    onClick={() => navigate('/products')}
-  >
-    <EditOutlined className="inline-block mb-[-2px]" />
-    <span className="ml-2 text-sm sm:text-base">Edit Products</span>
-  </Button>
-</div>
-
-
-      <div className="products-wrapper grid grid-cols-card gap-4">
-        {searchResults
-          .filter((product) => filtered.includes(product))
-          .map((item, i) => (
-            <ProductItem item={item} key={i} loading={loading} />
-          ))}
-        <div className="products-wrapper grid grid-cols-card gap-2"></div>
-
-        <Add
-          isAddModalOpen={isAddModalOpen}
-          setIsAddModalOpen={setIsAddModalOpen}
-          products={products}
-          setProducts={setProducts}
-          categories={categories}
-          getProduct={getProduct}
-        />
+        {/* Edit Products Button */}
+        <Button
+          className="flex items-center justify-center text-sm text-white bg-[#2463EB] hover:bg-[#1e4bb1] transition duration-200"
+          icon={<EditOutlined />}
+          onClick={() => navigate('/products')}
+          size="large" // Adjust size as needed
+        >
+          Edit Product
+        </Button>
       </div>
+
+      {/* Loading Spinner */}
+      {loading ? (
+        <div className="flex justify-center items-center h-64">
+          <Spin size="large" />
+        </div>
+      ) : (
+        <div className="products-wrapper grid grid-cols-card gap-4">
+          {searchResults
+            .filter((product) => filtered.includes(product))
+            .map((item, i) => (
+              <ProductItem item={item} key={i} loading={loading} />
+            ))}
+        </div>
+      )}
+
+      <Add
+        isAddModalOpen={isAddModalOpen}
+        setIsAddModalOpen={setIsAddModalOpen}
+        products={products}
+        setProducts={setProducts}
+        categories={categories}
+        getProduct={getProduct}
+      />
     </>
   );
 };

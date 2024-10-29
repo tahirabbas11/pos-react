@@ -118,11 +118,12 @@ const Login = () => {
             </Link>
           </div>
         </div>
-        <div className="sm:flex hidden xl:w-4/6 min-w-[500px] bg-[#6c63ff]">
+        <div className="sm:flex hidden xl:w-4/6 min-w-[500px] bg-[#1677ff] h-[100vh]">
           <div className="w-full mt-40">
             <Carousel autoplay>
               <AuthCarousel
-                img={'images/4.svg'}
+                img={'images/admin.svg'}
+                // img={'images/4.svg'}
                 title={'Responsive'}
                 desc={'Compatibility with all device sizes'}
               />{' '}

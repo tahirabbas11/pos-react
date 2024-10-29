@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from 'antd'; // Import Ant Design Button
-import { CalculatorOutlined } from '@ant-design/icons'; // Import Ant Design Calculator Icon
+import { WechatOutlined } from '@ant-design/icons'; // Import Ant Design Wechat Icon
 
 const CalculatorWidget = () => {
   const [originalAmount, setOriginalAmount] = useState('');
@@ -13,7 +13,7 @@ const CalculatorWidget = () => {
     const original = parseFloat(originalAmount);
     const target = parseFloat(targetAmount);
 
-    if (!isNaN(original) && !isNaN(target) && original > 0) {
+    if (!isNaN(original) && !isNaN(target) && original > 0 && target >= 0) {
       const discount = ((original - target) / original) * 100;
       setDiscountPercentage(discount.toFixed(2));
     } else {
@@ -50,20 +50,22 @@ const CalculatorWidget = () => {
 
   return (
     <div>
-      {/* Floating Button */}
+      {/* Floating Chat Button */}
       <button
-        onClick={() => setIsOpen(!isOpen)} // Toggle calculator visibility
-        className="fixed bottom-4 left-4 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition duration-300"
-        aria-label="Open Calculator"
+        onClick={() => setIsOpen(!isOpen)} // Toggle chat visibility
+        className="animate-bounce fixed bottom-4 left-4 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition duration-300 z-50"
+        aria-label="Open Chat"
       >
-        <CalculatorOutlined className="text-2xl" />
+        <WechatOutlined className="text-2xl" />
       </button>
 
       {/* Calculator Widget */}
       {isOpen && (
         <div
           ref={calculatorRef} // Attach the ref to the calculator widget
-          className="fixed bottom-16 left-4 max-w-xs mx-auto p-6 bg-white rounded-lg shadow-lg border border-gray-200"
+          className="fixed bottom-16 left-4 max-w-xs mx-auto p-6 bg-white rounded-lg shadow-lg border border-gray-200 transition-transform transform translate-y-0 opacity-100"
+          role="dialog"
+          aria-modal="true"
         >
           <h2 className="text-xl font-semibold text-center mb-4 text-gray-800">
             Discount Calculator
@@ -74,7 +76,7 @@ const CalculatorWidget = () => {
             value={originalAmount}
             onChange={(e) => {
               const value = e.target.value;
-              if (value === '' || parseFloat(value) >= 0) {
+              if (value === '' || /^\d*\.?\d*$/.test(value)) {
                 setOriginalAmount(value);
               }
             }}
@@ -87,7 +89,7 @@ const CalculatorWidget = () => {
             value={targetAmount}
             onChange={(e) => {
               const value = e.target.value;
-              if (value === '' || parseFloat(value) >= 0) {
+              if (value === '' || /^\d*\.?\d*$/.test(value)) {
                 setTargetAmount(value);
               }
             }}
