@@ -21,3 +21,14 @@
   transition: background-color 0.3s ease; /* Smooth background transition */
   color: #333; /* Default text color */
 }
+
+.home{
+  gap: 10px;
+}
+
+@media (max-width: 768px) {
+  .home{
+    gap: 1px;
+  }
+}
+

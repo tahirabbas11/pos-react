@@ -44,7 +44,7 @@ function HomePage() {
     <>
       <Header setSearched={setSearched} />
       {products && categories ? (
-        <div className="home px-6 flex md:flex-row flex-col justify-between gap-10 h-screen">
+        <div className="home px-6 flex md:flex-row flex-col justify-between h-screen">
           {/* <div className="categories overflow-auto md:max-h-[calc(100vh_-_112px)] min-h-[15px] pb-10 "> */}
           <div className="categories md:max-h-[calc(100vh_-_112px)] min-h-[15px] pb-10 ">
             <Categories
