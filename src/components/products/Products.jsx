@@ -66,23 +66,23 @@ const Products = ({
 
   return (
     <>
-      <div className="flex flex-col md:flex-row justify-end gap-4 mb-4">
+      <div className="flex flex-row justify-end gap-4 mb-4 w-full">
         {/* Add Products Button */}
         <Button
-          className="flex items-center justify-center text-sm text-white bg-[#2463EB] hover:bg-[#1e4bb1] transition duration-200"
+          className="flex-1 flex items-center justify-center text-sm text-white bg-[#2463EB] hover:bg-[#1e4bb1] transition duration-200"
           icon={<PlusOutlined />}
           onClick={() => setIsAddModalOpen(true)}
-          size="large" // Adjust size as needed
+          size="large"
         >
           Add Product
         </Button>
 
         {/* Edit Products Button */}
         <Button
-          className="flex items-center justify-center text-sm text-white bg-[#2463EB] hover:bg-[#1e4bb1] transition duration-200"
+          className="flex-1 flex items-center justify-center text-sm text-white bg-[#2463EB] hover:bg-[#1e4bb1] transition duration-200"
           icon={<EditOutlined />}
           onClick={() => navigate('/products')}
-          size="large" // Adjust size as needed
+          size="large"
         >
           Edit Product
         </Button>

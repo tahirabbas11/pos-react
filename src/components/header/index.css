@@ -16,7 +16,7 @@
 .menu-link-phone {
   @apply flex items-center; /* Use flex and center items */
   gap: 8px; /* Add a gap between icon and text */
-  padding: 10px 15px; /* Add padding for clickable area */
+  padding: 10px 5px; /* Add padding for clickable area */
   border-radius: 4px; /* Slightly round the corners */
   transition: background-color 0.3s ease; /* Smooth background transition */
   color: #333; /* Default text color */
