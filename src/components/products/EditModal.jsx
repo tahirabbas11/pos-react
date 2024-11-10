@@ -29,7 +29,7 @@ const EditProductModal = ({
   const [Loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log(editingItem);
+    // console.log(editingItem);
     fetchVendors();
     if (editingItem) {
       form.setFieldsValue(editingItem); // Populate form with editingItem values

@@ -221,7 +221,7 @@ const StatisticPage = () => {
                 <DatePicker
                   value={startDate ? dayjs(startDate) : null} // Control the start date picker with the state
                   onChange={(date) => {
-                    console.log('Start Date:', date);
+                    // console.log('Start Date:', date);
                     setStartDate(date); // Update the start date state
                   }}
                   format="YYYY-MM-DD"
@@ -233,7 +233,7 @@ const StatisticPage = () => {
                 <DatePicker
                   value={endDate ? dayjs(endDate) : null} // Control the end date picker with the state
                   onChange={(date) => {
-                    console.log('End Date:', date);
+                    // console.log('End Date:', date);
                     setEndDate(date); // Update the end date state
                   }}
                   format="YYYY-MM-DD"
