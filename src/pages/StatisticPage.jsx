@@ -128,41 +128,34 @@ const StatisticPage = () => {
   const calculateTotals = () => {
     let totalSales = 0;
     let totalCost = 0;
-
+  
     filteredData.forEach((order) => {
+      // Accumulate total sales using the totalAmount directly from each order
+      totalSales += order.totalAmount;
+  
       order.cartItems.forEach((item) => {
-        // Calculate the total sales and total cost for each item
-        totalSales += item.price * item.quantity;
+        // Calculate total cost using vendorPrice per item
         totalCost += item.vendorPrice * item.quantity;
       });
     });
-
+  
     // Calculate profit and profit percentage
     const profit = totalSales - totalCost;
     const profitPercentage = totalSales ? (profit / totalSales) * 100 : 0;
-
-    // Calculate total amount
-    const totalAmount = filteredData.reduce(
-      (total, item) => item.totalAmount + total,
-      0
-    );
-
+  
     // Calculate total expenses
-    const totalExpenses = filteredExpenses.reduce(
-      (total, item) => item.amount + total,
-      0
-    );
-
+    const totalExpenses = filteredExpenses.reduce((total, item) => total + item.amount, 0);
+  
     // Update state with calculated values
     setTotals({
-      totalSales,
+      totalAmount: totalSales,
       totalCost,
       profit,
       profitPercentage,
-      totalAmount,
       totalExpenses,
     });
   };
+  
 
   // Call `calculateTotals` when necessary, such as in a useEffect or based on an event
 
@@ -286,24 +279,24 @@ const StatisticPage = () => {
               />
               <StatisticCard
                 title="Total Sales"
-                amount={`${totals.totalAmount.toFixed(2)} Rs`}
+                amount={`${totals?.totalAmount?.toFixed(2)} Rs`}
                 image="images/money.png"
               />
 
               <StatisticCard
                 title="Total Expenses"
-                amount={`${totals.totalExpenses.toFixed(2)} Rs`}
+                amount={`${totals?.totalExpenses?.toFixed(2)} Rs`}
                 image="images/money.png"
               />
               <StatisticCard
                 title="Total Profit"
-                amount={`${totals.profit.toFixed(2)} Rs`}
+                amount={`${totals?.profit?.toFixed(2)} Rs`}
                 image="images/money.png"
-                percentage={totals.profitPercentage.toFixed(2)}
+                percentage={totals?.profitPercentage?.toFixed(2)}
               />
               <StatisticCard
                 title="Net Profit"
-                amount={`${(totals.profit - totals.totalExpenses).toFixed(2)} Rs`}
+                amount={`${(totals?.profit - totals?.totalExpenses).toFixed(2)} Rs`}
                 image="images/money.png"
               />
             </div>
