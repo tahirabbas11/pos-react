@@ -43,6 +43,7 @@ const Login = () => {
       } else {
         message.error('Invalid Credentials!');
       }
+      message.error("Invalid Credentials!");
       setLoading(false);
     } catch (error) {
       console.log('Error', error);
