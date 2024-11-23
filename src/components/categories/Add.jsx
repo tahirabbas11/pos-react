@@ -1,5 +1,5 @@
-import { Button, Form, Input, Modal, message } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { Button, Form, Input, Modal, message } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const Add = ({
   isAddModalOpen,
@@ -14,14 +14,14 @@ const Add = ({
   const onFinish = async (value) => {
     try {
       const res = await fetch(
-        process.env.REACT_APP_SERVER_URL + '/api/categories/add-category',
+        process.env.REACT_APP_SERVER_URL + "/api/categories/add-category",
         {
-          method: 'POST',
+          method: "POST",
           body: JSON.stringify(value),
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem('postUser'))?.token
+              JSON.parse(localStorage.getItem("postUser"))?.token
             }`,
           },
         }
@@ -29,12 +29,12 @@ const Add = ({
 
       if (res.status === 401) {
         localStorage.clear();
-        navigate('/login');
+        navigate("/login");
       }
 
       const data = await res.json();
 
-      message.success('Category added successfully.');
+      message.success("Category added successfully.");
       setIsAddModalOpen(false);
       form.resetFields();
       setCategories([
@@ -59,12 +59,12 @@ const Add = ({
     >
       <Form layout="vertical" onFinish={onFinish} form={form}>
         <Form.Item
-          label={'Add Category'}
+          label={"Add Category"}
           name="title"
           rules={[
             {
               required: true,
-              message: 'This field is required!',
+              message: "This field is required!",
             },
           ]}
         >

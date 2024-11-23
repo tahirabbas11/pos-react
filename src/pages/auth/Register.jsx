@@ -6,19 +6,20 @@ import {
   // message,
   Card,
   Descriptions,
-} from 'antd';
-import { Link } from 'react-router-dom';
-import AuthCarousel from '../../components/auth/AuthCarousel';
+} from "antd";
+import { Link } from "react-router-dom";
+import AuthCarousel from "../../components/auth/AuthCarousel";
 // import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from 'react';
-import Logo from '../../Images/4.png';
+import { useState, useEffect } from "react";
+import Logo from "../../Images/4.png";
 import {
   UserOutlined,
   GithubOutlined,
   MailOutlined,
   WhatsAppOutlined,
   FileOutlined,
-} from '@ant-design/icons';
+} from "@ant-design/icons";
+
 
 const Register = () => {
   // const [loading, setLoading] = useState(false);
@@ -30,7 +31,7 @@ const Register = () => {
       try {
         const response = await fetch(process.env.REACT_APP_SERVER_URL);
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         const data = await response.json();
         setContactInfo(data);
@@ -146,9 +147,7 @@ const Register = () => {
               </Button>
             </Form.Item>
           </Form> */}
-          <h1 className="text-4xl text-center font-bold mb-10">
-            Contact Admin
-          </h1>
+          <h1 className="text-4xl text-center font-bold mb-10">Contact Admin</h1>
           <Card
             title={contactInfo?.name}
             extra={<UserOutlined />}
@@ -232,24 +231,24 @@ const Register = () => {
           <div className="w-full mt-40">
             <Carousel autoplay>
               <AuthCarousel
-                img={'images/responsive.svg'}
-                title={'Responsive'}
-                desc={'Compability with all device sizes'}
+                img={"images/responsive.svg"}
+                title={"Responsive"}
+                desc={"Compability with all device sizes"}
               />
               <AuthCarousel
-                img={'images/statistic.svg'}
-                title={'Statistics'}
-                desc={'Wide-ranging Statistics'}
+                img={"images/statistic.svg"}
+                title={"Statistics"}
+                desc={"Wide-ranging Statistics"}
               />
               <AuthCarousel
-                img={'images/customer.svg'}
-                title={'Customer Satisfaction'}
-                desc={'Satisfied Customers at the End of the Product Journey'}
+                img={"images/customer.svg"}
+                title={"Customer Satisfaction"}
+                desc={"Satisfied Customers at the End of the Product Journey"}
               />
               <AuthCarousel
-                img={'images/admin.svg'}
-                title={'Admin Panel'}
-                desc={'Centralized Management'}
+                img={"images/admin.svg"}
+                title={"Admin Panel"}
+                desc={"Centralized Management"}
               />
             </Carousel>
           </div>

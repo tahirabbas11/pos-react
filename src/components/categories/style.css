@@ -1,18 +1,19 @@
 .category-item {
-  @apply bg-green-600 px-6 py-10 text-white text-center cursor-pointer hover:bg-pink-700 transition-all min-w-[145px] flex items-center justify-center;
+    @apply bg-green-600 px-6 py-10 text-white text-center cursor-pointer hover:bg-pink-700 transition-all min-w-[145px] flex items-center justify-center
 }
 
 .categories-container {
-  max-width: 800px; /* Set max width for better layout */
-  margin: 0 auto; /* Center the container */
-}
-
-.categories-container ul {
-  padding: 10px; /* Add padding inside the ul */
-}
-
-.categories-container .flex {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    max-width: 800px; /* Set max width for better layout */
+    margin: 0 auto; /* Center the container */
+  }
+  
+  .categories-container ul {
+    padding: 10px; /* Add padding inside the ul */
+  }
+  
+  .categories-container .flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  

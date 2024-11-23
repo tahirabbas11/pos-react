@@ -1,6 +1,6 @@
-import React from 'react';
-import Header from '../components/header/Header';
-import Edit from '../components/products/Edit';
+import React from "react";
+import Header from "../components/header/Header";
+import Edit from "../components/products/Edit";
 
 const ProductPage = () => {
   return (

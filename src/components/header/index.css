@@ -1,34 +1,8 @@
-.menu-links {
-  @apply flex justify-between items-center gap-7 md:static fixed z-50 bottom-0 
-    md:w-auto w-screen md:bg-transparent bg-white left-0 md:border-t-0 border-t md:px-0 px-4 py-1;
-
-  /* Hide on mobile */
-  @media (max-width: 768px) {
-    /* Adjust the max-width as needed */
-    display: none;
-  }
+.menu-links{
+    @apply flex justify-between items-center gap-7 md:static fixed z-50 bottom-0 
+    md:w-auto w-screen md:bg-transparent bg-white left-0 md:border-t-0 border-t md:px-0 px-4 py-1
 }
 
-.menu-link {
-  @apply flex flex-col hover:text-[#40a9ff] transition-all gap-y-1;
+.menu-link{
+    @apply flex flex-col hover:text-[#40a9ff] transition-all gap-y-1
 }
-
-.menu-link-phone {
-  @apply flex items-center; /* Use flex and center items */
-  gap: 8px; /* Add a gap between icon and text */
-  padding: 10px 5px; /* Add padding for clickable area */
-  border-radius: 4px; /* Slightly round the corners */
-  transition: background-color 0.3s ease; /* Smooth background transition */
-  color: #333; /* Default text color */
-}
-
-.home{
-  gap: 10px;
-}
-
-@media (max-width: 768px) {
-  .home{
-    gap: 1px;
-  }
-}
-

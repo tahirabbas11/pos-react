@@ -1,110 +1,97 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Suspense, lazy, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { jwtDecode } from 'jwt-decode';
-
-// Lazy load pages
-const HomePage = lazy(() => import('./pages/HomePage'));
-const CartPage = lazy(() => import('./pages/CartPage'));
-const InvoicePage = lazy(() => import('./pages/InvoicePage'));
-const CustomersPage = lazy(() => import('./pages/CustomersPage'));
-const StatisticPage = lazy(() => import('./pages/StatisticPage'));
-const Register = lazy(() => import('./pages/auth/Register'));
-const Login = lazy(() => import('./pages/auth/Login'));
-const ProductPage = lazy(() => import('./pages/ProductPage'));
-const VendorPage = lazy(() => import('./pages/Vendors'));
-const VendorsList = lazy(() => import('./pages/VendorsList'));
-const Expenses = lazy(() => import('./pages/Expenses'));
-const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import CartPage from "./pages/CartPage";
+import InvoicePage from "./pages/InvoicePage";
+import CustomersPage from "./pages/CustomersPage";
+import StatisticPage from "./pages/StatisticPage";
+import Register from "./pages/auth/Register";
+import Login from "./pages/auth/Login";
+import ProductPage from "./pages/ProductPage";
+import VendorPage from "./pages/Vendors";
+import VendorsList from "./pages/VendorsList";
+import NotFoundPage from "./pages/NotFoundPage";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 
 function App() {
   const cart = useSelector((state) => state.cart);
-
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
-
   return (
     <BrowserRouter>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <RouteControl>
-                <HomePage />
-              </RouteControl>
-            }
-          />
-          <Route
-            path="/cart"
-            element={
-              <RouteControl>
-                <CartPage />
-              </RouteControl>
-            }
-          />
-          <Route
-            path="/invoices"
-            element={
-              <RouteControl>
-                <InvoicePage />
-              </RouteControl>
-            }
-          />
-          <Route
-            path="/customers"
-            element={
-              <RouteControl>
-                <CustomersPage />
-              </RouteControl>
-            }
-          />
-          <Route
-            path="/statistics"
-            element={
-              <RouteControl>
-                <StatisticPage />
-              </RouteControl>
-            }
-          />
-          <Route
-            path="/products"
-            element={
-              <RouteControl>
-                <ProductPage />
-              </RouteControl>
-            }
-          />
-          <Route
-            path="/vendor"
-            element={
-              <RouteControl>
-                <VendorPage />
-              </RouteControl>
-            }
-          />
-          <Route
-            path="/vendor-list"
-            element={
-              <RouteControl>
-                <VendorsList />
-              </RouteControl>
-            }
-          />
-          <Route
-            path="/expenses"
-            element={
-              <RouteControl>
-                <Expenses />
-              </RouteControl>
-            }
-          />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </Suspense>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <RouteControl>
+              <HomePage />
+            </RouteControl>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <RouteControl>
+              <CartPage />
+            </RouteControl>
+          }
+        />
+        <Route
+          path="/invoices"
+          element={
+            <RouteControl>
+              <InvoicePage />
+            </RouteControl>
+          }
+        />
+        <Route
+          path="/customers"
+          element={
+            <RouteControl>
+              <CustomersPage />
+            </RouteControl>
+          }
+        />
+        <Route
+          path="/statistics"
+          element={
+            <RouteControl>
+              <StatisticPage />
+            </RouteControl>
+          }
+        />
+        <Route
+          path="/products"
+          element={
+            <RouteControl>
+              <ProductPage />
+            </RouteControl>
+          }
+        />
+        <Route
+          path="/vendor"
+          element={
+            <RouteControl>
+              <VendorPage />
+            </RouteControl>
+          }
+          
+        />
+         <Route
+          path="/vendor-list"
+          element={
+            <RouteControl>
+              <VendorsList />
+            </RouteControl>
+          }
+          
+        />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
     </BrowserRouter>
   );
 }
@@ -112,9 +99,10 @@ function App() {
 export default App;
 
 export const RouteControl = ({ children }) => {
-  const token = JSON.parse(localStorage.getItem('postUser'))?.token;
+  const token = JSON.parse(localStorage.getItem("postUser"))?.token;
 
   if (token) {
+    // console.log("token", token);
     try {
       const decodedToken = jwtDecode(token);
       const currentTime = (new Date().getTime() + 1) / 1000;
