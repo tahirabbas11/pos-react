@@ -1,31 +1,31 @@
-import Header from "../components/header/Header";
-import { Table, Card, Button, message, Popconfirm, Input, Space } from "antd";
-import { useRef, useState } from "react";
-import CreateInvoice from "../components/cart/CreateInvoice";
-import { useDispatch, useSelector } from "react-redux";
+import Header from '../components/header/Header';
+import { Table, Card, Button, message, Popconfirm, Input, Space } from 'antd';
+import { useRef, useState } from 'react';
+import CreateInvoice from '../components/cart/CreateInvoice';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   PlusCircleOutlined,
   MinusCircleOutlined,
-  ClearOutlined,
+  // ClearOutlined,
   SearchOutlined,
-} from "@ant-design/icons";
+} from '@ant-design/icons';
 import {
   increase,
   decrease,
   deleteProduct,
-  reset,
+  // reset,
   applyDiscount,
-  updateQuantity
-} from "../redux/cartSlice";
-import Highlighter from "react-highlight-words";
+  updateQuantity,
+} from '../redux/cartSlice';
+import Highlighter from 'react-highlight-words';
 
 const CartPage = () => {
   const cart = useSelector((state) => state.cart);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
 
-  const [searchText, setSearchText] = useState("");
-  const [searchedColumn, setSearchedColumn] = useState("");
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -36,7 +36,7 @@ const CartPage = () => {
 
   const handleReset = (clearFilters) => {
     clearFilters();
-    setSearchText("");
+    setSearchText('');
   };
 
   const getColumnSearchProps = (dataIndex) => ({
@@ -56,7 +56,7 @@ const CartPage = () => {
             setSelectedKeys(e.target.value ? [e.target.value] : [])
           }
           onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{ marginBottom: 8, display: "block" }}
+          style={{ marginBottom: 8, display: 'block' }}
         />
         <Space>
           <Button
@@ -93,7 +93,7 @@ const CartPage = () => {
       </div>
     ),
     filterIcon: (filtered) => (
-      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
     ),
     onFilter: (value, record) =>
       record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
@@ -105,10 +105,10 @@ const CartPage = () => {
     render: (text) =>
       searchedColumn === dataIndex ? (
         <Highlighter
-          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
           searchWords={[searchText]}
           autoEscape
-          textToHighlight={text ? text.toString() : ""}
+          textToHighlight={text ? text.toString() : ''}
         />
       ) : (
         text
@@ -117,37 +117,37 @@ const CartPage = () => {
 
   const columns = [
     {
-      title: "Product Image",
-      dataIndex: "img",
-      key: "img",
-      width: "120px",
+      title: 'Product Image',
+      dataIndex: 'img',
+      key: 'img',
+      width: '120px',
       render: (text) => (
         <img src={text} alt="" className="w-full h-20 object-cover" />
       ),
     },
     {
-      title: "Product Name",
-      dataIndex: "title",
-      key: "title",
-      ...getColumnSearchProps("title"),
+      title: 'Product Name',
+      dataIndex: 'title',
+      key: 'title',
+      ...getColumnSearchProps('title'),
     },
     {
-      title: "Category",
-      dataIndex: "category",
-      key: "category",
-      ...getColumnSearchProps("category"),
+      title: 'Category',
+      dataIndex: 'category',
+      key: 'category',
+      ...getColumnSearchProps('category'),
     },
     {
-      title: "Product Price",
-      dataIndex: "price",
-      key: "price",
+      title: 'Product Price',
+      dataIndex: 'price',
+      key: 'price',
       render: (text) => <span>{text.toFixed(2)}&nbsp;Rs</span>,
       sorter: (a, b) => a.price - b.price,
     },
     {
-      title: "Product Quantity",
-      dataIndex: "quantity",
-      key: "quantity",
+      title: 'Product Quantity',
+      dataIndex: 'quantity',
+      key: 'quantity',
       render: (text, record) => (
         <div className="flex items-center">
           <Button
@@ -165,9 +165,11 @@ const CartPage = () => {
             onChange={(e) => {
               const value = Number(e.target.value);
               if (value > record.totalQuantity) {
-                message.error(`Cannot exceed total quantity of ${record.totalQuantity}.`);
+                message.error(
+                  `Cannot exceed total quantity of ${record.totalQuantity}.`
+                );
               } else if (value < 1) {
-                message.error("Quantity cannot be less than 1.");
+                message.error('Quantity cannot be less than 1.');
               } else {
                 // Dispatch an action to update the quantity in the cart
                 dispatch(updateQuantity({ ...record, quantity: value }));
@@ -175,7 +177,7 @@ const CartPage = () => {
             }}
             className="w-12 text-center border rounded mx-2"
           />
-          
+
           {record.quantity > 1 ? (
             <Button
               type="primary"
@@ -205,11 +207,11 @@ const CartPage = () => {
         </div>
       ),
     },
-           
+
     {
-      title: "Total Stock",
-      dataIndex: "totalQuantity",
-      key: "totalQuantity",
+      title: 'Total Stock',
+      dataIndex: 'totalQuantity',
+      key: 'totalQuantity',
       render: (text, record) => (
         <Card className="w-full">
           <p className="font-bold text-center">{record.totalQuantity}</p>
@@ -220,9 +222,9 @@ const CartPage = () => {
       ),
     },
     {
-      title: "Discount Price (%)",
-      dataIndex: "discountPrice",
-      key: "discountPrice",
+      title: 'Discount Price (%)',
+      dataIndex: 'discountPrice',
+      key: 'discountPrice',
       render: (text, record) => (
         <Input
           type="number"
@@ -233,7 +235,7 @@ const CartPage = () => {
             const discountValue = Number(e.target.value);
             dispatch(
               applyDiscount({
-                discountType: "product",
+                discountType: 'product',
                 value: { productId: record._id, discount: discountValue },
               })
             );
@@ -242,29 +244,29 @@ const CartPage = () => {
       ),
     },
     {
-      title: "Total Price",
-      dataIndex: "totalPrice",
-      key: "totalPrice",
+      title: 'Total Price',
+      dataIndex: 'totalPrice',
+      key: 'totalPrice',
       render: (text, record) => {
         return (
           <div className="text-right">
-            <div>{record.discountPricePerPiece}&nbsp;Rs</div>{" "}
+            <div>{record.discountPricePerPiece}&nbsp;Rs</div>{' '}
             {/* Discounted price per piece */}
             <div>x {record.quantity}</div> {/* Quantity */}
             <div className="border-b border-gray-300 my-1"></div>
             <div>
               <strong>{record.totalproductprice}&nbsp;Rs</strong>
-            </div>{" "}
+            </div>{' '}
             {/* Total price */}
           </div>
         );
       },
     },
     {
-      title: "Action",
-      dataIndex: "action",
-      key: "action",
-      width: "100px",
+      title: 'Action',
+      dataIndex: 'action',
+      key: 'action',
+      width: '100px',
       render: (text, record) => (
         <Popconfirm
           title="Delete Product"
@@ -296,7 +298,9 @@ const CartPage = () => {
           <Card className="w-72">
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span>{cart?.subtotal ? cart.subtotal.toFixed(2): '-'}&nbsp;Rs</span>
+              <span>
+                {cart?.subtotal ? cart.subtotal.toFixed(2) : '-'}&nbsp;Rs
+              </span>
             </div>
             <div className="flex justify-between my-2">
               <span>Tax {cart.tax}%</span>
@@ -320,7 +324,7 @@ const CartPage = () => {
                   const overallDiscountValue = Number(e.target.value);
                   dispatch(
                     applyDiscount({
-                      discountType: "overall",
+                      discountType: 'overall',
                       value: overallDiscountValue,
                     })
                   );

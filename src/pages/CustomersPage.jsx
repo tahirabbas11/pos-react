@@ -1,29 +1,29 @@
-import Header from "../components/header/Header";
-import { Table, Button, Input, Space, Spin } from "antd";
-import { useEffect, useState, useRef } from "react";
-import Highlighter from "react-highlight-words";
-import { SearchOutlined } from "@ant-design/icons";
+import Header from '../components/header/Header';
+import { Table, Button, Input, Space, Spin } from 'antd';
+import { useEffect, useState, useRef } from 'react';
+import Highlighter from 'react-highlight-words';
+import { SearchOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
 const InvoicePage = () => {
   const navigate = useNavigate();
   const [invoices, setInvoices] = useState();
-  const [searchText, setSearchText] = useState("");
-  const [searchedColumn, setSearchedColumn] = useState("");
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
 
   useEffect(() => {
     const getInvoices = async () => {
-      const token = JSON.parse(localStorage.getItem("postUser"))?.token;
+      const token = JSON.parse(localStorage.getItem('postUser'))?.token;
 
       // console.log("token", token);
 
       try {
         const res = await fetch(
-          process.env.REACT_APP_SERVER_URL + "/api/invoices/get-all",
+          process.env.REACT_APP_SERVER_URL + '/api/invoices/get-all',
           {
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
               Authorization: `Bearer ${token}`, // Using the retrieved token
             },
           }
@@ -52,7 +52,7 @@ const InvoicePage = () => {
   };
   const handleReset = (clearFilters) => {
     clearFilters();
-    setSearchText("");
+    setSearchText('');
   };
   const getColumnSearchProps = (dataIndex) => ({
     filterDropdown: ({
@@ -78,7 +78,7 @@ const InvoicePage = () => {
           onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
           style={{
             marginBottom: 8,
-            display: "block",
+            display: 'block',
           }}
         />
         <Space>
@@ -130,7 +130,7 @@ const InvoicePage = () => {
     filterIcon: (filtered) => (
       <SearchOutlined
         style={{
-          color: filtered ? "#1890ff" : undefined,
+          color: filtered ? '#1890ff' : undefined,
         }}
       />
     ),
@@ -145,12 +145,12 @@ const InvoicePage = () => {
       searchedColumn === dataIndex ? (
         <Highlighter
           highlightStyle={{
-            backgroundColor: "#ffc069",
+            backgroundColor: '#ffc069',
             padding: 0,
           }}
           searchWords={[searchText]}
           autoEscape
-          textToHighlight={text ? text.toString() : ""}
+          textToHighlight={text ? text.toString() : ''}
         />
       ) : (
         text
@@ -158,21 +158,21 @@ const InvoicePage = () => {
   });
   const columns = [
     {
-      title: "Customer Name",
-      dataIndex: "customerName",
-      key: "customerName",
-      ...getColumnSearchProps("customerName"),
+      title: 'Customer Name',
+      dataIndex: 'customerName',
+      key: 'customerName',
+      ...getColumnSearchProps('customerName'),
     },
     {
-      title: "Phone Number",
-      dataIndex: "customerPhoneNumber",
-      key: "customerPhoneNumber",
-      ...getColumnSearchProps("customerPhoneNumber"),
+      title: 'Phone Number',
+      dataIndex: 'customerPhoneNumber',
+      key: 'customerPhoneNumber',
+      ...getColumnSearchProps('customerPhoneNumber'),
     },
     {
-      title: "Operation Date",
-      dataIndex: "createdAt",
-      key: "createdAt",
+      title: 'Operation Date',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
       render: (text, record) => {
         return <span>{text.substring(0, 10)}</span>;
       },
@@ -185,17 +185,21 @@ const InvoicePage = () => {
       {invoices ? (
         <div className="px-6 min-h-[550px]">
           <h1 className="text-4xl text-center font-bold mb-4">Customers</h1>
-          <Table
-            dataSource={invoices}
-            columns={columns}
-            bordered
-            pagination={{
-              pageSizeOptions: ['10', '20', '30'],
-              showSizeChanger: true,
-              pageSize: 10,
-            }}
-            rowKey="_id"
-          />
+          <div className="overflow-x-auto">
+            {' '}
+            {/* Makes the table scrollable horizontally on small screens */}
+            <Table
+              dataSource={invoices}
+              columns={columns}
+              bordered
+              pagination={{
+                pageSizeOptions: ['10', '20', '30'],
+                showSizeChanger: true,
+                pageSize: 10,
+              }}
+              rowKey="_id"
+            />
+          </div>
         </div>
       ) : (
         <Spin size="large" className="absolute left-1/2 top-1/2" />
